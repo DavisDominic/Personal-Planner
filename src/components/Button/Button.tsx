@@ -21,7 +21,8 @@ export function Button({ tone, size, icon, className, children, ...rest }: Butto
 
 type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   label: string
-  tone?: 'fill' | 'lemon'
+  /** "plain" is a bare icon with no box around it (used for the back / next chevrons). */
+  tone?: 'fill' | 'lemon' | 'plain'
   round?: boolean
 }
 

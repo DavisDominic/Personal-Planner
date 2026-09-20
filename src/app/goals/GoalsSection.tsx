@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Target } from 'lucide-react'
-import { Button, IconButton } from '../../components/Button/Button'
+import { Target } from 'lucide-react'
+import { Button } from '../../components/Button/Button'
 import { Card, CardHead } from '../../components/Card/Card'
 import { GoalRow } from '../../components/Goal/GoalRow'
 import { addDays, addMonths, goalPeriod, listGoals, restoreGoalFromArchive, today } from '../../domain/index'
@@ -47,9 +47,11 @@ export function GoalsSection({ scope, date, variant = 'full', showArchived, navi
     return (
       <div className={cx(s.context, s[scope])}>
         <div className={s.contextLabel}>{SCOPE_LABEL[scope]}</div>
-        {goals.map((goal) => (
-          <GoalRow key={goal.id} title={goal.title} description={goal.description} onOpen={open(goal)} />
-        ))}
+        <div className={s.list}>
+          {goals.map((goal) => (
+            <GoalRow key={goal.id} title={goal.title} description={goal.description} onOpen={open(goal)} />
+          ))}
+        </div>
         <div className={s.add}>
           <Button size="small" onClick={add}>
             + Add a goal
@@ -67,22 +69,17 @@ export function GoalsSection({ scope, date, variant = 'full', showArchived, navi
           kicker={SCOPE_LABEL[scope]}
           title={periodLabel(scope, shown)}
           icon={<Target aria-hidden="true" />}
-          actions={
-            navigable && (
-              <div className={s.stepper}>
-                <IconButton label={`Previous ${NOUN[scope]}`} onClick={() => step(-1)}>
-                  <ChevronLeft aria-hidden="true" />
-                </IconButton>
-                <IconButton label={`Next ${NOUN[scope]}`} onClick={() => step(1)}>
-                  <ChevronRight aria-hidden="true" />
-                </IconButton>
-              </div>
-            )
+          stepper={
+            navigable
+              ? { onPrevious: () => step(-1), onNext: () => step(1), previousLabel: `Previous ${NOUN[scope]}`, nextLabel: `Next ${NOUN[scope]}` }
+              : undefined
           }
         />
-        {goals.map((goal) => (
-          <GoalRow key={goal.id} title={goal.title} description={goal.description} onOpen={open(goal)} />
-        ))}
+        <div className={s.list}>
+          {goals.map((goal) => (
+            <GoalRow key={goal.id} title={goal.title} description={goal.description} onOpen={open(goal)} />
+          ))}
+        </div>
         <div className={s.add}>
           <Button size="small" onClick={add}>
             + Add a goal
@@ -100,20 +97,23 @@ export function GoalsSection({ scope, date, variant = 'full', showArchived, navi
                 Archived · {archived.length} — {showOld ? 'Hide' : 'Show'}
               </Button>
             </div>
-            {showOld &&
-              archived.map((goal) => (
-                <GoalRow
-                  key={goal.id}
-                  title={goal.title}
-                  description={goal.description}
-                  onOpen={open(goal)}
-                  actions={
-                    <Button size="small" onClick={() => void restoreGoalFromArchive(goal.id)}>
-                      Restore
-                    </Button>
-                  }
-                />
-              ))}
+            {showOld && (
+              <div className={s.list}>
+                {archived.map((goal) => (
+                  <GoalRow
+                    key={goal.id}
+                    title={goal.title}
+                    description={goal.description}
+                    onOpen={open(goal)}
+                    actions={
+                      <Button size="small" onClick={() => void restoreGoalFromArchive(goal.id)}>
+                        Restore
+                      </Button>
+                    }
+                  />
+                ))}
+              </div>
+            )}
           </>
         )}
       </Card>

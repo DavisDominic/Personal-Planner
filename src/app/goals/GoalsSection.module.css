@@ -1,6 +1,7 @@
 .add{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-3)}
 .disclose{margin-top:var(--sp-3)}
-.stepper{display:flex;gap:var(--u-px-2);flex:none}
+/* Goals flow into columns when the strip is wide, so a full-width strip is never mostly empty. */
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--u-px-300)),1fr));column-gap:var(--sp-6)}
 
 /* A compact, vertical block of goals above the Month and Week grids. Each scope has its own colour. */
 .context{

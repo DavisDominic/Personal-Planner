@@ -1,5 +1,5 @@
 .row{padding:var(--sp-3) 0}
-.row + .row{border-top:var(--u-px-1) solid var(--u-ink-22)}
+.row{border-top:var(--u-px-1) solid var(--u-ink-22)}
 .title{font-size:var(--text-md);font-weight:var(--u-fw-600)}
 .open{padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .open:hover{text-decoration:underline}

@@ -30,7 +30,6 @@ export function CalendarNav({ view, date, caption, title }: CalendarNavProps) {
     <CalendarToolbar
       caption={caption}
       title={title}
-      titleSize={view}
       previousLabel={`Previous ${view}`}
       nextLabel={`Next ${view}`}
       onPrevious={() => go(step(-1))}

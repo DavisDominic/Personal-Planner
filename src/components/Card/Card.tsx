@@ -1,4 +1,6 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { IconButton } from '../Button/Button'
 import { cx } from '../../lib/cx'
 import s from './Card.module.css'
 
@@ -15,17 +17,31 @@ export function Card({ as: Tag = 'div', tone, kind, className, ...rest }: CardPr
   return <Tag className={cx(s.card, kind && s[kind], tone && s[tone], className)} {...rest} />
 }
 
-export function CardHead({ kicker, title, icon, actions }: { kicker: string; title: string; icon?: ReactNode; actions?: ReactNode }) {
+export type CardStepper = { onPrevious: () => void; onNext: () => void; previousLabel: string; nextLabel: string }
+
+/** A card's heading. With `stepper`, back and next chevrons sit before and after the title. */
+export function CardHead({ kicker, title, icon, stepper }: { kicker: string; title: string; icon?: ReactNode; stepper?: CardStepper }) {
   return (
     <div className={s.cardHead}>
       <div>
         <div className={s.cardKicker}>{kicker}</div>
-        <div className={s.cardTitle}>
-          {icon && <span className={s.titleIcon}>{icon}</span>}
-          {title}
+        <div className={s.cardTitleRow}>
+          {stepper && (
+            <IconButton tone="plain" className={s.firstChevron} label={stepper.previousLabel} onClick={stepper.onPrevious}>
+              <ChevronLeft aria-hidden="true" />
+            </IconButton>
+          )}
+          <div className={s.cardTitle}>
+            {icon && <span className={s.titleIcon}>{icon}</span>}
+            {title}
+          </div>
+          {stepper && (
+            <IconButton tone="plain" label={stepper.nextLabel} onClick={stepper.onNext}>
+              <ChevronRight aria-hidden="true" />
+            </IconButton>
+          )}
         </div>
       </div>
-      {actions}
     </div>
   )
 }

@@ -84,11 +84,9 @@
 
 /* ---------- REAL VIEWS: links, more, marks, add, drag ---------- */
 .calendar-title{margin:0}
-.title-block{display:grid;justify-items:center;gap:var(--sp-1);text-align:center}
-.title-block.day{min-width:var(--u-px-170)}
-.title-block.week{min-width:var(--u-px-290)}
-.title-block.month{min-width:var(--u-px-220)}
-.title-block.year{min-width:var(--u-px-110)}
+.title-block{display:grid;justify-items:start;gap:var(--sp-1);text-align:left}
+/* The chevron glyph, not its box, lines up with the page edge. */
+.first-chevron{margin-left:calc(-1 * var(--u-px-10))}
 .title-row{display:flex;align-items:center;gap:var(--sp-3)}
 .day-number.selected-mark{background:var(--lemon);color:var(--ink);border:var(--u-px-1) solid var(--ink);border-radius:50%}
 .day-cell{position:relative}

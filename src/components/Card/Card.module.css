@@ -29,3 +29,6 @@
 .card-title{display:flex;align-items:center;gap:var(--sp-2)}
 .title-icon{display:inline-flex;flex:none}
 .title-icon svg{width:var(--u-px-20);height:var(--u-px-20)}
+
+.card-title-row{display:flex;align-items:center;gap:var(--sp-1)}
+.first-chevron{margin-left:calc(-1 * var(--u-px-10))}

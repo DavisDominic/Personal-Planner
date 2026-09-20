@@ -35,3 +35,7 @@
 .btn{composes:hit from "../../styles/hit.module.css"}
 .icon-btn{composes:hit from "../../styles/hit.module.css"}
 .btn:focus-visible,.icon-btn:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+
+/* Back / next chevrons: just the icon, with a soft tint on hover. */
+.icon-btn.plain{border-color:transparent;background:transparent}
+.icon-btn.plain:hover{background:var(--u-ink-12)}
