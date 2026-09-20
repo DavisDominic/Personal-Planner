@@ -200,3 +200,14 @@ Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with th
 - **Empty query browses:** choosing only a type lists everything of that type, newest first, so hundreds of open loops stay manageable. Results are paged 30 at a time.
 - **Opening a result:** tasks, open loops and goals open their existing dialogs; a reflection links to its period (Year reflections live in Looking Back); taken-care-of results have Reopen with Undo.
 - The search box shows no shortcut hint; the filters sit in one bordered card (Type chips, a segmented Time control, and a Between From/To row).
+
+## Settings and Backup (PRD 21)
+
+- **Search filters on desktop** sit on one line (Type, Time, Between); on mobile they stack.
+- **Backup file:** `{ schemaVersion, exportedAt, applicationVersion, data: { tasks, openLoops, rituals, checkins, goals, reflections, settings } }`, saved as `daybook-backup-YYYY-MM-DD.json`. "Last backup" is per device and is left out of the file.
+- **Goal history** is listed in PRD 21 but the app does not record it yet (goals hold only their current state), so backups contain none. Flagged as a gap; nothing was invented.
+- **Restore is validate-then-replace.** `parseBackup` checks the whole file (shape, enums, dates, duplicate ids, check-ins that point at missing rituals, duplicate reflection periods, newer schema versions) and rejects on the first problem, without repairing or skipping. `restoreBackup` swaps all tables in one transaction, so a failure leaves existing data untouched. Errors use the PRD wording: "This backup couldn't be imported. Your current data hasn't been changed."
+- **Confirmation:** choosing a file shows what it holds and when it was made, then asks to replace. Nothing changes until the user confirms.
+- **Privacy warning** is shown beside Save backup. No encryption (not a V1 requirement).
+- **Reminder:** after 30 days (or if no backup was ever saved) Settings shows a calm one-line notice. No notification is sent and it appears nowhere else. The 30-day interval is my choice; the PRD says only "a long interval".
+- **Preferences:** the PRD lists "application preferences" but names none, so Settings has none yet. Flagged rather than invented.

@@ -12,3 +12,8 @@
 .mark{background:var(--lemon);color:var(--ink);border-radius:var(--r-1);padding:0 var(--u-px-2)}
 .title-button,.title-link{all:unset;cursor:pointer;color:inherit;text-decoration:underline;text-underline-offset:var(--u-px-3)}
 .title-button:focus-visible,.title-link:focus-visible{outline:var(--u-px-2) solid var(--ink);outline-offset:var(--u-px-2)}
+
+@media(min-width:981px){
+  .filters{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:var(--sp-4)}
+  .row{flex-direction:column}
+}
