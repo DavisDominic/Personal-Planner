@@ -106,6 +106,23 @@ describe('filters', () => {
   })
 })
 
+describe('status filter', () => {
+  it('separates open, done and set-aside across kinds, and leaves reflections out', async () => {
+    const done = await createTask({ title: 'x done' })
+    await completeTask(done.id)
+    const nlr = await createTask({ title: 'x dropped' })
+    await markTaskNoLongerRelevant(nlr.id)
+    await createTask({ title: 'x active' })
+    const loop = await createOpenLoop({ title: 'x resolved' })
+    await resolveOpenLoop(loop.id)
+    await createOpenLoop({ title: 'x open loop' })
+    await saveReflection('day', '2026-09-20', 'x reflection')
+    expect((await titles('x', { status: 'open' })).sort()).toEqual(['x active', 'x open loop'])
+    expect((await titles('x', { status: 'done' })).sort()).toEqual(['x done', 'x resolved'])
+    expect(await titles('x', { status: 'set-aside' })).toEqual(['x dropped'])
+  })
+})
+
 describe('empty query', () => {
   it('lists everything the filters allow, newest first, so a long list can be browsed', async () => {
     setNow(2026, 9, 1)

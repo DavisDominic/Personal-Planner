@@ -1,4 +1,4 @@
-import { SlidersHorizontal } from 'lucide-react'
+import { SlidersHorizontal, X } from 'lucide-react'
 import { Fragment, useDeferredValue, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../../components/Button/Button'
@@ -6,9 +6,9 @@ import { Card } from '../../components/Card/Card'
 import { DatePicker } from '../../components/DatePicker/DatePicker'
 import { FilterChips, SearchBar } from '../../components/Search/Search'
 import { reopenOpenLoop, resolveOpenLoop, searchPlanner, today } from '../../domain/index'
-import type { SearchFilters, SearchKind, SearchMatch, SearchResult } from '../../domain/index'
+import type { SearchFilters, SearchKind, SearchStatus, SearchMatch, SearchResult } from '../../domain/index'
 import { cx } from '../../lib/cx'
-import { dayRelative } from '../../lib/dateFormat'
+import { dayRelative, dayTitle } from '../../lib/dateFormat'
 import t from '../../styles/typography.module.css'
 import { calendarPath } from '../calendar/calendarPaths'
 import { OpenLoopDetailDialog } from '../day/OpenLoopDetailDialog'
@@ -34,6 +34,13 @@ const TIME_FILTERS = [
   { label: 'All time', time: 'all' as const },
   { label: 'Past', time: 'past' as const },
   { label: 'Upcoming', time: 'upcoming' as const },
+]
+
+const STATUS_FILTERS: { label: string; status?: SearchStatus }[] = [
+  { label: 'Any' },
+  { label: 'Open', status: 'open' },
+  { label: 'Done', status: 'done' },
+  { label: 'Set aside', status: 'set-aside' },
 ]
 
 const PAGE = 30
@@ -99,11 +106,12 @@ export function SearchPage() {
   const toast = useToast()
   const [query, setQuery] = useState('')
   const [kindLabel, setKindLabel] = useState('All')
+  const [statusLabel, setStatusLabel] = useState('Any')
   const [timeLabel, setTimeLabel] = useState('All time')
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [count, setCount] = useState(PAGE)
-  const [moreOpen, setMoreOpen] = useState(false)
+  const [panelOpen, setPanelOpen] = useState(false)
   const [openTask, setOpenTask] = useState<Task | null>(null)
   const [openLoop, setOpenLoop] = useState<OpenLoop | null>(null)
   const [goal, setGoal] = useState<GoalTarget | null>(null)
@@ -121,14 +129,20 @@ export function SearchPage() {
   const q = useDeferredValue(query)
   const filters: SearchFilters = {
     kinds: KIND_FILTERS.find((k) => k.label === kindLabel)?.kinds,
+    status: STATUS_FILTERS.find((x) => x.label === statusLabel)?.status,
     time: TIME_FILTERS.find((x) => x.label === timeLabel)?.time,
     from: from || undefined,
     to: to || undefined,
   }
-  const filtered = kindLabel !== 'All' || timeLabel !== 'All time' || !!from || !!to
-  // Progressive disclosure: the type row is always there; time and dates open on request, and stay open while they narrow the results.
-  const narrowCount = (timeLabel !== 'All time' ? 1 : 0) + (from ? 1 : 0) + (to ? 1 : 0)
-  const showMore = moreOpen || narrowCount > 0
+  // Progressive disclosure: only the search box and a Filters button show at first. Chosen filters stay visible as removable chips.
+  const active: { key: string; label: string; clear: () => void }[] = [
+    ...(kindLabel !== 'All' ? [{ key: 'type', label: kindLabel, clear: () => setKindLabel('All') }] : []),
+    ...(statusLabel !== 'Any' ? [{ key: 'status', label: statusLabel, clear: () => setStatusLabel('Any') }] : []),
+    ...(timeLabel !== 'All time' ? [{ key: 'time', label: timeLabel, clear: () => setTimeLabel('All time') }] : []),
+    ...(from ? [{ key: 'from', label: `From ${dayTitle(from)}`, clear: () => setFrom('') }] : []),
+    ...(to ? [{ key: 'to', label: `To ${dayTitle(to)}`, clear: () => setTo('') }] : []),
+  ]
+  const filtered = active.length > 0
   const browsing = q.trim() !== '' || filtered
   const key = JSON.stringify([q, filters])
   const results = useLive(() => (browsing ? searchPlanner(q, filters) : Promise.resolve([] as SearchResult[])), key)
@@ -136,6 +150,7 @@ export function SearchPage() {
 
   const clearFilters = () => {
     setKindLabel('All')
+    setStatusLabel('Any')
     setTimeLabel('All time')
     setFrom('')
     setTo('')
@@ -190,34 +205,49 @@ export function SearchPage() {
 
       <div className={s.filters}>
         <div className={s.top}>
-          <FilterChips label="Type" items={KIND_FILTERS.map((k) => k.label)} value={kindLabel} onChange={(v) => { setKindLabel(v); reset() }} />
-          <button
-            type="button"
-            className={s.toggle}
-            aria-expanded={showMore}
-            aria-controls="search-more"
-            onClick={() => setMoreOpen(!showMore)}
-          >
+          <button type="button" className={s.toggle} aria-expanded={panelOpen} aria-controls="search-filters" onClick={() => setPanelOpen(!panelOpen)}>
             <SlidersHorizontal aria-hidden="true" />
-            When
-            {narrowCount > 0 && <span className={s.badge}>{narrowCount}</span>}
+            Filters
+            {active.length > 0 && <span className={s.badge}>{active.length}</span>}
           </button>
+          {active.map((a) => (
+            <button
+              key={a.key}
+              type="button"
+              className={s.applied}
+              aria-label={`Remove filter: ${a.label}`}
+              onClick={() => {
+                a.clear()
+                reset()
+              }}
+            >
+              {a.label}
+              <X aria-hidden="true" />
+            </button>
+          ))}
           {filtered && (
             <button type="button" className={s.clear} onClick={clearFilters}>
-              Clear filters
+              Clear all
             </button>
           )}
         </div>
-        {showMore && (
-          <div id="search-more" className={s.extra}>
-            <FilterChips label="Time scope" variant="segmented" items={TIME_FILTERS.map((x) => x.label)} value={timeLabel} onChange={(v) => { setTimeLabel(v); reset() }} />
-            <div className={s.range} role="group" aria-label="Date range">
-              <div className={s.date}>
-                <DatePicker label="From" labelHidden allowClear placeholder="From" value={from} onChange={(v) => { setFrom(v); reset() }} />
-              </div>
-              <span className={t.typeCaption} aria-hidden="true">to</span>
-              <div className={s.date}>
-                <DatePicker label="To" labelHidden allowClear placeholder="To" value={to} onChange={(v) => { setTo(v); reset() }} />
+        {panelOpen && (
+          <div id="search-filters" className={s.panel}>
+            <div className={t.typeCaption}>Type</div>
+            <FilterChips label="Type" items={KIND_FILTERS.map((k) => k.label)} value={kindLabel} onChange={(v) => { setKindLabel(v); reset() }} />
+            <div className={t.typeCaption}>Status</div>
+            <FilterChips label="Status" items={STATUS_FILTERS.map((x) => x.label)} value={statusLabel} onChange={(v) => { setStatusLabel(v); reset() }} />
+            <div className={t.typeCaption}>Time</div>
+            <div className={s.timeRow}>
+              <FilterChips label="Time scope" variant="segmented" items={TIME_FILTERS.map((x) => x.label)} value={timeLabel} onChange={(v) => { setTimeLabel(v); reset() }} />
+              <div className={s.range} role="group" aria-label="Date range">
+                <div className={s.date}>
+                  <DatePicker label="From" labelHidden allowClear placeholder="From" value={from} onChange={(v) => { setFrom(v); reset() }} />
+                </div>
+                <span className={t.typeCaption} aria-hidden="true">to</span>
+                <div className={s.date}>
+                  <DatePicker label="To" labelHidden allowClear placeholder="To" value={to} onChange={(v) => { setTo(v); reset() }} />
+                </div>
               </div>
             </div>
           </div>

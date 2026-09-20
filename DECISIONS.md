@@ -228,3 +228,6 @@ Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with th
 - The **Type** chips are always visible. A **When** button (with a count badge) reveals the rest: the Time segmented control and a From / To date range. Nothing beyond Type is shown until asked for.
 - The panel stays open while a time or date filter is narrowing the results, so an active filter is never hidden. A "Clear filters" text button appears whenever any filter is on.
 - From and To are the same width and height, and everything is left-aligned on one edge with tight spacing.
+
+**Revised:** search shows only the box and a **Filters** button. Filters opens three groups, each a filter in its own right: Type, Status (Any / Open / Done / Set aside) and Time (All time / Past / Upcoming plus From / To). Chosen filters stay visible as removable chips with a count on the button and a "Clear all".
+Status maps across kinds: open = active task, open loop, ritual or goal; done = completed task or taken-care-of loop; set aside = no-longer-relevant task, archived ritual or goal. Reflections have no status, so they drop out when one is chosen.

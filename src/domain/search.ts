@@ -4,7 +4,12 @@ import type { DateString, Goal, OpenLoop, Reflection, Ritual, Task, Timestamp } 
 
 export type SearchKind = 'task' | 'open-loop' | 'taken-care-of' | 'ritual' | 'goal' | 'reflection'
 
+/** open = still active, done = completed or taken care of, set-aside = no longer relevant or archived. Reflections have no status. */
+export type SearchStatus = 'open' | 'done' | 'set-aside'
+
 export type SearchFilters = {
+  /** Limit to records in this state. Reflections have none, so they drop out when this is set. */
+  status?: SearchStatus
   /** Limit to these kinds. Omit for everything. */
   kinds?: SearchKind[]
   /** Only records dated on or after this. */
@@ -53,6 +58,20 @@ function snippetAround(text: string, term: string): string {
   return `${start > 0 ? '…' : ''}${flat}${end < text.length ? '…' : ''}`
 }
 
+const statusOf = (r: { kind: SearchKind; record: unknown }): SearchStatus | undefined => {
+  switch (r.kind) {
+    case 'task': {
+      const st = (r.record as Task).status
+      return st === 'completed' ? 'done' : st === 'no-longer-relevant' ? 'set-aside' : 'open'
+    }
+    case 'open-loop': return 'open'
+    case 'taken-care-of': return 'done'
+    case 'ritual': return (r.record as Ritual).archivedAt ? 'set-aside' : 'open'
+    case 'goal': return (r.record as Goal).status === 'archived' ? 'set-aside' : 'open'
+    default: return undefined
+  }
+}
+
 const goalDate = (g: Goal): DateString => (g.scope === 'year' ? `${g.period}-01-01` : g.scope === 'month' ? `${g.period}-01` : g.period)
 
 /**
@@ -98,6 +117,7 @@ export async function searchPlanner(query: string, filters: SearchFilters = {}):
   const results: SearchResult[] = []
   for (const { result, title, body } of candidates) {
     if (filters.kinds && !filters.kinds.includes(result.kind)) continue
+    if (filters.status && statusOf(result as { kind: SearchKind; record: unknown }) !== filters.status) continue
     if (filters.from && result.date < filters.from) continue
     if (filters.to && result.date > filters.to) continue
     if (filters.time === 'past' && result.date >= now) continue
