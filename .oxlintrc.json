@@ -4,5 +4,21 @@
   "rules": {
     "react/rules-of-hooks": "error",
     "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/components/**", "src/gallery/**", "src/App.tsx", "src/main.tsx", "src/lib/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [{ "name": "dexie", "message": "UI never touches IndexedDB. Use the domain functions from src/domain." }],
+            "patterns": [
+              { "group": ["**/db/*", "**/domain/*", "!**/domain/index"], "message": "UI imports data only through src/domain (its index). Never src/db or domain internals." }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

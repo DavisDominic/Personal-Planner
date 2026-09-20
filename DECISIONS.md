@@ -6,6 +6,20 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 
 ---
 
+## Data layer (Slice 1)
+**Status: Assumed.** Choices the PRD leaves open, made while building. Correct any that are wrong.
+
+- **Formats:** dates are local `YYYY-MM-DD`, times `HH:mm`, timestamps ISO 8601, ids UUIDs. Absent optional fields are omitted, not null.
+- **Statuses:** Task `active | completed | no-longer-relevant`; Open Loop `open | taken-care-of`; Goal `active | archived`. Deleting removes the record (no trash) and returns it so the UI can offer Undo.
+- **Weeks start on Monday** (matches the design system's week view). Note the design system's month grid starts on Sunday; that mismatch is unresolved.
+- **Undo and reopen:** completing, resolving and archiving each have a reverse (`reopenTask`, `reopenOpenLoop`, `restoreRitual`, `restoreGoalFromArchive`) so a mis-tap is recoverable. A completed task cannot be moved until reopened (it stays on its original date).
+- **Older unfinished tasks:** the PRD says an unfinished task is surfaced the next day as "From yesterday". Tasks from earlier days are surfaced too (the Welcome Back review needs them). The domain returns all unfinished dated tasks from before a date; the UI decides how to group and label them.
+- **Empty reflection:** saving empty content on an existing reflection removes it (returned for Undo). Saving empty with nothing stored creates nothing.
+- **Weekly rituals** mean "once a week, any day", so every day lists them. Check-ins are accepted on any date, including days the frequency doesn't list.
+- **Goal change history** ("when changed significantly") is not recorded yet. It is undefined in the PRD and belongs with the Goals screen (Slice 8).
+- **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
+- **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
+
 ## Priority
 **Status: Confirmed** (2026-09-20)
 

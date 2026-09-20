@@ -15,7 +15,8 @@ A local-first personal planner (PWA). Read these before working:
 
 ### 2. Data access
 - UI code never touches IndexedDB (or Dexie) directly. It calls domain functions only (`createTask`, `completeTask`, `moveTask`, `deleteTask`, `resolveOpenLoop`, `convertOpenLoopToTask`, `checkRitual`, `archiveRitual`, `createGoal`, `saveReflection`, ...).
-- Domain logic lives outside UI components and is testable without a DOM.
+- Domain logic lives in `src/domain` (public API: `src/domain/index.ts`) on top of `src/db`. It is testable without a DOM: `npm test`.
+- oxlint enforces this: `npm run lint` fails if UI code (`src/components`, `src/gallery`, `App`, `main`, `lib`) imports `dexie`, `src/db`, or domain internals.
 - Import is validate-then-replace. A failed import must never change existing data.
 
 ### 3. No backend
