@@ -1,3 +1,4 @@
+import { SlidersHorizontal } from 'lucide-react'
 import { Fragment, useDeferredValue, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../../components/Button/Button'
@@ -102,6 +103,7 @@ export function SearchPage() {
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [count, setCount] = useState(PAGE)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [openTask, setOpenTask] = useState<Task | null>(null)
   const [openLoop, setOpenLoop] = useState<OpenLoop | null>(null)
   const [goal, setGoal] = useState<GoalTarget | null>(null)
@@ -124,6 +126,9 @@ export function SearchPage() {
     to: to || undefined,
   }
   const filtered = kindLabel !== 'All' || timeLabel !== 'All time' || !!from || !!to
+  // Progressive disclosure: the type row is always there; time and dates open on request, and stay open while they narrow the results.
+  const narrowCount = (timeLabel !== 'All time' ? 1 : 0) + (from ? 1 : 0) + (to ? 1 : 0)
+  const showMore = moreOpen || narrowCount > 0
   const browsing = q.trim() !== '' || filtered
   const key = JSON.stringify([q, filters])
   const results = useLive(() => (browsing ? searchPlanner(q, filters) : Promise.resolve([] as SearchResult[])), key)
@@ -184,30 +189,39 @@ export function SearchPage() {
       />
 
       <div className={s.filters}>
-        <div className={s.row}>
-          <div className={t.typeCaption}>Type</div>
-          <div className={s.control}>
-<FilterChips label="Type" items={KIND_FILTERS.map((k) => k.label)} value={kindLabel} onChange={(v) => { setKindLabel(v); reset() }} />
-</div>
+        <div className={s.top}>
+          <FilterChips label="Type" items={KIND_FILTERS.map((k) => k.label)} value={kindLabel} onChange={(v) => { setKindLabel(v); reset() }} />
+          <button
+            type="button"
+            className={s.toggle}
+            aria-expanded={showMore}
+            aria-controls="search-more"
+            onClick={() => setMoreOpen(!showMore)}
+          >
+            <SlidersHorizontal aria-hidden="true" />
+            When
+            {narrowCount > 0 && <span className={s.badge}>{narrowCount}</span>}
+          </button>
+          {filtered && (
+            <button type="button" className={s.clear} onClick={clearFilters}>
+              Clear filters
+            </button>
+          )}
         </div>
-        <div className={s.row}>
-          <div className={t.typeCaption}>Time</div>
-          <div className={s.control}>
-<FilterChips label="Time scope" variant="segmented" items={TIME_FILTERS.map((x) => x.label)} value={timeLabel} onChange={(v) => { setTimeLabel(v); reset() }} />
-</div>
-        </div>
-        <div className={s.row}>
-          <div className={t.typeCaption}>Between</div>
-          <div className={cx(s.control, s.range)}>
-            <DatePicker label="From" labelHidden allowClear placeholder="From" value={from} onChange={(v) => { setFrom(v); reset() }} />
-            <DatePicker label="To" labelHidden allowClear placeholder="To" value={to} onChange={(v) => { setTo(v); reset() }} />
-            {filtered && (
-              <Button tone="ghost" onClick={clearFilters}>
-                Clear filters
-              </Button>
-            )}
+        {showMore && (
+          <div id="search-more" className={s.extra}>
+            <FilterChips label="Time scope" variant="segmented" items={TIME_FILTERS.map((x) => x.label)} value={timeLabel} onChange={(v) => { setTimeLabel(v); reset() }} />
+            <div className={s.range} role="group" aria-label="Date range">
+              <div className={s.date}>
+                <DatePicker label="From" labelHidden allowClear placeholder="From" value={from} onChange={(v) => { setFrom(v); reset() }} />
+              </div>
+              <span className={t.typeCaption} aria-hidden="true">to</span>
+              <div className={s.date}>
+                <DatePicker label="To" labelHidden allowClear placeholder="To" value={to} onChange={(v) => { setTo(v); reset() }} />
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {!browsing && (

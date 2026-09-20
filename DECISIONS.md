@@ -222,3 +222,9 @@ Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with th
 - **Review:** the unfinished tasks one by one, each with a checkbox, "Complete today" and the usual detail dialog (move, no longer relevant, delete). Leave at any point with Start today. Open loops are counted but not reviewed here, as the PRD says Review presents tasks.
 - **Flag: visuals.** The design system has no First Launch or Welcome Back screens. They are assembled from existing pieces (logo, flat card, buttons, task rows, type styles); please look and say if you want them redone.
 - Limitation: undated tasks are not counted as "unfinished", since they appear on every day anyway.
+
+## Search filters: progressive disclosure
+
+- The **Type** chips are always visible. A **When** button (with a count badge) reveals the rest: the Time segmented control and a From / To date range. Nothing beyond Type is shown until asked for.
+- The panel stays open while a time or date filter is narrowing the results, so an active filter is never hidden. A "Clear filters" text button appears whenever any filter is on.
+- From and To are the same width and height, and everything is left-aligned on one edge with tight spacing.

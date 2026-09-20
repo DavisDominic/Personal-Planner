@@ -1,8 +1,15 @@
 .title{margin:var(--sp-1) 0 var(--sp-4);font-size:var(--text-3xl);line-height:var(--u-lh-1);letter-spacing:var(--u-em-n0_035);font-weight:var(--u-fw-700)}
-.filters{margin:var(--sp-4) 0;display:flex;flex-direction:column;gap:var(--sp-4)}
-.row{display:flex;flex-direction:column;gap:var(--sp-2)}
-.control{display:flex;align-items:center;min-height:var(--u-px-56)}
-.range{flex-wrap:wrap;gap:var(--sp-3)}
+.filters{margin:var(--sp-4) 0;display:flex;flex-direction:column;gap:var(--sp-3)}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3)}
+.toggle{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:var(--u-px-30);padding:var(--u-px-5) var(--u-px-11);border:var(--u-px-1) dashed var(--line-dark);border-radius:var(--r-pill);background:transparent;color:var(--ink);font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_10);text-transform:uppercase}
+.toggle svg{width:var(--u-px-14);height:var(--u-px-14)}
+.toggle[aria-expanded=true]{border-style:solid;border-color:var(--ink)}
+.toggle:focus-visible,.clear:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+.badge{display:grid;place-items:center;min-width:var(--u-px-16);height:var(--u-px-16);border-radius:50%;background:var(--ink);color:var(--white)}
+.clear{background:none;border:0;padding:var(--sp-2);color:var(--ink-muted);font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_10);text-transform:uppercase;text-decoration:underline;text-underline-offset:var(--u-px-3)}
+.extra{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3) var(--sp-4)}
+.date{width:var(--u-px-145)}
+.range{display:flex;align-items:center;gap:var(--sp-2)}
 .count{margin:var(--sp-4) 0 var(--sp-2)}
 .results{display:flex;flex-direction:column;gap:var(--sp-3)}
 .resultTitle{margin-top:var(--sp-1)}
@@ -14,6 +21,4 @@
 .title-button,.title-link{all:unset;cursor:pointer;color:inherit;text-decoration:underline;text-underline-offset:var(--u-px-3)}
 .title-button:focus-visible,.title-link:focus-visible{outline:var(--u-px-2) solid var(--ink);outline-offset:var(--u-px-2)}
 
-@media(min-width:981px){
-  .filters{flex-direction:row;align-items:flex-start;justify-content:space-between;gap:var(--sp-8)}
-}
+.top>*,.extra>*{margin-top:0}
