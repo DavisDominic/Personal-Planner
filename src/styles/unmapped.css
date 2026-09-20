@@ -131,14 +131,14 @@
 @media(max-width:980px){
   :root{
     /* Body text reaches 16px, which also stops iOS Safari zooming in when a field is focused. */
-    --text-xs:12px;
-    --text-sm:14px;
+    --text-xs:13px;
+    --text-sm:15px;
     --text-md:16px;
     --text-lg:18px;
     --text-xl:22px;
-    --t-micro:11px;
-    --t-mono:13px;
-    --t-sub:15px;
+    --t-micro:12px;
+    --t-mono:14px;
+    --t-sub:16px;
     --t-body:16px;
     --t-icon-12:14px;
     --t-icon-14:17px;

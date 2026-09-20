@@ -255,10 +255,14 @@ read on a phone. Rather than change the desktop appearance, a **mobile scale** w
 
 - **Semantic type and icon sizes.** Component CSS no longer uses raw `--u-px-*` for type or icon sizes.
   It uses `--t-micro` (mono micro labels), `--t-mono`, `--t-sub`, `--t-body` and `--t-icon-12 … --t-icon-32`.
-  Each keeps its desktop value and steps up on mobile, e.g. micro labels 9 → 11px, icons 16 → 19px.
+  Each keeps its desktop value and steps up on mobile, e.g. micro labels 9 → 12px, icons 16 → 19px.
 - **Body text reaches 16px on mobile**, which also stops iOS Safari zooming the page in when a field is
-  focused. The scale: `--text-xs` 10 → 12, `--text-sm` 12 → 14, `--text-md` 14 → 16, `--text-lg` 16 → 18,
+  focused. The scale: `--text-xs` 10 → 13, `--text-sm` 12 → 15, `--text-md` 14 → 16, `--text-lg` 16 → 18,
   `--text-xl` 20 → 22. Headings (2xl and up) are already large and are unchanged.
+- **Nothing renders below 12px on a phone.** The first pass left mono labels at 11px, which still read as
+  fine print on a real device, so the whole small end moved up again: 12px is the floor across every screen,
+  and it is only used for uppercase mono labels. Touch targets stay at 44px via `hit.module.css`, which
+  extends the tap area invisibly for the smaller pills and checkboxes.
 - **Keyboards no longer cut off a sheet.** `interactive-widget=resizes-content` in the viewport meta lets
   Android shrink the page when the keyboard opens; the Capture sheet is a flex column whose fields scroll,
   so Save and Cancel stay on screen. Dialog sheets scroll the same way.
