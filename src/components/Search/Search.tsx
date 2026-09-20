@@ -51,7 +51,7 @@ export function FilterChips({ items, label, value, onChange, variant = 'chips' }
     onChange?.(item)
   }
   return (
-    <div className={variant === 'segmented' ? s.segments : s.filters} role="group" aria-label={label}>
+    <div className={variant === 'segmented' ? s.segments : s.filters} data-variant={variant} role="group" aria-label={label}>
       {items.map((it) => (
         <button
           key={it}

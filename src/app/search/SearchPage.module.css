@@ -29,3 +29,10 @@
 .title-button:focus-visible,.title-link:focus-visible{outline:var(--u-px-2) solid var(--ink);outline-offset:var(--u-px-2)}
 
 .top>*,.panel>*{margin-top:0}
+
+/* One control height (38px) for every row of the panel: chips, the segmented track and the date fields. */
+.panel [data-variant=chips] button{min-height:var(--u-px-38)}
+.panel [role=group]{align-items:center}
+.date button{height:var(--u-px-38);padding-top:0;padding-bottom:0}
+.time-row{gap:var(--sp-2) var(--sp-4)}
+.panel{row-gap:var(--sp-3)}
