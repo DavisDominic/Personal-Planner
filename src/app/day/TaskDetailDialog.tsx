@@ -3,6 +3,7 @@ import { Trash2 } from 'lucide-react'
 import { Button } from '../../components/Button/Button'
 import { CaptureQuestion } from '../../components/Capture/Capture'
 import { DatePicker } from '../../components/DatePicker/DatePicker'
+import { TimePicker } from '../../components/TimePicker/TimePicker'
 import { Field, Select, TextArea } from '../../components/Field/Field'
 import { InlineMessage } from '../../components/Feedback/Feedback'
 import { Dialog } from '../../components/Overlay/Overlay'
@@ -105,7 +106,7 @@ function TaskForm({ task, onClose }: { task: Task; onClose: () => void }) {
           <TextArea label="Note" value={note} onChange={(e) => edit(setNote)(e.target.value)} />
           <div className={s.row}>
             <DatePicker label="Date" value={date} onChange={edit(setDate)} allowClear help="Leave empty to show it every day until it's done." />
-            <Field label="Time" type="time" value={time} onChange={(e) => edit(setTime)(e.target.value)} />
+            <TimePicker label="Time" value={time} onChange={edit(setTime)} allowClear align="end" />
           </div>
           <Select label="Priority" value={priority} onChange={(e) => edit(setPriority)(e.target.value)}>
             <option value="">None</option>

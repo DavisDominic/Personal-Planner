@@ -240,3 +240,8 @@ Status maps across kinds: open = active task, open loop, ritual or goal; done = 
 - **Icons:** the existing Daybook notebook icon rendered to PNG: 192, 512, a maskable 512 (icon at 62% on paper-warm so platform masks don't crop it) and a 180 Apple touch icon.
 - The service worker is registered only in production builds, and only once the main shell is showing (after Start on a first launch).
 - **Not verified here:** the in-app browser refuses service workers, so registration, offline reload and the install prompt have not been exercised; only the build output (manifest, 51-file precache list including fonts) was checked. Test in Chrome: `npm run build && npx vite preview`, load it, then go offline in DevTools and reload.
+
+## Time picker and search clear
+
+- **Time picker** replaces the browser's own, in the same style as the date picker: choose an hour (00-23), then a minute in five-minute steps; choosing the minute closes it. 24-hour "HH:mm", arrow keys move around each grid, Escape closes, Clear removes the time. Times already stored in other minutes still show correctly.
+- **Search** shows a clear (x) button while there is text.

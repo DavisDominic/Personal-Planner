@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Ref } from 'react'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { cx } from '../../lib/cx'
 import t from '../../styles/typography.module.css'
 import s from './Search.module.css'
@@ -28,6 +28,11 @@ export function SearchBar({ placeholder, hint, value, onChange, autoFocus, input
         {...(value === undefined ? {} : { value })}
         onChange={(e) => onChange?.(e.target.value)}
       />
+      {value && onChange && (
+        <button type="button" className={s.clearText} aria-label="Clear search" onClick={() => onChange('')}>
+          <X aria-hidden="true" />
+        </button>
+      )}
       {hint && <span className={t.typeCaption}>{hint}</span>}
     </div>
   )

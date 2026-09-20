@@ -255,7 +255,7 @@ export function SearchPage() {
       </div>
 
       {!browsing && (
-        <p className={t.typeSmall}>Type to search, or pick a type above to browse everything of that kind.</p>
+        <p className={t.typeSmall}>Type to search, or open Filters to browse everything of one kind.</p>
       )}
 
       {browsing && results && (

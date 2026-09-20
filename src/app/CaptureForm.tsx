@@ -3,6 +3,7 @@ import { CapturePanel, CaptureQuestion, CaptureRow } from '../components/Capture
 import type { CaptureTab } from '../components/Capture/captureTabs'
 import { Button } from '../components/Button/Button'
 import { DatePicker } from '../components/DatePicker/DatePicker'
+import { TimePicker } from '../components/TimePicker/TimePicker'
 import { Field, Select, TextArea } from '../components/Field/Field'
 import { WeekdayPicker } from '../components/Weekday/WeekdayPicker'
 import { DomainError, saveCapture, shouldConfirmPriority, today } from '../domain/index'
@@ -132,7 +133,7 @@ export function CaptureForm({ preset, onClose }: { preset?: CapturePreset; onClo
         <>
           <CaptureRow>
             <DatePicker label="Date" value={date} onChange={edit(setDate)} allowClear help="Leave empty to show it every day until it's done." />
-            <Field label="Time" type="time" value={time} onChange={(e) => edit(setTime)(e.target.value)} />
+            <TimePicker label="Time" value={time} onChange={edit(setTime)} allowClear align="end" />
           </CaptureRow>
           <Select label="Priority" value={priority} onChange={(e) => edit(setPriority)(e.target.value)}>
             <option value="">None</option>

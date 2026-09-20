@@ -21,3 +21,9 @@
 .segments{align-self:flex-start;display:inline-flex;flex-wrap:wrap;gap:var(--u-px-2);padding:var(--u-px-3);border:var(--u-px-1) solid var(--line-dark);border-radius:var(--r-pill);background:var(--white)}
 .segments .filter{border-color:transparent;background:transparent}
 .segments .filter.active{background:var(--ink);color:var(--white)}
+
+.searchbar input::-webkit-search-cancel-button{appearance:none;display:none}
+.clear-text{display:grid;place-items:center;flex:none;width:var(--u-px-30);height:var(--u-px-30);padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink)}
+.clear-text:hover{background:var(--paper-deep)}
+.clear-text svg{width:var(--u-px-16);height:var(--u-px-16)}
+.clear-text:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
