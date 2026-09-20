@@ -12,6 +12,7 @@ import { CalendarNav } from '../calendar/CalendarNav'
 import { dayShort, dayTitle, weekdayLong } from '../dateFormat'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
+import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useToast } from '../useToast'
 import s from './DayView.module.css'
 import { OpenLoopDetailDialog } from './OpenLoopDetailDialog'
@@ -105,9 +106,6 @@ export function DayView({ date }: { date: string }) {
 
       <div className={s.summary}>
         <div className={`${t.typeSmall} ${s.counts}`}>{day && `${remainingCount} remaining · ${completedCount} completed`}</div>
-        <Button tone="lemon" onClick={() => capture.open({ date })}>
-          + Capture
-        </Button>
       </div>
 
       {day && (
@@ -211,6 +209,8 @@ export function DayView({ date }: { date: string }) {
           )}
         </div>
       )}
+
+      <ReflectionSection type="day" date={date} />
 
       <TaskDetailDialog task={openTask} onClose={() => setOpenTask(null)} />
       <OpenLoopDetailDialog loop={openLoop} day={date} onClose={() => setOpenLoop(null)} />

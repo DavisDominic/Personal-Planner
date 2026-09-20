@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router'
+import { Outlet, useMatch, useNavigate } from 'react-router'
 import { Plus, Search } from 'lucide-react'
 import { IconButton } from '../components/Button/Button'
+import { isDateString } from '../domain/index'
 import { MobileNav } from '../components/Nav/Nav'
 import type { NavItem } from '../components/Nav/Nav'
 import { CaptureHost } from './CaptureHost'
@@ -27,10 +28,16 @@ export function AppShell() {
   const navigate = useNavigate()
   const [captureOpen, setCaptureOpen] = useState(false)
   const [preset, setPreset] = useState<CapturePreset>()
-  const open = useCallback((p?: CapturePreset) => {
-    setPreset(p)
-    setCaptureOpen(true)
-  }, [])
+  // Capturing while looking at a Day gives a task that Day's date (PRD 7: "created from a Day context").
+  const viewedDay = useMatch('/calendar/day/:date')?.params.date
+  const contextDate = viewedDay && isDateString(viewedDay) ? viewedDay : undefined
+  const open = useCallback(
+    (p?: CapturePreset) => {
+      setPreset({ date: contextDate, ...p })
+      setCaptureOpen(true)
+    },
+    [contextDate],
+  )
   const close = useCallback(() => setCaptureOpen(false), [])
   const capture = useMemo(() => ({ isOpen: captureOpen, open, close }), [captureOpen, open, close])
 

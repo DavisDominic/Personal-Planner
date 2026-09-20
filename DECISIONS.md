@@ -19,6 +19,15 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Reflections (Slice 6) and Capture placement
+**Status: Assumed** unless noted
+
+- **No separate Capture button** on the Day (or elsewhere on the page): Capture is only the sidebar button on desktop and the floating button on phones. **Confirmed** (2026-09-20). To keep PRD 7's "created from a Day context", opening Capture while viewing a Day gives a Task that Day's date (the tab still defaults to Open Loop).
+- **Month view:** hovering (or keyboard-focusing) a day shows a small **+** in its top-right corner that opens Capture on the Task tab with that date, so tasks can be added from the overview. On touch devices wider than a phone the + is always visible; on phones the cell stays a plain tap target that opens the Day. **Confirmed** (2026-09-20).
+- **Reflections** live at the bottom of the **Day**, **Week** and **Month** screens (Year comes with the Year view). Until the user writes, it is only a quiet "REFLECTION / OPTIONAL + Add something" (PRD 18).
+- **Writing** happens on a lined sheet and **saves as you type** (about half a second after you stop, and when leaving the field), with a small "Saved". An abandoned empty editor creates no record, and clearing all the text removes the record. **Delete** removes it permanently with an Undo toast.
+- **Prompts** ("What moved forward today?", "Today counts because…", "What do I want to carry into tomorrow?") are optional buttons on the Day only; tapping one starts the text. Week and Month have no prompts (the PRD lists none).
+
 ## Task and open-loop actions (Slice 5)
 **Status: Assumed**
 

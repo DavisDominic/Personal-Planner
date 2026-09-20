@@ -2,6 +2,8 @@ import { MonthGrid } from '../../components/Calendar/Calendar'
 import type { MonthCell } from '../../components/Calendar/Calendar'
 import { getCalendarPreview, monthGridDays, today } from '../../domain/index'
 import { dayLong, monthTitle, weekdayShort } from '../dateFormat'
+import { ReflectionSection } from '../reflection/ReflectionSection'
+import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
 import { CalendarNav } from './CalendarNav'
 import { dayPath } from './calendarPaths'
@@ -17,6 +19,7 @@ export function MonthView({ date }: { date: string }) {
   const start = days[0]
   const end = days[days.length - 1]
   const preview = useLive(() => getCalendarPreview(start, end), `${start}|${end}`)
+  const capture = useCapture()
   const now = today()
 
   const cells: MonthCell[] = days.map((d) => {
@@ -30,6 +33,8 @@ export function MonthView({ date }: { date: string }) {
       items: items.slice(0, SHOWN).map((i) => ({ label: labelFor(i), tone: toneFor(i), done: i.done })),
       more: Math.max(0, items.length - SHOWN),
       marks: Math.min(items.length, MARKS),
+      onAdd: () => capture.open({ tab: 'task', date: d }),
+      addLabel: `Add a task on ${dayLong(d)}`,
     }
   })
 
@@ -37,6 +42,7 @@ export function MonthView({ date }: { date: string }) {
     <>
       <CalendarNav view="month" date={date} caption="Month" title={monthTitle(date)} />
       <MonthGrid weekdays={days.slice(0, 7).map(weekdayShort)} cells={cells} />
+      <ReflectionSection type="month" date={date} />
     </>
   )
 }

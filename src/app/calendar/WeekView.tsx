@@ -4,6 +4,7 @@ import type { WeekDay } from '../../components/Calendar/Calendar'
 import { getCalendarPreview, moveTask, today, weekDays } from '../../domain/index'
 import type { PreviewItem } from '../../domain/index'
 import { dayLong, dayShort, weekdayShort, weekTitle } from '../dateFormat'
+import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
 import { useToast } from '../useToast'
@@ -74,6 +75,7 @@ export function WeekView({ date }: { date: string }) {
     <>
       <CalendarNav view="week" date={date} caption="Week" title={weekTitle(start, end)} />
       <WeekGrid days={week} />
+      <ReflectionSection type="week" date={date} />
       <MoveTaskDialog target={moving} onClose={() => setMoving(null)} />
     </>
   )

@@ -36,6 +36,9 @@ export type MonthCell = {
   more?: number
   /** On phones the cell shows only this many tiny markers instead of titles. */
   marks?: number
+  /** Shows a + on hover or focus that adds a task on this date without leaving the month. */
+  onAdd?: () => void
+  addLabel?: string
 }
 
 export function MonthGrid({ weekdays, cells }: { weekdays: string[]; cells: MonthCell[] }) {
@@ -70,13 +73,18 @@ export function MonthGrid({ weekdays, cells }: { weekdays: string[]; cells: Mont
             )}
           </>
         )
-        return c.href ? (
-          <Link key={i} to={c.href} className={className} aria-label={c.ariaLabel} aria-current={c.today ? 'date' : undefined}>
-            {body}
-          </Link>
-        ) : (
+        return (
           <div key={i} className={className}>
-            {body}
+            {/* The whole cell opens the Day. The preview is hidden from screen readers because the link's label says it. */}
+            {c.href && <Link to={c.href} className={s.dayOverlay} aria-label={c.ariaLabel} aria-current={c.today ? 'date' : undefined} />}
+            <div className={s.dayBody} aria-hidden={c.href ? true : undefined}>
+              {body}
+            </div>
+            {c.onAdd && (
+              <button type="button" className={s.dayAdd} aria-label={c.addLabel ?? 'Add a task'} onClick={c.onAdd}>
+                <Plus aria-hidden="true" />
+              </button>
+            )}
           </div>
         )
       })}

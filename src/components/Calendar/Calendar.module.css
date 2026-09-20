@@ -87,10 +87,9 @@
 /* ---------- REAL VIEWS: links, more, marks, add, drag ---------- */
 .calendar-title{margin:0}
 .day-cell{position:relative}
-.day-link{display:block;color:inherit;text-decoration:none}
+.day-link{color:inherit}
 .day-link:hover{background:var(--paper-warm)}
 .day-cell.today.day-link:hover{background:var(--lemon)}
-.day-link:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:calc(-1 * var(--u-px-3));z-index:1}
 .day-item.lemon{background:var(--lemon)}
 .day-item.done{text-decoration:line-through}
 .day-more{margin-top:var(--sp-1);font:var(--u-px-9) var(--font-mono);text-transform:uppercase;color:var(--ink-muted)}
@@ -131,6 +130,22 @@
 .week-add:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 .drop-over{background:var(--paper-deep);outline:var(--u-px-2) dashed var(--ink);outline-offset:calc(-1 * var(--u-px-2))}
 
+.day-overlay{position:absolute;inset:0;z-index:0;color:inherit;text-decoration:none}
+.day-overlay:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:calc(-1 * var(--u-px-3))}
+.day-body{position:relative;pointer-events:none}
+.day-add{composes:hit from "../../styles/hit.module.css"}
+.day-cell .day-add{
+  position:absolute;top:var(--u-px-5);right:var(--u-px-5);z-index:2;
+  width:var(--u-px-24);height:var(--u-px-24);padding:0;display:grid;place-items:center;
+  border:var(--u-px-1) solid var(--ink);border-radius:50%;background:var(--lemon);color:var(--ink);
+  box-shadow:var(--shadow-float);
+  opacity:0;
+}
+.day-add svg{width:var(--u-px-12);height:var(--u-px-12)}
+.day-cell:hover .day-add,.day-cell .day-add:focus-visible{opacity:1}
+.day-add:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+@media(hover:none){.day-cell .day-add{opacity:1}}
+
 @media(max-width:980px){
   .week-grid{grid-template-columns:1fr}
   .week-col{min-height:var(--u-px-110);border-right:0;border-bottom:var(--u-px-1) solid var(--line)}
@@ -143,6 +158,7 @@
   .day-cell{min-height:var(--u-px-82);padding:var(--u-px-5)}
   .day-items,.day-more{display:none}
   .day-marks{display:flex}
+  .day-cell .day-add{display:none}
   .year-grid{grid-template-columns:repeat(2,1fr)}
 }
 
