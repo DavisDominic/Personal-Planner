@@ -8,6 +8,8 @@ export const SCHEMA_VERSION = 1
 export const APPLICATION_VERSION = '0.1.0'
 
 const LAST_BACKUP_KEY = 'lastBackupAt'
+/** Settings that describe this device, not the planner's content: never exported, and kept across a restore. */
+const DEVICE_KEYS = [LAST_BACKUP_KEY, 'lastVisitDate']
 
 export type Backup = {
   schemaVersion: number
@@ -40,7 +42,7 @@ export async function createBackup(): Promise<Backup> {
     schemaVersion: SCHEMA_VERSION,
     exportedAt: nowTimestamp(),
     applicationVersion: APPLICATION_VERSION,
-    data: { tasks, openLoops, rituals, checkins, goals, reflections, settings: settings.filter((s) => s.key !== LAST_BACKUP_KEY) },
+    data: { tasks, openLoops, rituals, checkins, goals, reflections, settings: settings.filter((s) => !DEVICE_KEYS.includes(s.key)) },
   }
 }
 
@@ -195,14 +197,14 @@ export type RestoreSummary = { tasks: number; openLoops: number; rituals: number
 
 /**
  * Replaces everything with the backup's contents (replace, not merge). The swap is one transaction, so if
- * anything goes wrong the existing data stays exactly as it was. "Last backup" is kept.
+ * anything goes wrong the existing data stays exactly as it was. Device-only settings (last backup, last visit) are kept.
  */
 export async function restoreBackup(backup: Backup): Promise<RestoreSummary> {
   const d = db()
   const { data } = backup
   try {
     await d.transaction('rw', [d.tasks, d.openLoops, d.rituals, d.checkins, d.goals, d.reflections, d.settings], async () => {
-      const last = await d.settings.get(LAST_BACKUP_KEY)
+      const keep = (await d.settings.bulkGet(DEVICE_KEYS)).filter((x): x is Setting => x !== undefined)
       await Promise.all([d.tasks.clear(), d.openLoops.clear(), d.rituals.clear(), d.checkins.clear(), d.goals.clear(), d.reflections.clear(), d.settings.clear()])
       await d.tasks.bulkAdd(data.tasks)
       await d.openLoops.bulkAdd(data.openLoops)
@@ -210,8 +212,8 @@ export async function restoreBackup(backup: Backup): Promise<RestoreSummary> {
       await d.checkins.bulkAdd(data.checkins)
       await d.goals.bulkAdd(data.goals)
       await d.reflections.bulkAdd(data.reflections)
-      await d.settings.bulkAdd(data.settings.filter((s) => s.key !== LAST_BACKUP_KEY))
-      if (last) await d.settings.put(last)
+      await d.settings.bulkAdd(data.settings.filter((s) => !DEVICE_KEYS.includes(s.key)))
+      await d.settings.bulkPut(keep)
     })
   } catch {
     throw new DomainError('invalid-state', COULD_NOT_IMPORT)

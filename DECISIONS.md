@@ -211,3 +211,14 @@ Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with th
 - **Privacy warning** is shown beside Save backup. No encryption (not a V1 requirement).
 - **Reminder:** after 30 days (or if no backup was ever saved) Settings shows a calm one-line notice. No notification is sent and it appears nowhere else. The 30-day interval is my choice; the PRD says only "a long interval".
 - **Preferences:** the PRD lists "application preferences" but names none, so Settings has none yet. Flagged rather than invented.
+
+## Welcome Back and First Launch (PRD 15, 25)
+
+- **Search filters** are now open (no surrounding box): Type, Time and Between spread across one row on desktop, controls centred on a common band, labels on top. They stack on mobile.
+- **How the planner opens** (`src/domain/visits.ts`): a device-only setting `lastVisitDate` records the last day it was used. No visit and no data at all is a **First Launch**. Three or more days since the last visit is **Welcome Back** (30+ days gets the same state, no escalation). A planner that has data but no recorded visit (for example just restored from a backup) opens normally.
+- **When it is checked:** at load, and again when the tab or installed app returns to view, so a planner left open for days still greets the user. A normal open counts as a visit. `lastVisitDate` is never exported and a restore keeps this device's value.
+- **First Launch:** the PRD text (Your planner / A place to keep what's on your mind, plan your days, and see what actually happened.) with the Daybook logo and Start. Start goes straight to Today. No navigation is shown around it.
+- **Welcome Back:** shown in place of the screen the user opened, inside the normal navigation. It says "Welcome back.", "Today is ...", and, only when something is waiting, "A few things are waiting for you." with the counts (unfinished dated tasks from earlier days; open loops). Zero counts are left out. **Review** appears only if there are unfinished tasks; **Start today** always does. It never mentions how many days were away. Choosing anything in the navigation also ends it.
+- **Review:** the unfinished tasks one by one, each with a checkbox, "Complete today" and the usual detail dialog (move, no longer relevant, delete). Leave at any point with Start today. Open loops are counted but not reviewed here, as the PRD says Review presents tasks.
+- **Flag: visuals.** The design system has no First Launch or Welcome Back screens. They are assembled from existing pieces (logo, flat card, buttons, task rows, type styles); please look and say if you want them redone.
+- Limitation: undated tasks are not counted as "unfinished", since they appear on every day anyway.

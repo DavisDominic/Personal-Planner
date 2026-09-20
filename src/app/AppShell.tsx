@@ -2,11 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Outlet, useMatch, useNavigate } from 'react-router'
 import { Plus, Search } from 'lucide-react'
 import { IconButton } from '../components/Button/Button'
-import { isDateString } from '../domain/index'
+import { isDateString, today } from '../domain/index'
 import { AppIcon } from '../components/Logo/Logo'
 import { MobileNav } from '../components/Nav/Nav'
 import type { NavItem } from '../components/Nav/Nav'
 import { CaptureHost } from './CaptureHost'
+import { FirstLaunch } from './entry/FirstLaunch'
+import { useEntry } from './entry/useEntry'
+import { WelcomeBack } from './entry/WelcomeBack'
+import { calendarPath } from './calendar/calendarPaths'
 import { CaptureContext } from './captureContext'
 import type { CapturePreset } from './captureContext'
 import { PRIMARY_NAV, SETTINGS_NAV } from './navItems'
@@ -27,6 +31,7 @@ const MOBILE_ITEMS: NavItem[] = [...PRIMARY_NAV, SETTINGS_NAV].map(({ label, to,
  */
 export function AppShell() {
   const navigate = useNavigate()
+  const entry = useEntry()
   const [captureOpen, setCaptureOpen] = useState(false)
   const [preset, setPreset] = useState<CapturePreset>()
   // Capturing while looking at a Day gives a task that Day's date (PRD 7: "created from a Day context").
@@ -54,6 +59,13 @@ export function AppShell() {
     return () => window.removeEventListener('keydown', onKey)
   }, [navigate, captureOpen])
 
+  const startToday = () => {
+    void entry.finish().then(() => navigate(calendarPath('day', today()), { replace: true }))
+  }
+
+  // PRD 25: a brand new planner opens on a single Start screen, with no navigation around it.
+  if (entry.state === 'first-launch') return <FirstLaunch onStart={startToday} />
+
   return (
     <ToastProvider>
     <CaptureContext.Provider value={capture}>
@@ -74,7 +86,11 @@ export function AppShell() {
           </header>
           <main id="main" tabIndex={-1} className={s.main}>
             <div className={s.content}>
-              <Outlet />
+              {entry.state === 'welcome-back' ? (
+                <WelcomeBack onDone={() => void entry.finish()} onStart={startToday} />
+              ) : entry.state === 'loading' ? null : (
+                <Outlet />
+              )}
             </div>
           </main>
         </div>

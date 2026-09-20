@@ -1,0 +1,11 @@
+.first{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-4);padding:var(--sp-6) var(--sp-4);text-align:center}
+.logo{width:min(var(--u-px-290),80%);height:auto}
+.first-title{margin:var(--sp-2) 0 0;font-size:var(--text-3xl);line-height:var(--u-lh-1);letter-spacing:var(--u-em-n0_035);font-weight:var(--u-fw-700)}
+.first-text{margin:0;max-width:var(--u-px-430);font-size:var(--u-px-15)}
+.welcome{max-width:var(--u-px-520)}
+.welcome-title{margin:var(--sp-2) 0 var(--sp-3);font-size:var(--text-3xl);line-height:var(--u-lh-1);letter-spacing:var(--u-em-n0_035);font-weight:var(--u-fw-700)}
+.today{margin:0 0 var(--sp-4);font-size:var(--u-px-15)}
+.lead{margin:0 0 var(--sp-2);font-weight:var(--u-fw-600)}
+.facts{margin:0 0 var(--sp-4);padding:0;list-style:none;font-size:var(--text-xl);line-height:var(--u-lh-1_1);font-weight:var(--u-fw-600);display:flex;flex-direction:column;gap:var(--sp-1)}
+.actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
+.list{display:flex;flex-direction:column;gap:var(--sp-3);margin-top:var(--sp-4)}
