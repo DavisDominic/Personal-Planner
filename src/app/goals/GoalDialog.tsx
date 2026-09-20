@@ -10,6 +10,7 @@ import {
 import type { Goal, GoalScope } from '../../domain/index'
 import t from '../../styles/typography.module.css'
 import { ModalHost } from '../ModalHost'
+import { goalDate, periodLabel } from './goalLabels'
 import { useToast } from '../useToast'
 import s from './GoalDialog.module.css'
 
@@ -17,8 +18,6 @@ const CANT_SAVE = "We couldn't save that change. Your previous version is still 
 const messageFor = (e: unknown) => (e instanceof DomainError ? e.message : CANT_SAVE)
 
 export type GoalTarget = { kind: 'new'; scope: GoalScope; date: string } | { kind: 'edit'; goal: Goal }
-
-const SCOPE_WORD: Record<GoalScope, string> = { year: 'year', month: 'month', week: 'week' }
 
 /** Add or edit a goal (PRD 10). Just a title and an optional description. */
 export function GoalDialog({ target, onClose }: { target: GoalTarget | null; onClose: () => void }) {
@@ -89,7 +88,7 @@ function GoalForm({ target, onClose }: { target: GoalTarget; onClose: () => void
           void save()
         }}
       >
-        <div className={t.typeLabel}>{goal ? `${SCOPE_WORD[scope]} goal` : `New ${SCOPE_WORD[scope]} goal`}</div>
+        <div className={t.typeLabel}>{`${periodLabel(scope, goal ? goalDate(goal) : (target as { date: string }).date)} goal`}</div>
         <div className={s.fields}>
           <Field
             label="Goal"

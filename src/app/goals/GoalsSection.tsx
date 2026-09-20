@@ -1,67 +1,52 @@
 import { useState } from 'react'
-import { Target } from 'lucide-react'
-import { Button } from '../../components/Button/Button'
+import { ChevronLeft, ChevronRight, Target } from 'lucide-react'
+import { Button, IconButton } from '../../components/Button/Button'
 import { Card, CardHead } from '../../components/Card/Card'
 import { GoalRow } from '../../components/Goal/GoalRow'
-import { goalPeriod, listGoals, periodBounds, restoreGoalFromArchive } from '../../domain/index'
+import { addDays, addMonths, goalPeriod, listGoals, restoreGoalFromArchive, today } from '../../domain/index'
 import type { Goal, GoalScope } from '../../domain/index'
-import { monthTitle, weekTitle } from '../../lib/dateFormat'
+import { cx } from '../../lib/cx'
 import { useLive } from '../useLive'
 import { GoalDialog } from './GoalDialog'
 import type { GoalTarget } from './GoalDialog'
+import { SCOPE_LABEL, SCOPE_TONE, periodLabel } from './goalLabels'
 import s from './GoalsSection.module.css'
-
-const SCOPE_LABEL: Record<GoalScope, string> = { year: 'YEAR GOALS', month: 'MONTH GOALS', week: 'WEEK GOALS' }
-
-function periodLabel(scope: GoalScope, date: string) {
-  if (scope === 'year') return date.slice(0, 4)
-  if (scope === 'month') return monthTitle(date)
-  const { start, end } = periodBounds('week', date)
-  return weekTitle(start, end)
-}
 
 type GoalsSectionProps = {
   scope: GoalScope
   /** Any date inside the period the goals are for. */
   date: string
-  /** "full" is a card; "context" is a slim strip for the Month and Week views (PRD 12). */
+  /** "full" is a card; "context" is a compact block for the Month and Week views (PRD 12). */
   variant?: 'full' | 'context'
   /** Lists archived goals for the period behind a disclosure. */
   showArchived?: boolean
+  /** Back and next arrows so any year, month or week can be reached from here. */
+  navigable?: boolean
 }
 
+const NOUN: Record<GoalScope, string> = { year: 'year', month: 'month', week: 'week' }
+
 /** The goals for a year, month or week (PRD 10): direction, not project management. */
-export function GoalsSection({ scope, date, variant = 'full', showArchived }: GoalsSectionProps) {
-  const key = `${scope}-${goalPeriod(scope, date)}`
-  const goals = useLive(() => listGoals(scope, date), key) ?? []
-  const archived = useLive(() => (showArchived ? listGoals(scope, date, { archived: true }) : Promise.resolve([] as Goal[])), `${key}-archived-${!!showArchived}`) ?? []
+export function GoalsSection({ scope, date, variant = 'full', showArchived, navigable }: GoalsSectionProps) {
+  // With arrows the section keeps its own period; otherwise it follows the date it is given.
+  const [browsed, setBrowsed] = useState(date)
+  const shown = navigable ? browsed : date
+  const key = `${scope}-${goalPeriod(scope, shown)}`
+  const goals = useLive(() => listGoals(scope, shown), key) ?? []
+  const archived =
+    useLive(() => (showArchived ? listGoals(scope, shown, { archived: true }) : Promise.resolve([] as Goal[])), `${key}-archived-${!!showArchived}`) ?? []
   const [target, setTarget] = useState<GoalTarget | null>(null)
   const [showOld, setShowOld] = useState(false)
 
-  const add = () => setTarget({ kind: 'new', scope, date })
+  const add = () => setTarget({ kind: 'new', scope, date: shown })
   const open = (goal: Goal) => () => setTarget({ kind: 'edit', goal })
+  const step = (dir: 1 | -1) => setBrowsed(scope === 'year' ? addMonths(shown, dir * 12) : scope === 'month' ? addMonths(shown, dir) : addDays(shown, dir * 7))
+  const isCurrent = goalPeriod(scope, shown) === goalPeriod(scope, today())
 
   if (variant === 'context') {
     return (
-      <div className={s.context}>
-        <span className={s.contextLabel}>{SCOPE_LABEL[scope]}</span>
-        {goals.map((goal) => (
-          <button key={goal.id} type="button" className={s.chip} onClick={open(goal)}>
-            {goal.title}
-          </button>
-        ))}
-        <Button size="small" onClick={add}>
-          + Add a goal
-        </Button>
-        <GoalDialog target={target} onClose={() => setTarget(null)} />
-      </div>
-    )
-  }
-
-  return (
-    <>
-      <Card kind="color" tone="violet">
-        <CardHead kicker={SCOPE_LABEL[scope]} title={periodLabel(scope, date)} icon={<Target aria-hidden="true" />} />
+      <div className={cx(s.context, s[scope])}>
+        <div className={s.contextLabel}>{SCOPE_LABEL[scope]}</div>
         {goals.map((goal) => (
           <GoalRow key={goal.id} title={goal.title} description={goal.description} onOpen={open(goal)} />
         ))}
@@ -69,6 +54,44 @@ export function GoalsSection({ scope, date, variant = 'full', showArchived }: Go
           <Button size="small" onClick={add}>
             + Add a goal
           </Button>
+        </div>
+        <GoalDialog target={target} onClose={() => setTarget(null)} />
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <Card kind="color" tone={SCOPE_TONE[scope]}>
+        <CardHead
+          kicker={SCOPE_LABEL[scope]}
+          title={periodLabel(scope, shown)}
+          icon={<Target aria-hidden="true" />}
+          actions={
+            navigable && (
+              <div className={s.stepper}>
+                <IconButton label={`Previous ${NOUN[scope]}`} onClick={() => step(-1)}>
+                  <ChevronLeft aria-hidden="true" />
+                </IconButton>
+                <IconButton label={`Next ${NOUN[scope]}`} onClick={() => step(1)}>
+                  <ChevronRight aria-hidden="true" />
+                </IconButton>
+              </div>
+            )
+          }
+        />
+        {goals.map((goal) => (
+          <GoalRow key={goal.id} title={goal.title} description={goal.description} onOpen={open(goal)} />
+        ))}
+        <div className={s.add}>
+          <Button size="small" onClick={add}>
+            + Add a goal
+          </Button>
+          {navigable && !isCurrent && (
+            <Button size="small" onClick={() => setBrowsed(today())}>
+              Show this {NOUN[scope]}
+            </Button>
+          )}
         </div>
         {showArchived && archived.length > 0 && (
           <>

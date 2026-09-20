@@ -15,7 +15,7 @@ export function Card({ as: Tag = 'div', tone, kind, className, ...rest }: CardPr
   return <Tag className={cx(s.card, kind && s[kind], tone && s[tone], className)} {...rest} />
 }
 
-export function CardHead({ kicker, title, icon }: { kicker: string; title: string; icon?: ReactNode }) {
+export function CardHead({ kicker, title, icon, actions }: { kicker: string; title: string; icon?: ReactNode; actions?: ReactNode }) {
   return (
     <div className={s.cardHead}>
       <div>
@@ -25,6 +25,7 @@ export function CardHead({ kicker, title, icon }: { kicker: string; title: strin
           {title}
         </div>
       </div>
+      {actions}
     </div>
   )
 }

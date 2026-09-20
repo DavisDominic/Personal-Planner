@@ -1,19 +1,17 @@
-.add{margin-top:var(--sp-3)}
+.add{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-3)}
 .disclose{margin-top:var(--sp-3)}
+.stepper{display:flex;gap:var(--u-px-2);flex:none}
 
-/* A slim strip of goals above the Month and Week grids. */
+/* A compact, vertical block of goals above the Month and Week grids. Each scope has its own colour. */
 .context{
-  display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);
-  margin-bottom:var(--sp-4);padding:var(--u-px-10) var(--sp-3);
-  background:var(--violet);color:var(--ink);
+  margin-bottom:var(--sp-4);padding:var(--sp-3) var(--sp-4);
+  color:var(--ink);
   border:var(--u-px-1) solid var(--ink);border-radius:var(--r-1);
 }
-.context-label{font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_14);text-transform:uppercase}
-.chip{
-  padding:var(--u-px-5) var(--u-px-10);
-  border:var(--u-px-1) solid var(--ink);border-radius:var(--r-pill);
-  background:var(--white);color:var(--ink);
-  font:inherit;font-size:var(--text-sm);cursor:pointer;
+.context.year{background:var(--violet)}
+.context.month{background:var(--sky)}
+.context.week{background:var(--mint)}
+.context-label{
+  margin-bottom:var(--sp-1);
+  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_14);text-transform:uppercase;
 }
-.chip:hover{background:var(--paper-deep)}
-.chip:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
