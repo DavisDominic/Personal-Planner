@@ -35,10 +35,10 @@ function describe(type: ReflectionPeriodType, date: string) {
  * The one optional Reflection for a Day, Week, Month or Year (PRD 11). It stays a small "+ Add something"
  * until the user chooses to write, saves as they type, and never creates a record from an empty editor.
  */
-export function ReflectionSection({ type, date }: { type: ReflectionPeriodType; date: string }) {
+export function ReflectionSection({ type, date, flush }: { type: ReflectionPeriodType; date: string; flush?: boolean }) {
   // A new period starts fresh, so unsaved text can never land on the wrong date.
   return (
-    <div className={s.wrap}>
+    <div className={flush ? undefined : s.wrap}>
       <ReflectionBody key={`${type}-${periodBounds(type, date).start}`} type={type} date={date} />
     </div>
   )

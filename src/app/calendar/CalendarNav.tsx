@@ -22,13 +22,15 @@ type CalendarNavProps = {
 export function CalendarNav({ view, date, caption, title }: CalendarNavProps) {
   const navigate = useNavigate()
   const go = (to: string) => navigate(calendarPath(view, to))
-  const step = (dir: 1 | -1) => (view === 'month' ? addMonths(date, dir) : addDays(date, dir * (view === 'week' ? 7 : 1)))
+  const step = (dir: 1 | -1) =>
+    view === 'year' ? addMonths(date, dir * 12) : view === 'month' ? addMonths(date, dir) : addDays(date, dir * (view === 'week' ? 7 : 1))
   const now = today()
 
   return (
     <CalendarToolbar
       caption={caption}
       title={title}
+      titleSize={view}
       previousLabel={`Previous ${view}`}
       nextLabel={`Next ${view}`}
       onPrevious={() => go(step(-1))}

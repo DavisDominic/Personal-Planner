@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { DragEvent, ReactNode } from 'react'
+import type { CSSProperties, DragEvent, ReactNode } from 'react'
 import { Link } from 'react-router'
 import { CalendarDays, ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { cx } from '../../lib/cx'
@@ -10,9 +10,13 @@ import s from './Calendar.module.css'
 type DayItemTone = 'coral' | 'violet' | 'sage' | 'sky' | 'peach' | 'lemon'
 type WeekTaskTone = 'coral' | 'lemon' | 'violet' | 'sage' | 'sky' | 'peach'
 
+export type ToolbarTitleSize = 'day' | 'week' | 'month' | 'year'
+
 type CalendarToolbarProps = {
   caption: string
   title: string
+  /** Reserves room for the longest title of this view, so the arrows stay put as the title changes. */
+  titleSize?: ToolbarTitleSize
   onPrevious: () => void
   onNext: () => void
   previousLabel: string
@@ -22,20 +26,20 @@ type CalendarToolbarProps = {
 }
 
 /** The period title sits between the back and next arrows; other controls go to the right. */
-export function CalendarToolbar({ caption, title, onPrevious, onNext, previousLabel, nextLabel, children }: CalendarToolbarProps) {
+export function CalendarToolbar({ caption, title, titleSize = 'month', onPrevious, onNext, previousLabel, nextLabel, children }: CalendarToolbarProps) {
   return (
     <div className={s.calendarToolbar}>
-      <div>
-        <div className={t.typeCaption}>{caption}</div>
-        <div className={s.titleRow}>
-          <IconButton label={previousLabel} onClick={onPrevious}>
-            <ChevronLeft aria-hidden="true" />
-          </IconButton>
+      <div className={s.titleRow}>
+        <IconButton label={previousLabel} onClick={onPrevious}>
+          <ChevronLeft aria-hidden="true" />
+        </IconButton>
+        <div className={cx(s.titleBlock, s[titleSize])}>
+          <div className={t.typeCaption}>{caption}</div>
           <h1 className={s.calendarTitle}>{title}</h1>
-          <IconButton label={nextLabel} onClick={onNext}>
-            <ChevronRight aria-hidden="true" />
-          </IconButton>
         </div>
+        <IconButton label={nextLabel} onClick={onNext}>
+          <ChevronRight aria-hidden="true" />
+        </IconButton>
       </div>
       <div className={s.calendarControls}>{children}</div>
     </div>
@@ -242,22 +246,50 @@ export function WeekGrid({ days }: { days: WeekDay[] }) {
 
 /* -------------------------------------------------------------------- year */
 
-export type YearMonth = { name: string; sub: string; active?: boolean; bars: number }
+export type YearMonth = {
+  name: string
+  /** A factual line such as "12 recorded days". Empty when nothing was recorded: absence is neutral. */
+  sub: string
+  /** The month holding the selected date. */
+  active?: boolean
+  /** The month holding today. */
+  current?: boolean
+  /** One small bar per week: how many days that week had something recorded (0 to 7). */
+  bars: number[]
+  /** Where the card goes (its Month view). */
+  href?: string
+  ariaLabel?: string
+}
 
 export function YearGrid({ months }: { months: YearMonth[] }) {
   return (
     <div className={s.yearGrid}>
-      {months.map((m) => (
-        <div key={m.name} className={cx(s.monthCard, m.active && s.active)}>
-          <div className={s.monthName}>{m.name}</div>
-          <div className={s.monthSub}>{m.sub}</div>
-          <div className={s.activityRow} aria-hidden="true">
-            {Array.from({ length: m.bars }, (_, i) => (
-              <i key={i} className={s.activityBar} />
-            ))}
+      {months.map((m) => {
+        const className = cx(s.monthCard, m.active && s.active, m.href && s.monthLink)
+        const body = (
+          <>
+            <div className={s.monthName}>
+              {m.current && <span className={s.currentDot} aria-hidden="true" />}
+              {m.name}
+            </div>
+            <div className={s.monthSub}>{m.sub}</div>
+            <div className={s.activityRow} aria-hidden="true">
+              {m.bars.map((n, i) => (
+                <i key={i} className={cx(s.activityBar, n === 0 && s.quiet)} style={{ '--n': n } as CSSProperties} />
+              ))}
+            </div>
+          </>
+        )
+        return m.href ? (
+          <Link key={m.name} to={m.href} className={className} aria-label={m.ariaLabel} aria-current={m.current ? 'date' : undefined}>
+            {body}
+          </Link>
+        ) : (
+          <div key={m.name} className={className}>
+            {body}
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

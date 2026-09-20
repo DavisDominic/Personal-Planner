@@ -127,10 +127,10 @@ const WEEK: WeekDay[] = [
 ]
 
 const YEAR: YearMonth[] = [
-  { name: 'Jan', sub: 'Year goal', active: true, bars: 4 },
-  { name: 'Feb', sub: '12 recorded days', bars: 3 },
-  { name: 'Mar', sub: '8 recorded days', bars: 2 },
-  { name: 'Apr', sub: '18 recorded days', bars: 5 },
+  { name: 'Jan', sub: 'Year goal', active: true, current: true, bars: [1, 3, 2, 5, 0] },
+  { name: 'Feb', sub: '12 recorded days', bars: [2, 4, 3, 3, 0] },
+  { name: 'Mar', sub: '8 recorded days', bars: [1, 0, 4, 3, 0] },
+  { name: 'Apr', sub: '18 recorded days', bars: [4, 5, 3, 6, 0] },
 ]
 
 const NAV_SIDEBAR: { label: string; items: [string, string, LucideIcon][] }[] = [

@@ -28,3 +28,8 @@ export const weekTitle = (start: string, end: string) =>
 
 /** "Sun, Sep 20, 2026" */
 export const dayFull = (d: string) => fmt(d, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
+
+/** "Sep" (from any date in that month) */
+export const monthShort = (d: string) => fmt(d, { month: 'short' })
+/** "September" */
+export const monthLong = (d: string) => fmt(d, { month: 'long' })

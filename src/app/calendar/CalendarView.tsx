@@ -6,6 +6,7 @@ import { CALENDAR_VIEWS, calendarPath } from './calendarPaths'
 import type { CalendarViewName } from './calendarPaths'
 import { MonthView } from './MonthView'
 import { WeekView } from './WeekView'
+import { YearView } from './YearView'
 import s from './CalendarView.module.css'
 
 const isView = (v: string | undefined): v is CalendarViewName => CALENDAR_VIEWS.includes(v as CalendarViewName)
@@ -29,6 +30,7 @@ export function CalendarView() {
       {view === 'month' && <MonthView date={date} />}
       {view === 'week' && <WeekView date={date} />}
       {view === 'day' && <DayView key={date} date={date} />}
+      {view === 'year' && <YearView date={date} />}
     </div>
   )
 }

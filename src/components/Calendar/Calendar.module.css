@@ -80,11 +80,15 @@
 .month-name{font:var(--u-fw-700) var(--u-px-11) var(--font-mono);text-transform:uppercase}
 .month-sub{font-size:var(--text-xs);color:var(--ink-muted);margin-top:var(--sp-1)}
 .activity-row{display:flex;gap:var(--u-px-3);align-items:end;height:var(--u-px-35);margin-top:var(--u-px-18)}
-.activity-bar{width:var(--u-px-7);background:var(--ink)}
-.activity-bar:nth-child(1){height:var(--u-px-8)}.activity-bar:nth-child(2){height:var(--u-px-18)}.activity-bar:nth-child(3){height:var(--u-px-12)}.activity-bar:nth-child(4){height:var(--u-px-26)}.activity-bar:nth-child(5){height:var(--u-px-15)}.activity-bar:nth-child(6){height:var(--u-px-31)}
+.activity-bar{--n:0;width:var(--u-px-7);height:calc(var(--u-px-4) + var(--n, 0) * var(--u-px-4));background:var(--ink)}
 
 /* ---------- REAL VIEWS: links, more, marks, add, drag ---------- */
-.calendar-title{margin:0;min-width:var(--u-px-220);text-align:center}
+.calendar-title{margin:0}
+.title-block{display:grid;justify-items:center;gap:var(--sp-1);text-align:center}
+.title-block.day{min-width:var(--u-px-170)}
+.title-block.week{min-width:var(--u-px-290)}
+.title-block.month{min-width:var(--u-px-220)}
+.title-block.year{min-width:var(--u-px-110)}
 .title-row{display:flex;align-items:center;gap:var(--sp-3)}
 .day-number.selected-mark{background:var(--lemon);color:var(--ink);border:var(--u-px-1) solid var(--ink);border-radius:50%}
 .day-cell{position:relative}
@@ -148,6 +152,13 @@
 .day-add:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 @media(hover:none){.day-cell .day-add{opacity:1}}
 
+.month-link{display:block;color:inherit;text-decoration:none}
+.month-link:hover{background:var(--paper-warm)}
+.month-link.active:hover{background:var(--lemon)}
+.month-link:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+.month-name{display:flex;align-items:center}
+.current-dot{display:inline-block;width:var(--u-px-8);height:var(--u-px-8);margin-right:var(--u-px-6);border-radius:50%;background:var(--ink)}
+
 @media(max-width:980px){
   .week-grid{grid-template-columns:1fr}
   .week-col{min-height:var(--u-px-110);border-right:0;border-bottom:var(--u-px-1) solid var(--line)}
@@ -165,3 +176,6 @@
 }
 
 .calendar-toolbar{flex-wrap:wrap}
+
+/* A week with nothing recorded is a faint mark, not a gap or a failure. */
+.activity-bar.quiet{background:var(--u-ink-24)}

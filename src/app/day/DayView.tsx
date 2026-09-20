@@ -108,8 +108,11 @@ export function DayView({ date }: { date: string }) {
         <div className={`${t.typeSmall} ${s.counts}`}>{day && `${remainingCount} remaining · ${completedCount} completed`}</div>
       </div>
 
-      {day && (
-        <div className={s.grid}>
+      <div className={s.grid}>
+        {/* Doing: what to do today. */}
+        <div className={s.col}>
+          {day && (
+            <>
           {priorities.length > 0 && (
             <Card tone="lemon">
               <CardHead kicker="IN THIS ORDER" title="Priorities" icon={<ListOrdered aria-hidden="true" />} />
@@ -152,7 +155,14 @@ export function DayView({ date }: { date: string }) {
               {fromEarlier.map((task) => earlierRow(task, true))}
             </Card>
           )}
+            </>
+          )}
+        </div>
 
+        {/* Context: what is on my mind, my rituals, and the optional reflection. */}
+        <div className={s.col}>
+          {day && (
+            <>
           {loops.length > 0 && (
             <Card tone="peach">
               <CardHead kicker="ON MY MIND" title={`${loops.length} Open ${loops.length === 1 ? 'Loop' : 'Loops'}`} icon={<Brain aria-hidden="true" />} />
@@ -207,10 +217,11 @@ export function DayView({ date }: { date: string }) {
               )}
             </Card>
           )}
+            </>
+          )}
+          <ReflectionSection type="day" date={date} flush />
         </div>
-      )}
-
-      <ReflectionSection type="day" date={date} />
+      </div>
 
       <TaskDetailDialog task={openTask} onClose={() => setOpenTask(null)} />
       <OpenLoopDetailDialog loop={openLoop} day={date} onClose={() => setOpenLoop(null)} />

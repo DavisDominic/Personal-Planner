@@ -19,6 +19,18 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Year view and Goals (Slice 7)
+**Status: Assumed** unless noted
+
+- **Year view** (Day / Week / Month / **Year** switch, `‹ 2026 ›`): exactly what PRD 12 lists, three things: the **12 months**, a **light indication of recorded activity**, and the **Year's goals**. No individual tasks, open loops or rituals.
+- **Each month card** shows a factual "N recorded days" (blank when there are none: absence is neutral) and a small strip with one bar per week of the month. Empty weeks are faint marks, never a gap or a failure. A card opens that month, keeping the selected date if it is in that month, else today if it is, else the 1st. The month holding the selected date is the yellow card; the month holding today has an ink dot.
+- **A "recorded day"** is a day on which a task was completed, a ritual was checked in, an open loop was taken care of, or a day reflection was written. It is a count, never a score, target or comparison.
+- **The Year reflection is not on the Year view**, because PRD 12 says the Year holds exactly those three things. It will live in Looking Back with the other reflections. *(Flag: say if you would rather it sat on the Year view.)*
+- **Goals page** (PRD 4, 10): the goals for the current year, month and week as violet cards, each with "+ Add a goal" and, when any exist, "Archived · N — Show" with Restore. Other periods are reached from the Year, Month and Week views.
+- **Month and Week** show their goals as a slim violet strip above the grid (goal titles you can tap, plus "+ Add a goal"): "available as context" (PRD 12).
+- **A goal is just a title and an optional description** (PRD 10): no progress, milestones or checklist, and no link to tasks. Tap one to edit; actions are Archive / Restore and Delete, each with Undo. A week goal's field says "Something I want this week to be about." Goal change history ("when changed significantly") is still not recorded.
+- **Layout fixes** (2026-09-20): the calendar title slot is sized per view with the label centred above the title, and the Day is two independent columns (doing on the left: Priorities, Tasks, From yesterday; context on the right: On My Mind, Rituals, Reflection), which removes the empty half-width gap.
+
 ## Daybook brand, control sizes and the date picker
 **Status: Confirmed** (2026-09-20) unless noted
 
@@ -59,7 +71,7 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Completed priorities sink to the bottom** of the Priorities card, still visible and checked (PRD 7). Completed tasks in the Tasks card sit behind "Completed · N — Show" at the bottom, per PRD 12. **Confirmed** (2026-09-20).
 - The Day's "N remaining · N completed" counts priorities and tasks together.
 - **Live:** screens update the moment data is saved, through a domain `watch` query, with no reload.
-- **Not built yet:** the Reflection section (Reflections slice), Goals as context on Month and Week (Goals slice), and the Year view.
+- **Not built yet:** the Year reflection (planned for Looking Back).
 - **Wording:** the toolbar shows "Month" / "Week" above the period title, the reverse of the design system's sample, because the period is the useful heading.
 
 ## Capture (Slice 3)

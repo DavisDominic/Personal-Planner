@@ -2,6 +2,7 @@ import { MonthGrid } from '../../components/Calendar/Calendar'
 import type { MonthCell } from '../../components/Calendar/Calendar'
 import { getCalendarPreview, monthGridDays, today } from '../../domain/index'
 import { dayLong, monthTitle, weekdayShort } from '../../lib/dateFormat'
+import { GoalsSection } from '../goals/GoalsSection'
 import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
@@ -42,6 +43,7 @@ export function MonthView({ date }: { date: string }) {
   return (
     <>
       <CalendarNav view="month" date={date} caption="Month" title={monthTitle(date)} />
+      <GoalsSection scope="month" date={date} variant="context" />
       <MonthGrid weekdays={days.slice(0, 7).map(weekdayShort)} cells={cells} />
       <ReflectionSection type="month" date={date} />
     </>

@@ -39,12 +39,15 @@ for (const file of walk(ROOT)) {
   const isTsx = /\.(tsx|ts)$/.test(file)
   if (!isCss && !isTsx) continue
   const rules = isCss ? CSS_RULES : TSX_RULES
-  fs.readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+  const source = fs.readFileSync(file, 'utf8')
+  // A file may declare its own custom properties (e.g. a per-item --n); those are fine to use.
+  const local = new Set([...source.matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]))
+  source.split('\n').forEach((line, i) => {
     if (isCss && (/^\s*@media/.test(line) || /^\s*(\/\*|\*)/.test(line))) return
     const code = isCss ? line.replace(/\/\*.*?\*\//g, '') : line
     if (isCss) {
       for (const m of code.matchAll(/var\((--[\w-]+)/g)) {
-        if (!defined.has(m[1])) problems.push(`${file}:${i + 1}  undefined variable ${m[1]}: ${line.trim()}`)
+        if (!defined.has(m[1]) && !local.has(m[1])) problems.push(`${file}:${i + 1}  undefined variable ${m[1]}: ${line.trim()}`)
       }
     }
     for (const [re, label] of rules) if (re.test(code)) problems.push(`${file}:${i + 1}  ${label}: ${line.trim()}`)

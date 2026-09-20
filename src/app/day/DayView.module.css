@@ -4,6 +4,8 @@
 }
 .counts{color:var(--ink-muted)}
 .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--u-px-18);align-items:start}
+.col{display:flex;flex-direction:column;gap:var(--u-px-18);min-width:0}
+.col:empty{display:none}
 .disclose{margin-top:var(--sp-3)}
 .empty{margin-top:var(--sp-3)}
 @media(min-width:981px){

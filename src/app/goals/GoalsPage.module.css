@@ -1,0 +1,2 @@
+.title{margin:var(--sp-1) 0 var(--sp-5);font-size:var(--text-3xl);line-height:var(--u-lh-1);letter-spacing:var(--u-em-n0_035);font-weight:var(--u-fw-700)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--u-px-300)),1fr));gap:var(--u-px-18);align-items:start}
