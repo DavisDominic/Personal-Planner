@@ -147,6 +147,7 @@ export const getTask = (id: string) => db().tasks.get(id)
 
 /**
  * The Priorities section of a Day: tasks with a priority that belong to that day, ordered by level.
+ * Completed ones stay visible, checked, and sink to the bottom of the list.
  * - Dated tasks on that date (active or completed; No Longer Relevant is removed).
  * - Undated priority tasks show on every day from their creation date while active. A completed
  *   one shows (checked) only on the day it was completed.
@@ -157,7 +158,7 @@ export async function getDayPriorities(date: DateString): Promise<Task[]> {
   const tasks = await db().tasks.filter((t) => t.priority !== undefined && t.status !== 'no-longer-relevant').toArray()
   return tasks
     .filter((t) => (t.date !== undefined ? t.date === date : showsUndatedOn(t, date)))
-    .sort(byPriorityThenCreated)
+    .sort((a, b) => Number(a.status === 'completed') - Number(b.status === 'completed') || byPriorityThenCreated(a, b))
 }
 
 /**

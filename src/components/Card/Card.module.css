@@ -24,3 +24,8 @@
 .card.lemon .card-meta,.card.coral .card-meta,.card.sage .card-meta,.card.violet .card-meta,.card.sky .card-meta,.card.mint .card-meta,.card.blush .card-meta,.card.peach .card-meta,.card.periwinkle .card-meta{color:var(--ink)}
 .card-rule{height:var(--u-px-1);background:var(--u-ink-22);margin:var(--u-px-14) 0}
 .card.periwinkle{background:var(--periwinkle)}
+
+/* The icon sits beside the heading, so it doesn't read as a button on the right. */
+.card-title{display:flex;align-items:center;gap:var(--sp-2)}
+.title-icon{display:inline-flex;flex:none}
+.title-icon svg{width:var(--u-px-20);height:var(--u-px-20)}

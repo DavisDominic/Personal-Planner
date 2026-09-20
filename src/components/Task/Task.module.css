@@ -27,3 +27,10 @@
 .task-check:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 
 .task-check{padding:0;color:inherit}
+
+.task-note{
+  margin-top:var(--sp-1);font-size:var(--text-sm);color:var(--ink-muted);
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;
+}
+.on-color .task-note{color:var(--ink)}

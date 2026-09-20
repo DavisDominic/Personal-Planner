@@ -20,9 +20,11 @@ export function CardHead({ kicker, title, icon }: { kicker: string; title: strin
     <div className={s.cardHead}>
       <div>
         <div className={s.cardKicker}>{kicker}</div>
-        <div className={s.cardTitle}>{title}</div>
+        <div className={s.cardTitle}>
+          {icon && <span className={s.titleIcon}>{icon}</span>}
+          {title}
+        </div>
       </div>
-      {icon}
     </div>
   )
 }

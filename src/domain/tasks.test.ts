@@ -244,3 +244,15 @@ describe('undated tasks without a priority', () => {
     expect(await getDayTasks('2026-09-21')).toHaveLength(0)
   })
 })
+
+describe('completed priorities', () => {
+  it('stay visible but sink to the bottom of the day\'s priorities', async () => {
+    const p1 = await createTask({ title: 'p1', date: '2026-09-20', priority: 1 })
+    const p2 = await createTask({ title: 'p2', date: '2026-09-20', priority: 2 })
+    const p3 = await createTask({ title: 'p3', date: '2026-09-20', priority: 3 })
+    await completeTask(p1.id)
+    expect((await getDayPriorities('2026-09-20')).map((t) => t.id)).toEqual([p2.id, p3.id, p1.id])
+    await reopenTask(p1.id)
+    expect((await getDayPriorities('2026-09-20')).map((t) => t.id)).toEqual([p1.id, p2.id, p3.id])
+  })
+})

@@ -39,6 +39,7 @@ export function DayView({ date }: { date: string }) {
       key={task.id}
       title={task.title}
       meta={taskMeta(task)}
+      note={task.note}
       done={task.status === 'completed'}
       onToggle={(done) => void safely(done ? completeTask(task.id) : reopenTask(task.id))}
       onColor
@@ -106,6 +107,7 @@ export function DayView({ date }: { date: string }) {
                 <TaskRow
                   key={loop.id}
                   title={loop.title}
+                  note={loop.note}
                   checkLabel={`Taken care of: ${loop.title}`}
                   done={false}
                   onToggle={() =>

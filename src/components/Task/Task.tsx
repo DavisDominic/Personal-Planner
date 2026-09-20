@@ -6,6 +6,8 @@ import s from './Task.module.css'
 type TaskRowProps = {
   title: string
   meta?: string
+  /** The user's note, shown under the title (first few lines). */
+  note?: string
   /** The checkbox's accessible name when it should say more than the title, e.g. "Taken care of: ...". */
   checkLabel?: string
   defaultDone?: boolean
@@ -21,7 +23,7 @@ type TaskRowProps = {
   leading?: ReactNode
 }
 
-export function TaskRow({ title, meta, checkLabel, defaultDone = false, done: controlled, onToggle, strikeWhenDone = true, onColor, priority, leading }: TaskRowProps) {
+export function TaskRow({ title, meta, note, checkLabel, defaultDone = false, done: controlled, onToggle, strikeWhenDone = true, onColor, priority, leading }: TaskRowProps) {
   const [inner, setInner] = useState(defaultDone)
   const done = controlled ?? inner
   const toggle = () => {
@@ -48,6 +50,7 @@ export function TaskRow({ title, meta, checkLabel, defaultDone = false, done: co
           {title}
         </div>
         {meta && <div className={s.taskMeta}>{meta}</div>}
+        {note && <div className={s.taskNote}>{note}</div>}
       </div>
     </div>
   )
