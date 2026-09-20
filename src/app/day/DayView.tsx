@@ -89,7 +89,7 @@ export function DayView({ date }: { date: string }) {
   const remainingCount = remaining.length + priorities.filter((x) => x.status !== 'completed').length
   const completedCount = completed.length + priorities.filter((x) => x.status === 'completed').length
 
-  // Unfinished tasks from earlier days are surfaced on today's Day only, with no "overdue" framing.
+  // Unfinished tasks from earlier days are surfaced on today's Day only, with neutral wording.
   const yesterday = addDays(date, -1)
   const earlier = isToday ? (day?.earlier ?? []) : []
   const fromYesterday = earlier.filter((x) => x.date === yesterday)

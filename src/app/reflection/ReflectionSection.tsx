@@ -85,6 +85,24 @@ function ReflectionBody({ type, date }: { type: ReflectionPeriodType; date: stri
     [],
   )
 
+  // Switching apps or closing the tab within the autosave delay must not lose the last words.
+  useEffect(() => {
+    const onHide = (e: Event) => {
+      if ((e.type === 'pagehide' || document.visibilityState === 'hidden') && timer.current !== undefined) {
+        window.clearTimeout(timer.current)
+        timer.current = undefined
+        void saveReflection(type, date, latest.current)
+      }
+    }
+    document.addEventListener('visibilitychange', onHide)
+    window.addEventListener('pagehide', onHide)
+    return () => {
+      document.removeEventListener('visibilitychange', onHide)
+      window.removeEventListener('pagehide', onHide)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const flush = () => {
     window.clearTimeout(timer.current)
     timer.current = undefined

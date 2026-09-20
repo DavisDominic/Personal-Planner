@@ -481,7 +481,7 @@ export default function Gallery() {
               </div>
               <div className={cx(g.mt6, g.grid3)}>
                 <Card><div className={t.typeLabel}>Task complete</div><p className={t.typeSmall}>Checkbox fills ink; title strikes through; record remains visible.</p></Card>
-                <Card><div className={t.typeLabel}>Ritual check-in</div><p className={t.typeSmall}>Square fills ink; no celebration or streak animation.</p></Card>
+                <Card><div className={t.typeLabel}>Ritual check-in</div><p className={t.typeSmall}>Square fills ink; no celebration animation.</p></Card>
                 <Card><div className={t.typeLabel}>Open loop resolved</div><p className={t.typeSmall}>Moves to Taken care of; no destructive visual treatment.</p></Card>
               </div>
             </Board>
@@ -628,7 +628,7 @@ export default function Gallery() {
           </Section>
 
           {/* 17 FEEDBACK */}
-          <Section id="feedback" n="17" title="Feedback & system messages" note="Feedback is factual. The app never turns a save event into praise or a missed action into shame.">
+          <Section id="feedback" n="17" title="Feedback & system messages" note="Feedback is factual. The app never turns a save event into praise or an unchecked box into shame.">
             <div className={g.grid2}>
               <div>
                 <div className={t.typeLabel}>Toast / Undo</div>

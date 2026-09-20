@@ -20,7 +20,7 @@ export type TimelineEntry = {
 export type RitualTally = { ritualId: string; name: string; checkins: number }
 
 /**
- * What was recorded, as plain facts (PRD 13). There is no score, ranking, streak, comparison or reading
+ * What was recorded, as plain facts (PRD 13). There is no score, ranking, comparison or reading
  * of what any of it means: history is evidence, not evaluation.
  */
 export type LookingBackResult = {
