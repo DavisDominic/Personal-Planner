@@ -40,7 +40,8 @@
 .fab{
   position:fixed;z-index:10;
   right:calc(var(--sp-4) + env(safe-area-inset-right));
-  bottom:calc(var(--sp-16) + env(safe-area-inset-bottom));
+  /* Above the fixed 64px-tall "Powered by Netlify" badge, with a gap. */
+  bottom:calc(var(--sp-16) + var(--sp-2) + env(safe-area-inset-bottom));
   width:var(--u-px-56);height:var(--u-px-56);
   display:grid;place-items:center;padding:0;
   border:var(--u-px-1) solid var(--ink);border-radius:50%;
