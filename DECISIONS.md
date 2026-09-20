@@ -190,3 +190,13 @@ Goals, Settings/Backup, Welcome Back, First Launch, the "From yesterday" review,
 **Status: Confirmed** (2026-09-20)
 
 Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with the slices that need them. Fonts (Fontsource) and icons (`lucide-react`) are bundled so the app works offline. No backend, no runtime CDN.
+
+## Search (PRD 14)
+
+- **A page, not a modal.** `/search` is a routed page (Ctrl/Cmd+K jumps there and focuses the box; on the page it refocuses). A desktop modal is deferred.
+- **Ranking is exact and deterministic** (`src/domain/search.ts`): exact title, then title, then note/content, then more recent. Every word must appear (case- and accent-insensitive). No AI ranking.
+- **What is searched:** tasks (any status), open loops, taken-care-of loops (dated by when resolved), rituals (with recorded-day count), goals (title and description), reflections (content only, they have no title).
+- **Filters:** type chips, Time scope (All time / Past = before today / Upcoming = today or later) and an inclusive From/To date range.
+- **Empty query browses:** choosing only a type lists everything of that type, newest first, so hundreds of open loops stay manageable. Results are paged 30 at a time.
+- **Opening a result:** tasks, open loops and goals open their existing dialogs; a reflection links to its period (Year reflections live in Looking Back); taken-care-of results have Reopen with Undo.
+- Known limitation: the "Ctrl K" hint wraps on narrow screens.

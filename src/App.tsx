@@ -4,6 +4,7 @@ import { CalendarView } from './app/calendar/CalendarView'
 import { calendarPath } from './app/calendar/calendarPaths'
 import { GoalsPage } from './app/goals/GoalsPage'
 import { LookingBackPage } from './app/lookingBack/LookingBackPage'
+import { SearchPage } from './app/search/SearchPage'
 import { PagePlaceholder } from './app/PagePlaceholder'
 import { today } from './domain/index'
 import Gallery from './gallery/Gallery'
@@ -20,7 +21,7 @@ export default function App() {
           <Route path="calendar/:view/:date" element={<CalendarView />} />
           <Route path="looking-back" element={<LookingBackPage />} />
           <Route path="goals" element={<GoalsPage />} />
-          <Route path="search" element={<PagePlaceholder kicker="Find anything" title="Search" />} />
+          <Route path="search" element={<SearchPage />} />
           <Route path="settings" element={<PagePlaceholder kicker="Backup, restore and preferences" title="Settings" />} />
           <Route path="*" element={<Navigate to={calendarPath('day', today())} replace />} />
         </Route>
