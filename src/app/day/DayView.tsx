@@ -1,17 +1,21 @@
 import { useState } from 'react'
-import { Brain, ListChecks, ListOrdered, Repeat } from 'lucide-react'
+import { Brain, History, ListChecks, ListOrdered, Repeat } from 'lucide-react'
 import { Button } from '../../components/Button/Button'
 import { Card, CardHead } from '../../components/Card/Card'
 import { TaskRow } from '../../components/Task/Task'
-import { checkRitual, completeTask, getDayContents, reopenOpenLoop, reopenTask, resolveOpenLoop, today } from '../../domain/index'
-import type { Task } from '../../domain/index'
+import {
+  addDays, checkRitual, completeTask, getDayContents, moveTask, moveTaskToToday, reopenOpenLoop, reopenTask, resolveOpenLoop, today,
+} from '../../domain/index'
+import type { OpenLoop, Task } from '../../domain/index'
 import t from '../../styles/typography.module.css'
 import { CalendarNav } from '../calendar/CalendarNav'
-import { dayTitle, weekdayLong } from '../dateFormat'
+import { dayShort, dayTitle, weekdayLong } from '../dateFormat'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
 import { useToast } from '../useToast'
 import s from './DayView.module.css'
+import { OpenLoopDetailDialog } from './OpenLoopDetailDialog'
+import { TaskDetailDialog } from './TaskDetailDialog'
 
 /** Open loops and rituals show a few, then "+N more" (PRD 12: progressive disclosure). */
 const LOOPS_SHOWN = 3
@@ -19,7 +23,9 @@ const RITUALS_SHOWN = 2
 
 const CANT_SAVE = "We couldn't save that change. Your previous version is still here."
 
-const taskMeta = (task: Task) => [task.priority !== undefined && `P${task.priority}`, task.date === undefined ? 'every day' : undefined, task.time].filter(Boolean).join(' · ') || undefined
+const join = (parts: (string | false | undefined)[]) => parts.filter(Boolean).join(' · ') || undefined
+
+const taskMeta = (task: Task) => join([task.priority !== undefined && `P${task.priority}`, task.date === undefined && 'every day', task.time])
 
 export function DayView({ date }: { date: string }) {
   const day = useLive(() => getDayContents(date), date)
@@ -28,6 +34,8 @@ export function DayView({ date }: { date: string }) {
   const [showDone, setShowDone] = useState(false)
   const [showLoops, setShowLoops] = useState(false)
   const [showRituals, setShowRituals] = useState(false)
+  const [openTask, setOpenTask] = useState<Task | null>(null)
+  const [openLoop, setOpenLoop] = useState<OpenLoop | null>(null)
 
   const isToday = date === today()
   const caption = `${isToday ? 'Today / ' : ''}${weekdayLong(date)}`
@@ -42,6 +50,33 @@ export function DayView({ date }: { date: string }) {
       note={task.note}
       done={task.status === 'completed'}
       onToggle={(done) => void safely(done ? completeTask(task.id) : reopenTask(task.id))}
+      onOpen={() => setOpenTask(task)}
+      onColor
+    />
+  )
+
+  /** PRD 7 "Complete today": the task's date becomes today. It is not marked done. */
+  const bringToToday = (task: Task) =>
+    void safely(
+      moveTaskToToday(task.id).then(() =>
+        toast.show({ message: 'Moved to today', actionLabel: 'Undo', onAction: () => void moveTask(task.id, task.date!) }),
+      ),
+    )
+
+  const earlierRow = (task: Task, showDate: boolean) => (
+    <TaskRow
+      key={task.id}
+      title={task.title}
+      meta={join([showDate && dayShort(task.date!), task.priority !== undefined && `P${task.priority}`, task.time])}
+      note={task.note}
+      done={false}
+      onToggle={() => void safely(completeTask(task.id))}
+      onOpen={() => setOpenTask(task)}
+      actions={
+        <Button size="small" onClick={() => bringToToday(task)}>
+          Complete today
+        </Button>
+      }
       onColor
     />
   )
@@ -52,6 +87,12 @@ export function DayView({ date }: { date: string }) {
   const completed = tasks.filter((x) => x.status === 'completed')
   const remainingCount = remaining.length + priorities.filter((x) => x.status !== 'completed').length
   const completedCount = completed.length + priorities.filter((x) => x.status === 'completed').length
+
+  // Unfinished tasks from earlier days are surfaced on today's Day only, with no "overdue" framing.
+  const yesterday = addDays(date, -1)
+  const earlier = isToday ? (day?.earlier ?? []) : []
+  const fromYesterday = earlier.filter((x) => x.date === yesterday)
+  const fromEarlier = earlier.filter((x) => x.date !== yesterday)
 
   const loops = day?.openLoops ?? []
   const shownLoops = showLoops ? loops : loops.slice(0, LOOPS_SHOWN)
@@ -100,6 +141,20 @@ export function DayView({ date }: { date: string }) {
             )}
           </Card>
 
+          {fromYesterday.length > 0 && (
+            <Card kind="color" tone="periwinkle">
+              <CardHead kicker="FROM YESTERDAY" title={`From yesterday · ${fromYesterday.length}`} icon={<History aria-hidden="true" />} />
+              {fromYesterday.map((task) => earlierRow(task, false))}
+            </Card>
+          )}
+
+          {fromEarlier.length > 0 && (
+            <Card kind="color" tone="periwinkle">
+              <CardHead kicker="FROM EARLIER DAYS" title={`From earlier · ${fromEarlier.length}`} icon={<History aria-hidden="true" />} />
+              {fromEarlier.map((task) => earlierRow(task, true))}
+            </Card>
+          )}
+
           {loops.length > 0 && (
             <Card tone="peach">
               <CardHead kicker="ON MY MIND" title={`${loops.length} Open ${loops.length === 1 ? 'Loop' : 'Loops'}`} icon={<Brain aria-hidden="true" />} />
@@ -117,6 +172,7 @@ export function DayView({ date }: { date: string }) {
                       ),
                     )
                   }
+                  onOpen={() => setOpenLoop(loop)}
                   onColor
                 />
               ))}
@@ -132,11 +188,7 @@ export function DayView({ date }: { date: string }) {
 
           {rituals.length > 0 && (
             <Card tone="sage">
-              <CardHead
-                kicker="RITUALS"
-                title={`${rituals.filter((r) => r.checked).length} of ${rituals.length} checked`}
-                icon={<Repeat aria-hidden="true" />}
-              />
+              <CardHead kicker="RITUALS" title={`${rituals.filter((r) => r.checked).length} of ${rituals.length} checked`} icon={<Repeat aria-hidden="true" />} />
               {shownRituals.map(({ ritual, checked, recordedDays }) => (
                 <TaskRow
                   key={ritual.id}
@@ -159,6 +211,9 @@ export function DayView({ date }: { date: string }) {
           )}
         </div>
       )}
+
+      <TaskDetailDialog task={openTask} onClose={() => setOpenTask(null)} />
+      <OpenLoopDetailDialog loop={openLoop} day={date} onClose={() => setOpenLoop(null)} />
     </div>
   )
 }

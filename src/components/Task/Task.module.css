@@ -34,3 +34,9 @@
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;
 }
 .on-color .task-note{color:var(--ink)}
+
+.task-open{padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.task-open:hover{text-decoration:underline}
+.task-open:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+.task.done .task-open{text-decoration:line-through}
+.task-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-2)}

@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import s from './Overlay.module.css'
 
-/** Static presentation of a dialog surface. Focus handling and dismissal come with the real capture flow. */
+/** The surface of a dialog. The native <dialog> that hosts it provides the role, focus handling and dismissal. */
 export function Dialog({ children }: { children: ReactNode }) {
   return (
-    <div className={s.dialog} role="dialog" aria-modal="false">
+    <div className={s.dialog}>
       {children}
     </div>
   )

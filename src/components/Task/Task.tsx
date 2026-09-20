@@ -21,9 +21,13 @@ type TaskRowProps = {
   priority?: boolean
   /** Replaces the checkbox, e.g. a timeline icon. */
   leading?: ReactNode
+  /** Makes the title a button that opens the item's details. */
+  onOpen?: () => void
+  /** Row actions shown under the note, e.g. "Complete today". */
+  actions?: ReactNode
 }
 
-export function TaskRow({ title, meta, note, checkLabel, defaultDone = false, done: controlled, onToggle, strikeWhenDone = true, onColor, priority, leading }: TaskRowProps) {
+export function TaskRow({ title, meta, note, checkLabel, defaultDone = false, done: controlled, onToggle, strikeWhenDone = true, onColor, priority, leading, onOpen, actions }: TaskRowProps) {
   const [inner, setInner] = useState(defaultDone)
   const done = controlled ?? inner
   const toggle = () => {
@@ -47,10 +51,17 @@ export function TaskRow({ title, meta, note, checkLabel, defaultDone = false, do
       <div className={s.taskCopy}>
         <div className={s.taskTitle}>
           {priority && <span className={s.taskPriority} aria-hidden="true" />}
-          {title}
+          {onOpen ? (
+            <button type="button" className={s.taskOpen} onClick={onOpen}>
+              {title}
+            </button>
+          ) : (
+            title
+          )}
         </div>
         {meta && <div className={s.taskMeta}>{meta}</div>}
         {note && <div className={s.taskNote}>{note}</div>}
+        {actions && <div className={s.taskActions}>{actions}</div>}
       </div>
     </div>
   )

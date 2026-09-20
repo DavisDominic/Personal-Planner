@@ -19,6 +19,15 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Task and open-loop actions (Slice 5)
+**Status: Assumed**
+
+- **Tap a title** on the Day to open its details: a modal on desktop, a bottom sheet on phones. Tasks: edit title, note, date, time and priority (P1–P5, or the task's current level), plus actions. Open loops: edit title, note and an optional date, plus actions.
+- **Task actions:** *Complete today* (date becomes today; not marked done; only for a dated task from another day), *No longer relevant*, *Delete*, and *Reopen* for a completed task. Each shows a toast with Undo. Moving a task to any other date is just editing its Date, or the Move dialog on the Week (its click alternative to dragging).
+- **From yesterday:** on **today's Day only**, unfinished dated tasks from earlier days appear in a quiet blue card, "From yesterday" for the previous day and "From earlier" (with each task's date) for older ones. Nothing changes by being listed. Each row has the tick (done on its original date) and a visible **Complete today** button; the rest is behind the title. No "overdue" wording, and no "keep here" action (PRD 7).
+- **The gentle priority question** appears in the edit view only when a priority is newly set or changed, never on a move or Complete today (PRD 7).
+- **Open loop actions:** *Taken care of*, *Turn into a task*, *Delete* (all with Undo). A loop turned into a task keeps its title, note and date; with no date of its own it lands on the Day it was opened from, so it doesn't start recurring every day by accident. Undo turns it back into an open loop.
+
 ## Calendar and Day view
 **Status: Assumed**
 

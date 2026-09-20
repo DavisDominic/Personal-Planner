@@ -12,7 +12,7 @@ afterEach(() => closeDomain(db))
 
 describe('getDayContents', () => {
   it('is empty on a blank planner, which is a valid day', async () => {
-    expect(await getDayContents('2026-09-20')).toEqual({ priorities: [], tasks: [], openLoops: [], rituals: [] })
+    expect(await getDayContents('2026-09-20')).toEqual({ priorities: [], tasks: [], earlier: [], openLoops: [], rituals: [] })
   })
 
   it('gathers priorities, tasks, open loops and due rituals for a date', async () => {
@@ -50,5 +50,19 @@ describe('getDayContents', () => {
     const day = await getDayContents('2026-09-20')
     expect(day.tasks.map((x) => x.status)).toEqual(['completed'])
     expect(day.openLoops).toHaveLength(0)
+  })
+})
+
+describe('getDayContents: unfinished tasks from earlier days', () => {
+  it('lists unfinished dated tasks from before the date, oldest first, without touching them', async () => {
+    const old = await createTask({ title: 'older', date: '2026-09-10' })
+    const yest = await createTask({ title: 'yesterday', date: '2026-09-19', priority: 1 })
+    const done = await createTask({ title: 'done', date: '2026-09-18' })
+    await completeTask(done.id)
+    await createTask({ title: 'undated' })
+    const day = await getDayContents('2026-09-20')
+    expect(day.earlier.map((t) => t.id)).toEqual([old.id, yest.id])
+    expect(day.priorities).toHaveLength(0) // not counted or shown as today's priorities
+    expect((await getDayContents('2026-09-19')).earlier.map((t) => t.id)).toEqual([old.id])
   })
 })
