@@ -107,7 +107,9 @@
 .week-head-link{color:inherit;text-decoration:none}
 .week-head-link:hover{background:var(--paper-warm)}
 .week-head-link:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
-.week-head .date.today-date,.week-head .date.selected-date{display:grid;place-items:center;min-width:var(--u-px-22);height:var(--u-px-22);border-radius:50%}
+.week-head{align-items:center}
+/* Every date box is the same height so the divider sits at one level, selected or not. */
+.week-head .date{display:grid;place-items:center;box-sizing:border-box;min-width:var(--u-px-22);height:var(--u-px-22);border:var(--u-px-1) solid transparent;border-radius:50%}
 .week-head .date.today-date{background:var(--ink);color:var(--white)}
 /* The selected date: a yellow circle around its number. */
 .week-head .date.selected-date{background:var(--lemon);color:var(--ink);border:var(--u-px-1) solid var(--ink)}

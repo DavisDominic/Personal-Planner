@@ -199,4 +199,4 @@ Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with th
 - **Filters:** type chips, Time scope (All time / Past = before today / Upcoming = today or later) and an inclusive From/To date range.
 - **Empty query browses:** choosing only a type lists everything of that type, newest first, so hundreds of open loops stay manageable. Results are paged 30 at a time.
 - **Opening a result:** tasks, open loops and goals open their existing dialogs; a reflection links to its period (Year reflections live in Looking Back); taken-care-of results have Reopen with Undo.
-- Known limitation: the "Ctrl K" hint wraps on narrow screens.
+- The search box shows no shortcut hint; the filters sit in one bordered card (Type chips, a segmented Time control, and a Between From/To row).

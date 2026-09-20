@@ -174,7 +174,6 @@ export function SearchPage() {
 
       <SearchBar
         placeholder="Search tasks, open loops, goals, reflections and notes…"
-        hint="Ctrl K"
         value={query}
         onChange={(v) => {
           setQuery(v)
@@ -184,37 +183,28 @@ export function SearchPage() {
         inputRef={input}
       />
 
-      <div className={s.filters}>
-        <div className={t.typeCaption}>Type</div>
-        <FilterChips
-          label="Type"
-          items={KIND_FILTERS.map((k) => k.label)}
-          value={kindLabel}
-          onChange={(v) => {
-            setKindLabel(v)
-            reset()
-          }}
-        />
-        <div className={cx(t.typeCaption, s.gap)}>Time</div>
-        <FilterChips
-          label="Time scope"
-          items={TIME_FILTERS.map((x) => x.label)}
-          value={timeLabel}
-          onChange={(v) => {
-            setTimeLabel(v)
-            reset()
-          }}
-        />
-        <div className={s.range}>
-          <DatePicker label="From" allowClear value={from} onChange={(v) => { setFrom(v); reset() }} />
-          <DatePicker label="To" allowClear value={to} onChange={(v) => { setTo(v); reset() }} />
-          {filtered && (
-            <Button tone="ghost" onClick={clearFilters}>
-              Clear filters
-            </Button>
-          )}
+      <Card kind="flat" className={s.filters}>
+        <div className={s.row}>
+          <div className={t.typeCaption}>Type</div>
+          <FilterChips label="Type" items={KIND_FILTERS.map((k) => k.label)} value={kindLabel} onChange={(v) => { setKindLabel(v); reset() }} />
         </div>
-      </div>
+        <div className={s.row}>
+          <div className={t.typeCaption}>Time</div>
+          <FilterChips label="Time scope" variant="segmented" items={TIME_FILTERS.map((x) => x.label)} value={timeLabel} onChange={(v) => { setTimeLabel(v); reset() }} />
+        </div>
+        <div className={s.row}>
+          <div className={t.typeCaption}>Between</div>
+          <div className={s.range}>
+            <DatePicker label="From" labelHidden allowClear placeholder="From" value={from} onChange={(v) => { setFrom(v); reset() }} />
+            <DatePicker label="To" labelHidden allowClear placeholder="To" value={to} onChange={(v) => { setTo(v); reset() }} />
+            {filtered && (
+              <Button tone="ghost" onClick={clearFilters}>
+                Clear filters
+              </Button>
+            )}
+          </div>
+        </div>
+      </Card>
 
       {!browsing && (
         <p className={t.typeSmall}>Type to search, or pick a type above to browse everything of that kind.</p>

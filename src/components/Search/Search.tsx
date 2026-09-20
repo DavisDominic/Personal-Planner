@@ -39,9 +39,11 @@ type FilterChipsProps = {
   /** Controlled selection. Without it the chips keep their own state (as in the gallery). */
   value?: string
   onChange?: (item: string) => void
+  /** "segmented" joins the options into one pill track. */
+  variant?: 'chips' | 'segmented'
 }
 
-export function FilterChips({ items, label, value, onChange }: FilterChipsProps) {
+export function FilterChips({ items, label, value, onChange, variant = 'chips' }: FilterChipsProps) {
   const [own, setOwn] = useState(items[0])
   const active = value ?? own
   const setActive = (item: string) => {
@@ -49,7 +51,7 @@ export function FilterChips({ items, label, value, onChange }: FilterChipsProps)
     onChange?.(item)
   }
   return (
-    <div className={s.filters} role="group" aria-label={label}>
+    <div className={variant === 'segmented' ? s.segments : s.filters} role="group" aria-label={label}>
       {items.map((it) => (
         <button
           key={it}

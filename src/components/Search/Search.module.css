@@ -16,3 +16,8 @@
 .filter{composes:hit from "../../styles/hit.module.css"}
 .filter:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 .searchbar:focus-within{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+
+/* Segmented control: one connected pill track. */
+.segments{align-self:flex-start;display:inline-flex;flex-wrap:wrap;gap:var(--u-px-2);padding:var(--u-px-3);border:var(--u-px-1) solid var(--line-dark);border-radius:var(--r-pill);background:var(--white)}
+.segments .filter{border-color:transparent;background:transparent}
+.segments .filter.active{background:var(--ink);color:var(--white)}
