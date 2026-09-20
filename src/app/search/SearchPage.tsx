@@ -25,7 +25,7 @@ const KIND_FILTERS: { label: string; kinds?: SearchKind[] }[] = [
   { label: 'All' },
   { label: 'Tasks', kinds: ['task'] },
   { label: 'Open loops', kinds: ['open-loop'] },
-  { label: 'Taken care of', kinds: ['taken-care-of'] },
+  { label: 'Completed', kinds: ['taken-care-of'] },
   { label: 'Rituals', kinds: ['ritual'] },
   { label: 'Goals', kinds: ['goal'] },
   { label: 'Reflections', kinds: ['reflection'] },
@@ -47,7 +47,7 @@ const PAGE = 30
 
 const MATCH_LABEL: Record<SearchMatch, string> = { exact: 'EXACT MATCH', title: 'TITLE MATCH', content: 'CONTENT MATCH', none: '' }
 const KIND_WORD: Record<SearchKind, string> = {
-  task: 'Task', 'open-loop': 'Open loop', 'taken-care-of': 'Taken care of', ritual: 'Ritual', goal: 'Goal', reflection: 'Reflection',
+  task: 'Task', 'open-loop': 'Open loop', 'taken-care-of': 'Completed', ritual: 'Ritual', goal: 'Goal', reflection: 'Reflection',
 }
 const PERIOD_WORD = { day: 'Day', week: 'Week', month: 'Month', year: 'Year' } as const
 

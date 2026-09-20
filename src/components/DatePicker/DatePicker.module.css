@@ -58,7 +58,13 @@
 
 .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);margin-top:var(--sp-3)}
 
+/* Only on a phone, where the popover is centred rather than anchored to its field. */
+.scrim{display:none}
 @media(max-width:680px){
+  .scrim{
+    display:block;position:fixed;inset:0;z-index:40;
+    background:var(--u-ink-18);touch-action:none;
+  }
   .popover,.popover.end,.popover.up{
     position:fixed;left:var(--sp-3);right:var(--sp-3);top:50%;bottom:auto;
     width:auto;max-height:86dvh;overflow-y:auto;overscroll-behavior:contain;

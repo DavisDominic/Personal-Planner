@@ -24,7 +24,7 @@ type Props = {
   onClose: () => void
 }
 
-/** Edit an Open Loop and act on it (PRD 8): taken care of, turn it into a task, or delete it. */
+/** Edit an Open Loop and act on it (PRD 8): complete it, turn it into a task, or delete it. */
 export function OpenLoopDetailDialog({ loop, day, onClose }: Props) {
   return (
     <ModalHost open={loop !== null} onClose={onClose} label="Open loop" className={s.width}>
@@ -74,7 +74,7 @@ function LoopForm({ loop, day, onClose }: { loop: OpenLoop; day: string; onClose
     }
   }
 
-  const takenCare = act('Taken care of', () => resolveOpenLoop(loop.id), () => reopenOpenLoop(loop.id))
+  const takenCare = act('Completed', () => resolveOpenLoop(loop.id), () => reopenOpenLoop(loop.id))
   const backOnMyMind = act('Back on my mind', () => reopenOpenLoop(loop.id), () => resolveOpenLoop(loop.id))
   const resolved = loop.status === 'taken-care-of'
   const remove = act('Open loop deleted', () => deleteOpenLoop(loop.id), () => restoreOpenLoop(loop))
@@ -104,7 +104,7 @@ function LoopForm({ loop, day, onClose }: { loop: OpenLoop; day: string; onClose
           void save()
         }}
       >
-        <div className={t.typeLabel}>{resolved ? 'Taken care of' : 'On my mind'}</div>
+        <div className={t.typeLabel}>{resolved ? 'Completed' : 'On my mind'}</div>
         <div className={s.fields}>
           <Field label="What's on your mind?" value={title} onChange={(e) => edit(setTitle)(e.target.value)} data-autofocus />
           <TextArea label="Note" value={note} onChange={(e) => edit(setNote)(e.target.value)} />
@@ -135,7 +135,7 @@ function LoopForm({ loop, day, onClose }: { loop: OpenLoop; day: string; onClose
               </Button>
             ) : (
               <Button size="small" disabled={busy} onClick={() => void takenCare()}>
-                Taken care of
+                Completed
               </Button>
             )}
             <Button size="small" disabled={busy} onClick={() => void makeTask()}>

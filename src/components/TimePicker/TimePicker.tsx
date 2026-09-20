@@ -66,6 +66,18 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
     if (open) popover.current?.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((el) => el.scrollIntoView({ block: 'nearest' }))
   }, [open, value])
 
+
+  // The popover is centred on a phone, so it would otherwise hang there while the page moved
+  // underneath. Any scroll outside it closes it.
+  useEffect(() => {
+    if (!open) return
+    const onScroll = (e: Event) => {
+      if (!popover.current?.contains(e.target as Node)) setOpen(false)
+    }
+    window.addEventListener('scroll', onScroll, true)
+    return () => window.removeEventListener('scroll', onScroll, true)
+  }, [open])
+
   useEffect(() => {
     if (!open) return
     const onDown = (e: MouseEvent) => {
@@ -111,6 +123,8 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
           <span className={value ? undefined : d.placeholder}>{value ? formatTime(value) : placeholder}</span>
           <Clock aria-hidden="true" />
         </button>
+
+        {open && <div className={d.scrim} aria-hidden="true" onClick={() => close(false)} />}
 
         {open && (
           <div ref={popover} className={cx(d.popover, align === 'end' && d.end, up && d.up)} role="dialog" aria-label={`Choose ${label.toLowerCase()}`}>

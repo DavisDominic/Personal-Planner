@@ -47,7 +47,7 @@ function reflectionLabel(r: Reflection) {
 const KIND_LABEL: Record<TimelineEntry['kind'], string> = {
   task: 'Task completed',
   ritual: 'Ritual check-in',
-  loop: 'Taken care of',
+  loop: 'Completed',
   reflection: 'Reflection',
 }
 
@@ -126,10 +126,18 @@ export function LookingBackPage() {
       )}
 
       <p className={`${t.typeCaption} ${s.facts}`}>
-        {scope === 'recent' && `Last ${RECENT_DAYS} days`}
-        {scope === 'all' && 'All time'}
-        {facts && `${scope === 'recent' || scope === 'all' ? ' · ' : ''}${data!.recordedDays} recorded ${data!.recordedDays === 1 ? 'day' : 'days'}`}
-        {data?.recordBegins && ` · Your record begins ${dayRelative(data.recordBegins)}`}
+        {[
+          scope === 'recent' && `Last ${RECENT_DAYS} days`,
+          scope === 'all' && 'All time',
+          facts && `${data!.recordedDays} recorded ${data!.recordedDays === 1 ? 'day' : 'days'}`,
+          data?.recordBegins && `Your record begins ${dayRelative(data.recordBegins)}`,
+        ]
+          .filter(Boolean)
+          .map((fact, i) => (
+            <span key={i} className={s.fact}>
+              {fact}
+            </span>
+          ))}
       </p>
 
       {empty && <p className={t.typeSmall}>Nothing recorded for this period.</p>}
@@ -155,7 +163,6 @@ export function LookingBackPage() {
                     meta={[dayRelative(dateOf(task.completedAt!)), task.priority !== undefined && `P${task.priority}`].filter(Boolean).join(' · ')}
                     note={task.note}
                     bare
-                    quiet
                     onColor
                     onOpen={() => setOpenTask(task)}
                   />
@@ -182,7 +189,6 @@ export function LookingBackPage() {
                     title={r.name}
                     meta={`${r.checkins} ${r.checkins === 1 ? 'check-in' : 'check-ins'}`}
                     bare
-                    quiet
                     onColor
                   />
                 ))}
@@ -191,9 +197,9 @@ export function LookingBackPage() {
 
             {data.resolvedLoops.length > 0 && (
               <Card kind="color" tone="periwinkle">
-                <CardKicker>TAKEN CARE OF</CardKicker>
+                <CardKicker>COMPLETED</CardKicker>
                 <div className={`${t.typeH1} ${s.big}`}>{data.resolvedLoops.length}</div>
-                <div className={t.typeSmall}>open {data.resolvedLoops.length === 1 ? 'loop' : 'loops'} taken care of</div>
+                <div className={t.typeSmall}>open {data.resolvedLoops.length === 1 ? 'loop' : 'loops'} completed</div>
                 <CardRule />
                 {data.resolvedLoops.map((loop) => (
                   <TaskRow
@@ -202,7 +208,6 @@ export function LookingBackPage() {
                     meta={dayRelative(dateOf(loop.resolvedAt!))}
                     note={loop.note}
                     bare
-                    quiet
                     onColor
                     onOpen={() => setOpenLoop(loop)}
                   />
@@ -220,7 +225,6 @@ export function LookingBackPage() {
                   title={e.kind === 'reflection' ? excerpt(e.title, 90) : e.title}
                   meta={`${e.kind === 'reflection' ? `${PERIOD_WORD[e.periodType!]} reflection` : KIND_LABEL[e.kind]} · ${dayRelative(e.date)}${e.priority !== undefined ? ` · P${e.priority}` : ''}`}
                   bare
-                  quiet
                   onOpen={openEntry(e)}
                 />
               ))}
@@ -243,7 +247,6 @@ export function LookingBackPage() {
                     meta={`${PERIOD_WORD[r.periodType]} reflection`}
                     note={excerpt(r.content, 220)}
                     bare
-                    quiet
                   />
                 ))}
               </Card>

@@ -97,7 +97,7 @@ export function DayView({ date }: { date: string }) {
   const fromEarlier = earlier.filter((x) => x.date !== yesterday)
 
   const loops = day?.openLoops ?? []
-  // Taken care of today: still on the day, ticked, so it can be undone or opened.
+  // Completed today: still on the day, ticked, so it can be undone or opened.
   const takenCareOf = day?.takenCareOf ?? []
   const shownLoops = showLoops ? loops : loops.slice(0, LOOPS_SHOWN)
   const rituals = day?.rituals ?? []
@@ -174,12 +174,12 @@ export function DayView({ date }: { date: string }) {
                   key={loop.id}
                   title={loop.title}
                   note={loop.note}
-                  checkLabel={`Taken care of: ${loop.title}`}
+                  checkLabel={`Completed: ${loop.title}`}
                   done={false}
                   onToggle={() =>
                     void safely(
                       resolveOpenLoop(loop.id).then(() =>
-                        toast.show({ message: 'Taken care of', actionLabel: 'Undo', onAction: () => void reopenOpenLoop(loop.id) }),
+                        toast.show({ message: 'Completed', actionLabel: 'Undo', onAction: () => void reopenOpenLoop(loop.id) }),
                       ),
                     )
                   }
@@ -198,7 +198,7 @@ export function DayView({ date }: { date: string }) {
                 <>
                   <div className={s.disclose}>
                     <Button size="small" aria-expanded={showTaken} aria-controls="day-taken-care-of" onClick={() => setShowTaken((v) => !v)}>
-                      Taken care of · {takenCareOf.length} — {showTaken ? 'Hide' : 'Show'}
+                      Completed · {takenCareOf.length} — {showTaken ? 'Hide' : 'Show'}
                     </Button>
                   </div>
                   {showTaken && (

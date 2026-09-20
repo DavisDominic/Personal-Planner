@@ -1,6 +1,16 @@
 .title{margin:var(--sp-1) 0 var(--sp-4);font-size:var(--text-3xl);line-height:var(--u-lh-1);letter-spacing:var(--u-em-n0_035);font-weight:var(--u-fw-700)}
 .period{margin-top:var(--sp-4)}
-.facts{margin:var(--sp-4) 0}
+/* Each fact is its own item: they sit in a row on a wide screen and stack on a phone, so a
+   sentence is never broken across two lines mid-phrase. */
+.facts{margin:var(--sp-4) 0;display:flex;flex-wrap:wrap;gap:var(--sp-1) var(--sp-3)}
+.fact+.fact{position:relative}
+@media(min-width:681px){
+  .fact+.fact{padding-left:var(--sp-3)}
+  .fact+.fact::before{content:"·";position:absolute;left:0}
+}
+@media(max-width:680px){
+  .facts{flex-direction:column;gap:var(--sp-1)}
+}
 .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--u-px-18);align-items:start}
 .col{display:flex;flex-direction:column;gap:var(--u-px-18);min-width:0}
 .col:empty{display:none}

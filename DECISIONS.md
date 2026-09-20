@@ -309,3 +309,24 @@ Once the Undo toast passed there was no way back to it from the Day.
 - `TimelineEntry` carries the record's `id` so a row can find what it came from.
 - **Header icons.** The menu and search icons lost their boxes (`tone="plain"`) and are drawn at one size
   and weight, matching the chevrons elsewhere.
+
+## "Completed" replaces "Taken care of" (user decision)
+
+**Flagged conflict with the PRD, resolved by the user.** PRD 8 and the design system's vocabulary call a
+finished open loop "Taken Care Of", and reserve "completed" for tasks. The user chose **Completed**
+everywhere in the app: the Day's disclosure, the item dialog's action and label, the Search filter, the
+toast and Looking Back ("COMPLETED / 1 open loop completed"). The gallery still shows the design system's
+own wording, and the stored status value stays `taken-care-of`, so no data migration is needed.
+
+## Looking Back and phone layout, second pass
+
+- **History rows have a hierarchy.** The rows in "Things I did", "Completed" and the timeline lost their
+  `quiet` styling: the title is now the same semibold 16px used elsewhere, over a 12px mono meta line.
+- **The facts line no longer breaks mid-sentence.** "Last 14 days · 1 recorded day · Your record begins …"
+  is built from separate facts: a row with · separators on a wide screen, one fact per line on a phone.
+- **Less dead space at the foot of a page.** The page's bottom padding is the capture button's height plus
+  one step (72px), rather than the old bottom-bar allowance. At the very end of a long scroll the button
+  can sit over the last card's corner, which is the usual trade-off for a floating button.
+- **The date and time pickers behave like dialogs on a phone.** They are centred there, so they now have a
+  scrim behind them: a tap outside closes them, and the page no longer slides around underneath. Any scroll
+  outside the popover (including inside a sheet) closes it.

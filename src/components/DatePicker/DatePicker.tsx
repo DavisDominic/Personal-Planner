@@ -75,6 +75,18 @@ export function DatePicker({ label, labelHidden, value, onChange, allowClear, pl
     if (open) grid.current?.querySelector<HTMLElement>(`[data-date="${focused}"]`)?.focus()
   }, [open, focused, view])
 
+
+  // The popover is centred on a phone, so it would otherwise hang there while the page moved
+  // underneath. Any scroll outside it closes it.
+  useEffect(() => {
+    if (!open) return
+    const onScroll = (e: Event) => {
+      if (!wrap.current?.contains(e.target as Node)) setOpen(false)
+    }
+    window.addEventListener('scroll', onScroll, true)
+    return () => window.removeEventListener('scroll', onScroll, true)
+  }, [open])
+
   // A click anywhere else closes it.
   useEffect(() => {
     if (!open) return
@@ -125,6 +137,9 @@ export function DatePicker({ label, labelHidden, value, onChange, allowClear, pl
           <span className={value ? undefined : s.placeholder}>{value ? dayFull(value) : placeholder}</span>
           <CalendarDays aria-hidden="true" />
         </button>
+
+        {/* On a phone the popover is centred like a dialog, so a scrim holds the page still behind it. */}
+        {open && <div className={s.scrim} aria-hidden="true" onClick={() => close(false)} />}
 
         {open && (
           <div className={cx(s.popover, align === 'end' && s.end, up && s.up)} role="dialog" aria-label={`Choose ${label.toLowerCase()}`}>

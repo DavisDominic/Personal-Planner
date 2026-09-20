@@ -8,7 +8,7 @@ type TaskRowProps = {
   meta?: string
   /** The user's note, shown under the title (first few lines). */
   note?: string
-  /** The checkbox's accessible name when it should say more than the title, e.g. "Taken care of: ...". */
+  /** The checkbox's accessible name when it should say more than the title, e.g. "Completed: ...". */
   checkLabel?: string
   defaultDone?: boolean
   /** Controlled state. With `onToggle`, the caller owns whether the row is done. */
