@@ -5,6 +5,7 @@ A local-first personal planner (PWA). Read these before working:
 - `PRD.md` — product behavior (converted from `Personal_Planner_V1_PRD_Single_Source_of_Truth.docx`).
 - `Personal_Planner_V1_1_Expanded_Design_System (1).html` — visual reference.
 - `src/styles/tokens.css` — the design tokens, copied verbatim from the design system.
+- `DECISIONS.md` — how conflicts and gaps between the PRD and design system were resolved. Check it first, and add an entry when the user makes a new decision.
 
 ## Rules
 
