@@ -1,0 +1,2026 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Personal Planner — V1.1 Complete Design System</title>
+
+<!--
+  PERSONAL PLANNER — V1.1 COMPLETE DESIGN SYSTEM
+
+  Visual direction:
+  - tactile stationery / archive / post-it
+  - warm paper base
+  - saturated functional pastels
+  - black/dark-ink linework
+  - Space Grotesk + Space Mono
+  - compact editorial labels
+  - restrained borders and shadows
+  - playful color, serious information architecture
+
+  Icon system:
+  Lucide icons, selected and normalized for this product.
+  Lucide is loaded from the public package CDN so this HTML can render
+  the icon library without bundling a build tool.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+:root{
+  /* =========================================================
+     01 — COLOR TOKENS
+     Calibrated to the supplied visual references.
+     ========================================================= */
+  --lemon:#F5E642;
+  --amber:#E8A020;
+  --coral:#E85030;
+  --blush:#F0B4B0;
+  --rose:#E87888;
+  --violet:#A898E0;
+  --periwinkle:#B8C8F0;
+  --sky:#78B8E0;
+  --mint:#A8D8C0;
+  --sage:#8AAA70;
+  --olive:#7A9060;
+  --peach:#F0C898;
+
+  --paper:#FAF7F0;
+  --paper-warm:#F3EFE6;
+  --paper-deep:#E8E1D5;
+  --white:#FFFDF8;
+
+  --ink:#1A1A18;
+  --ink-2:#292A26;
+  --ink-muted:#8A8A82;
+  --line:#D8D3C8;
+  --line-dark:#B6B0A4;
+
+  --focus:#4C63FF;
+  --danger:#C73E2D;
+  --success:#4D7B61;
+
+  /* Semantic mapping */
+  --c-primary:var(--ink);
+  --c-accent:var(--lemon);
+  --c-task:var(--coral);
+  --c-open-loop:var(--peach);
+  --c-ritual:var(--sage);
+  --c-goal:var(--violet);
+  --c-reflection:var(--paper);
+  --c-history:var(--periwinkle);
+  --c-planning:var(--sky);
+  --c-success:var(--mint);
+
+  /* =========================================================
+     02 — TYPOGRAPHY
+     ========================================================= */
+  --font-display:"Space Grotesk",Arial,sans-serif;
+  --font-mono:"Space Mono",ui-monospace,monospace;
+
+  --text-xs:10px;
+  --text-sm:12px;
+  --text-md:14px;
+  --text-lg:16px;
+  --text-xl:20px;
+  --text-2xl:28px;
+  --text-3xl:40px;
+  --text-4xl:56px;
+  --text-5xl:72px;
+
+  /* =========================================================
+     03 — SPACING
+     ========================================================= */
+  --sp-1:4px;
+  --sp-2:8px;
+  --sp-3:12px;
+  --sp-4:16px;
+  --sp-5:20px;
+  --sp-6:24px;
+  --sp-7:28px;
+  --sp-8:32px;
+  --sp-10:40px;
+  --sp-12:48px;
+  --sp-16:64px;
+  --sp-20:80px;
+
+  /* =========================================================
+     04 — GEOMETRY
+     ========================================================= */
+  --r-0:0;
+  --r-1:2px;
+  --r-2:4px;
+  --r-3:8px;
+  --r-4:12px;
+  --r-pill:999px;
+
+  /* =========================================================
+     05 — ELEVATION
+     ========================================================= */
+  --shadow-note:3px 4px 0 rgba(26,26,24,.10);
+  --shadow-float:0 8px 20px rgba(26,26,24,.12);
+  --shadow-heavy:4px 5px 0 var(--ink);
+
+  /* =========================================================
+     06 — MOTION
+     ========================================================= */
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --fast:120ms;
+  --med:200ms;
+  --slow:320ms;
+
+  /* =========================================================
+     07 — LAYOUT
+     ========================================================= */
+  --content:1440px;
+  --sidebar:220px;
+  --mobile-nav:68px;
+  --touch:44px;
+}
+
+/* ---------- RESET ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper-warm);
+  color:var(--ink);
+  font-family:var(--font-display);
+  font-size:var(--text-md);
+  line-height:1.45;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+::selection{background:var(--lemon);color:var(--ink)}
+svg{display:block}
+
+/* ---------- SHELL ---------- */
+.shell{
+  display:grid;
+  grid-template-columns:var(--sidebar) 1fr;
+  min-height:100vh;
+}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow:auto;
+  background:var(--paper);
+  border-right:1px solid var(--line);
+  padding:22px 16px;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 8px 22px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:18px;
+}
+.brand-dot{width:11px;height:11px;border-radius:50%;background:var(--coral)}
+.brand-name{
+  font-size:14px;font-weight:700;letter-spacing:.01em;
+}
+.brand-meta{
+  margin-left:auto;font:9px var(--font-mono);color:var(--ink-muted);
+}
+.nav-label{
+  margin:20px 8px 7px;
+  font:700 9px var(--font-mono);
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.nav{
+  display:grid;gap:2px;
+}
+.nav a{
+  display:flex;align-items:center;gap:9px;
+  min-height:38px;padding:8px 10px;
+  text-decoration:none;color:var(--ink);
+  border-radius:var(--r-2);
+  font-size:12px;
+}
+.nav a:hover{background:var(--paper-deep)}
+.nav a.active{background:var(--ink);color:var(--white)}
+.nav i{width:16px;height:16px}
+.main{min-width:0}
+.content{
+  max-width:var(--content);
+  margin:auto;
+  padding:32px 28px 90px;
+}
+
+/* ---------- SECTION STRUCTURE ---------- */
+.page-kicker{
+  font:700 9px var(--font-mono);
+  letter-spacing:.20em;
+  text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.hero{
+  padding:28px 0 40px;
+  border-bottom:1px solid var(--line);
+}
+.hero h1{
+  margin:12px 0 8px;
+  font-size:clamp(42px,6vw,var(--text-5xl));
+  line-height:.92;
+  letter-spacing:-.055em;
+  font-weight:700;
+}
+.hero h1 span{color:var(--ink-muted)}
+.hero p{max-width:720px;color:var(--ink-2);font-size:16px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  min-height:28px;padding:5px 9px;
+  border:1px solid var(--ink);
+  border-radius:var(--r-pill);
+  font:700 9px var(--font-mono);
+  text-transform:uppercase;letter-spacing:.04em;
+  background:var(--white);
+}
+.pill.lemon{background:var(--lemon)}
+.pill.coral{background:var(--coral)}
+.pill.sage{background:var(--sage)}
+.pill.violet{background:var(--violet)}
+.pill.sky{background:var(--sky)}
+
+.section{
+  scroll-margin-top:20px;
+  margin-top:64px;
+}
+.section-head{
+  display:flex;align-items:end;gap:20px;
+  margin-bottom:20px;
+}
+.section-title{
+  display:flex;align-items:center;gap:14px;
+  flex:0 0 auto;
+  font:700 11px var(--font-mono);
+  text-transform:uppercase;letter-spacing:.18em;
+  color:var(--ink-muted);
+  white-space:nowrap;
+}
+.section-title:after{
+  content:"";height:1px;background:var(--line);
+  width:min(220px,16vw);
+}
+.section-note{
+  margin:0 0 0 auto;
+  max-width:560px;
+  color:var(--ink-muted);
+  font-size:12px;
+}
+.board{
+  border:1px solid var(--line);
+  background:rgba(255,253,248,.55);
+  border-radius:var(--r-2);
+  padding:24px;
+}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.grid-6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+
+/* ---------- TYPE ---------- */
+.type-display{font-size:var(--text-4xl);line-height:.95;letter-spacing:-.05em;font-weight:700}
+.type-h1{font-size:var(--text-3xl);line-height:1;letter-spacing:-.035em;font-weight:700}
+.type-h2{font-size:var(--text-2xl);line-height:1.05;letter-spacing:-.02em;font-weight:700}
+.type-h3{font-size:var(--text-xl);line-height:1.1;font-weight:600}
+.type-body{font-size:15px}
+.type-small{font-size:12px}
+.type-label{font:700 10px var(--font-mono);letter-spacing:.12em;text-transform:uppercase}
+.type-caption{font:9px var(--font-mono);letter-spacing:.10em;text-transform:uppercase;color:var(--ink-muted)}
+.type-mono{font-family:var(--font-mono)}
+.type-strike{text-decoration:line-through;color:var(--ink-muted)}
+
+/* ---------- COLOR ---------- */
+.swatch{
+  min-height:118px;padding:11px;
+  border:1px solid rgba(26,26,24,.12);
+  border-radius:var(--r-2);
+  display:flex;flex-direction:column;justify-content:end;
+}
+.swatch-name{font:700 10px var(--font-mono);text-transform:uppercase}
+.swatch-code{font:9px var(--font-mono);opacity:.75}
+.light{color:var(--ink)}
+.dark{color:var(--white)}
+.semantic{
+  display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+.semantic-dot{width:28px;height:28px;border:1px solid var(--ink);flex:none}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  min-height:40px;padding:9px 15px;
+  border:1px solid var(--ink);
+  border-radius:var(--r-2);
+  background:var(--white);color:var(--ink);
+  font:700 10px var(--font-mono);
+  text-transform:uppercase;letter-spacing:.06em;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease),background var(--fast);
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--ink)}
+.btn:active{transform:translate(1px,1px);box-shadow:none}
+.btn.primary{background:var(--ink);color:var(--white);box-shadow:none}
+.btn.lemon{background:var(--lemon)}
+.btn.coral{background:var(--coral)}
+.btn.violet{background:var(--violet)}
+.btn.sage{background:var(--sage)}
+.btn.ghost{background:transparent;border-color:var(--line);box-shadow:none;color:var(--ink-muted)}
+.btn.disabled,.btn:disabled{opacity:.38;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.small{min-height:32px;padding:7px 10px}
+.btn.large{min-height:48px;padding:11px 18px;font-size:11px}
+.icon-btn{
+  width:40px;height:40px;padding:0;
+  display:inline-grid;place-items:center;
+  border:1px solid var(--ink);
+  border-radius:var(--r-2);
+  background:var(--white);
+  color:var(--ink);
+}
+.icon-btn:hover{background:var(--paper-deep)}
+.icon-btn.round{border-radius:50%}
+.icon-btn.fill{background:var(--ink);color:var(--white)}
+.icon-btn.lemon{background:var(--lemon)}
+.btn:focus-visible,.icon-btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.nav a:focus-visible{
+  outline:3px solid var(--focus);outline-offset:2px;
+}
+
+/* ---------- ICONS ---------- */
+.icon-demo{
+  border:1px solid var(--line);
+  background:var(--white);
+  min-height:88px;
+  padding:12px 10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  border-radius:var(--r-2);
+}
+.icon-demo svg{width:22px;height:22px;stroke-width:1.8}
+.icon-demo span{font:8px var(--font-mono);text-transform:uppercase;text-align:center}
+.icon-size-16 svg{width:16px;height:16px}
+.icon-size-20 svg{width:20px;height:20px}
+.icon-size-24 svg{width:24px;height:24px}
+.icon-size-32 svg{width:32px;height:32px}
+
+/* ---------- FIELDS ---------- */
+.field-wrap{display:grid;gap:6px}
+.field-label{font:700 9px var(--font-mono);letter-spacing:.14em;text-transform:uppercase}
+.field{
+  width:100%;height:42px;
+  border:1px solid var(--line-dark);
+  border-radius:var(--r-2);
+  background:var(--white);
+  padding:9px 11px;color:var(--ink);
+}
+.field::placeholder{color:var(--ink-muted)}
+.field:hover{border-color:var(--ink)}
+textarea.field{height:100px;resize:vertical}
+.field.error{border:1.5px solid var(--danger)}
+.field.success{border:1.5px solid var(--success)}
+.field-help{font-size:10px;color:var(--ink-muted)}
+.select-wrap{position:relative}
+.select-wrap svg{position:absolute;right:11px;top:12px;width:16px;height:16px;pointer-events:none}
+select.field{appearance:none}
+
+/* ---------- BADGES / STATUS ---------- */
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  min-height:26px;padding:5px 9px;
+  border-radius:2px;
+  font:700 9px var(--font-mono);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.badge.done{background:var(--mint)}
+.badge.asap{background:var(--coral);color:var(--ink)}
+.badge.later{background:var(--periwinkle)}
+.badge.focus{background:var(--lemon)}
+.badge.personal{background:var(--blush)}
+.badge.work{background:var(--sage)}
+.badge.health{background:var(--violet)}
+.badge.blocked{background:var(--ink);color:var(--white)}
+.badge.neutral{background:var(--paper-deep);color:var(--ink-2)}
+
+/* ---------- CARDS ---------- */
+.card{
+  border:1px solid var(--line);
+  background:var(--white);
+  border-radius:var(--r-2);
+  padding:18px;
+}
+.card.note{box-shadow:var(--shadow-note)}
+.card.flat{border-color:var(--ink)}
+.card.color{border-color:transparent}
+.card.lemon{background:var(--lemon)}
+.card.coral{background:var(--coral)}
+.card.sage{background:var(--sage)}
+.card.violet{background:var(--violet)}
+.card.sky{background:var(--sky)}
+.card.mint{background:var(--mint)}
+.card.blush{background:var(--blush)}
+.card.peach{background:var(--peach)}
+.card-head{display:flex;align-items:start;justify-content:space-between;gap:10px}
+.card-kicker{font:700 9px var(--font-mono);letter-spacing:.14em;text-transform:uppercase}
+.card-title{font-size:18px;font-weight:600;margin-top:8px}
+.card-meta{font:9px var(--font-mono);text-transform:uppercase;color:var(--ink-muted);margin-top:7px}
+.card.color .card-meta{color:rgba(26,26,24,.72)}
+.card-rule{height:1px;background:rgba(26,26,24,.22);margin:14px 0}
+
+/* ---------- TASK ---------- */
+.task{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.task:last-child{border-bottom:0}
+.task-check{
+  width:21px;height:21px;flex:none;
+  border:1px solid var(--ink);
+  border-radius:2px;
+  background:var(--white);
+  display:grid;place-items:center;
+}
+.task-check.checked{background:var(--ink);color:var(--white)}
+.task-copy{flex:1;min-width:0}
+.task-title{font-size:14px;font-weight:600}
+.task.done .task-title{text-decoration:line-through;color:var(--ink-muted)}
+/* Completed tasks on color-block/paper surfaces keep strong ink contrast. */
+.card.color .task.done .task-title{color:var(--ink)}
+.task-meta{font:9px var(--font-mono);color:var(--ink-muted);text-transform:uppercase;margin-top:4px}
+.task-priority{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--coral);display:inline-block;margin-right:5px;
+}
+
+/* ---------- CALENDAR ---------- */
+.calendar-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:14px;
+}
+.calendar-title{font-size:26px;font-weight:700;letter-spacing:-.035em}
+.calendar-controls{display:flex;align-items:center;gap:4px}
+.month-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border-top:1px solid var(--ink);
+  border-left:1px solid var(--ink);
+}
+.month-dow{
+  padding:9px 8px;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  background:var(--paper-deep);
+  font:700 9px var(--font-mono);
+  text-transform:uppercase;
+}
+.day-cell{
+  min-height:118px;
+  padding:8px;
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--white);
+}
+.day-cell.muted{background:var(--paper);color:var(--ink-muted)}
+.day-cell.today{background:var(--lemon)}
+.day-number{
+  width:25px;height:25px;display:grid;place-items:center;
+  font:700 10px var(--font-mono);
+}
+.day-number.today-mark{background:var(--ink);color:var(--white);border-radius:50%}
+.day-items{display:grid;gap:4px;margin-top:7px}
+.day-item{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 5px;
+  border:1px solid rgba(26,26,24,.28);
+  border-radius:2px;
+  font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.day-item.coral{background:var(--coral)}
+.day-item.violet{background:var(--violet)}
+.day-item.sage{background:var(--sage)}
+.day-item.sky{background:var(--sky)}
+.day-item.peach{background:var(--peach)}
+.week-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border:1px solid var(--ink);
+}
+.week-col{min-height:290px;border-right:1px solid var(--line);padding:10px}
+.week-col:last-child{border-right:0}
+.week-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:9px;border-bottom:1px solid var(--line);
+  font:700 9px var(--font-mono);text-transform:uppercase;
+}
+.week-head .date{color:var(--ink-muted)}
+.week-task{
+  margin-top:8px;padding:8px;
+  border:1px solid rgba(26,26,24,.35);
+  border-radius:2px;font-size:10px;
+}
+.week-task strong{display:block;font-size:11px}
+.week-task small{font:8px var(--font-mono);text-transform:uppercase}
+.week-task.coral{background:var(--coral)}
+.week-task.lemon{background:var(--lemon)}
+.week-task.violet{background:var(--violet)}
+.week-task.sage{background:var(--sage)}
+.week-task.sky{background:var(--sky)}
+
+.year-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.month-card{
+  min-height:132px;border:1px solid var(--ink);
+  background:var(--white);padding:12px;border-radius:2px;
+}
+.month-card.active{background:var(--lemon)}
+.month-name{font:700 11px var(--font-mono);text-transform:uppercase}
+.month-sub{font-size:10px;color:var(--ink-muted);margin-top:4px}
+.activity-row{display:flex;gap:3px;align-items:end;height:35px;margin-top:18px}
+.activity-bar{width:7px;background:var(--ink)}
+.activity-bar:nth-child(1){height:8px}.activity-bar:nth-child(2){height:18px}.activity-bar:nth-child(3){height:12px}.activity-bar:nth-child(4){height:26px}.activity-bar:nth-child(5){height:15px}.activity-bar:nth-child(6){height:31px}
+
+/* ---------- DAY / WIDGETS ---------- */
+.widget-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;
+}
+.widget{
+  min-height:170px;padding:18px;border:1px solid var(--ink);
+  border-radius:var(--r-2);
+  position:relative;overflow:hidden;
+}
+.widget h3{margin:0;font-size:13px;font-weight:700}
+.widget-kicker{font:700 9px var(--font-mono);text-transform:uppercase;letter-spacing:.12em}
+.widget-corner{position:absolute;right:15px;top:15px;font:9px var(--font-mono)}
+.widget-number{font-size:40px;font-weight:700;letter-spacing:-.05em;margin-top:24px}
+.widget-copy{font-size:11px;max-width:210px}
+.widget.lemon{background:var(--lemon)}
+.widget.sky{background:var(--sky)}
+.widget.sage{background:var(--sage)}
+.widget.violet{background:var(--violet)}
+.widget.coral{background:var(--coral)}
+.widget.paper{background:var(--white)}
+.mini-rule{height:1px;background:rgba(26,26,24,.25);margin:12px 0}
+
+/* ritual grid */
+.ritual-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:18px}
+.ritual-square{
+  aspect-ratio:1;border:1px solid rgba(26,26,24,.45);
+  background:transparent;border-radius:2px;
+}
+.ritual-square.checked{background:var(--ink)}
+.ritual-square.today{outline:2px solid var(--ink);outline-offset:1px}
+
+/* hydration / move */
+.icon-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;
+}
+.icon-box{
+  display:grid;place-items:center;gap:5px;
+  color:var(--ink);
+}
+.icon-box svg{width:32px;height:32px;stroke-width:1.7}
+
+/* ---------- OPEN LOOP / REFLECTION ---------- */
+.note-lines{
+  margin-top:14px;
+  min-height:100px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 28px,
+      var(--line) 29px,
+      transparent 30px
+    );
+}
+.open-loop-lines{
+  display:grid;gap:0;margin-top:12px;
+}
+.open-loop-line{
+  min-height:31px;border-bottom:1px solid rgba(26,26,24,.24);
+  display:flex;align-items:center;gap:8px;font-size:12px;
+}
+.reflection-sheet{
+  background:var(--white);
+  border:1px solid var(--line);
+  min-height:210px;padding:18px;
+}
+.reflection-sheet .prompt{
+  font:700 9px var(--font-mono);text-transform:uppercase;
+  letter-spacing:.13em;color:var(--ink-muted);
+}
+.reflection-sheet .writing{
+  min-height:145px;margin-top:14px;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 28px,var(--line) 29px,transparent 30px);
+}
+
+/* ---------- SEARCH / FILTERS ---------- */
+.searchbar{
+  display:flex;align-items:center;gap:9px;
+  min-height:44px;border:1px solid var(--ink);
+  background:var(--white);padding:0 12px;border-radius:var(--r-2);
+}
+.searchbar input{border:0;outline:0;background:transparent;width:100%;color:var(--ink)}
+.searchbar svg{width:18px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.filter{
+  min-height:30px;padding:5px 9px;border:1px solid var(--line-dark);
+  border-radius:var(--r-pill);background:var(--white);
+  font:700 9px var(--font-mono);text-transform:uppercase;
+}
+.filter.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+
+/* ---------- NAV COMPONENT ---------- */
+.product-nav{
+  display:flex;align-items:center;gap:4px;
+  padding:8px;
+  border:1px solid var(--line);
+  background:var(--white);
+  border-radius:var(--r-2);
+}
+.product-brand{display:flex;align-items:center;gap:9px;margin-right:auto;padding:0 10px}
+.product-brand .dot{width:9px;height:9px;border-radius:50%;background:var(--coral)}
+.product-brand strong{font-size:13px}
+.product-link{
+  min-height:36px;padding:8px 12px;border-radius:var(--r-2);
+  display:flex;align-items:center;gap:7px;
+  font:700 9px var(--font-mono);text-transform:uppercase;
+}
+.product-link.active{background:var(--ink);color:var(--white)}
+.product-link:hover{background:var(--paper-deep)}
+.product-add{
+  width:40px;height:40px;border:0;border-radius:50%;background:var(--lemon);
+  display:grid;place-items:center;margin-left:4px;
+}
+
+/* mobile nav */
+.mobile-nav{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--white);border:1px solid var(--line);
+  padding:5px;border-radius:10px;
+}
+.mobile-item{
+  min-height:52px;display:grid;place-items:center;gap:3px;
+  font:700 8px var(--font-mono);text-transform:uppercase;color:var(--ink-muted);
+}
+.mobile-item svg{width:19px;height:19px}
+.mobile-item.active{color:var(--ink);background:var(--lemon);border-radius:6px}
+
+/* ---------- CAPTURE ---------- */
+.capture{
+  width:min(500px,100%);
+  background:var(--white);border:1px solid var(--ink);
+  box-shadow:var(--shadow-heavy);
+  padding:18px;border-radius:var(--r-2);
+}
+.capture-head{display:flex;align-items:center;justify-content:space-between}
+.capture-title{font-size:20px;font-weight:700}
+.capture-tabs{display:grid;grid-template-columns:repeat(3,1fr);margin:16px 0;border-bottom:1px solid var(--line)}
+.capture-tab{
+  min-height:38px;border:0;background:transparent;
+  border-bottom:2px solid transparent;
+  font:700 9px var(--font-mono);text-transform:uppercase;
+}
+.capture-tab.active{border-color:var(--ink);background:var(--lemon)}
+.capture-foot{display:flex;justify-content:flex-end;gap:7px;margin-top:16px}
+
+/* ---------- FEEDBACK ---------- */
+.toast{
+  display:flex;align-items:center;gap:9px;
+  min-height:46px;padding:9px 12px;
+  border:1px solid var(--ink);
+  border-radius:var(--r-3);
+  background:var(--ink);color:var(--white);
+  box-shadow:var(--shadow-float);
+  font-size:11px;
+}
+.toast .undo{margin-left:auto;color:var(--lemon);font:700 9px var(--font-mono);text-transform:uppercase}
+.inline-error{
+  padding:10px;border-left:3px solid var(--danger);
+  background:rgba(232,80,48,.10);font-size:11px;
+}
+.inline-success{
+  padding:10px;border-left:3px solid var(--success);
+  background:rgba(168,216,192,.28);font-size:11px;
+}
+
+/* ---------- MODAL / BOTTOM SHEET ---------- */
+.modal-demo{
+  min-height:300px;background:rgba(26,26,24,.18);
+  display:grid;place-items:center;padding:18px;
+}
+.dialog{
+  width:min(430px,100%);background:var(--white);
+  border:1px solid var(--ink);box-shadow:var(--shadow-heavy);
+  padding:22px;border-radius:var(--r-2);
+}
+.dialog h3{margin:0 0 7px;font-size:22px}
+.dialog p{font-size:12px;color:var(--ink-muted)}
+.sheet{
+  width:min(520px,100%);background:var(--white);
+  border:1px solid var(--ink);padding:18px;border-radius:12px 12px 0 0;
+}
+.handle{width:38px;height:4px;background:var(--ink-muted);border-radius:99px;margin:0 auto 18px}
+
+/* ---------- STATES ---------- */
+.state-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.state-box{
+  min-width:100px;min-height:78px;
+  border:1px solid var(--line);background:var(--white);
+  padding:12px;border-radius:var(--r-2);
+}
+.state-box.hover{background:var(--paper-deep);border-color:var(--ink)}
+.state-box.focus{outline:3px solid var(--focus);outline-offset:2px}
+.state-box.pressed{background:var(--ink);color:var(--white)}
+.state-box.disabled{opacity:.35}
+.state-box.error{border-color:var(--danger);background:rgba(232,80,48,.08)}
+.state-box.success{border-color:var(--success);background:rgba(168,216,192,.2)}
+.state-name{font:700 8px var(--font-mono);text-transform:uppercase}
+.state-description{font-size:10px;margin-top:8px}
+
+/* ---------- EMPTY / SKELETON ---------- */
+.empty{
+  min-height:170px;border:1px dashed var(--line-dark);
+  background:var(--paper);
+  display:grid;place-items:center;text-align:center;padding:20px;
+}
+.empty svg{margin:auto;width:28px;height:28px}
+.empty h3{font-size:15px;margin:8px 0 3px}
+.empty p{font-size:11px;color:var(--ink-muted);margin:0}
+.skeleton{
+  background:linear-gradient(90deg,var(--paper-deep),var(--white),var(--paper-deep));
+  background-size:200% 100%;height:12px;border-radius:2px;
+  animation:shimmer 1.5s linear infinite;
+}
+@keyframes shimmer{to{background-position:-200% 0}}
+
+/* ---------- DATA TABLE ---------- */
+.table{
+  width:100%;border-collapse:collapse;
+}
+.table th,.table td{
+  border-bottom:1px solid var(--line);
+  padding:10px 8px;text-align:left;vertical-align:top;font-size:11px;
+}
+.table th{
+  background:var(--paper-deep);
+  font:700 9px var(--font-mono);text-transform:uppercase;letter-spacing:.1em;
+}
+
+/* ---------- LAYOUT SYSTEM ---------- */
+.layout-demo{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:6px;
+}
+.layout-demo span{
+  min-height:46px;background:var(--violet);
+  border:1px solid var(--ink);
+  display:grid;place-items:center;
+  font:700 8px var(--font-mono);
+}
+.col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
+.measure{
+  display:flex;align-items:center;gap:8px;font:9px var(--font-mono);text-transform:uppercase;color:var(--ink-muted);
+}
+.measure:before,.measure:after{content:"";height:1px;background:var(--line);flex:1}
+
+/* ---------- FOOTER ---------- */
+.footer{
+  margin-top:70px;padding-top:18px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:20px;
+  font:9px var(--font-mono);text-transform:uppercase;color:var(--ink-muted);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:980px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{
+    position:relative;height:auto;
+    border-right:0;border-bottom:1px solid var(--line);
+    padding:12px 14px;
+  }
+  .brand{padding-bottom:12px;margin-bottom:10px}
+  .nav-label{display:none}
+  .nav{display:flex;overflow:auto}
+  .nav a{white-space:nowrap}
+  .content{padding:24px 18px 80px}
+  .grid-6{grid-template-columns:repeat(3,1fr)}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .widget-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:680px){
+  .content{padding:18px 12px 82px}
+  .hero h1{font-size:42px}
+  .grid-2,.grid-3,.grid-4,.grid-6,.widget-grid{grid-template-columns:1fr}
+  .year-grid{grid-template-columns:repeat(2,1fr)}
+  .section{margin-top:48px}
+  .section-head{display:block}
+  .section-note{margin-top:8px}
+  .board{padding:14px}
+  .month-grid{overflow:hidden}
+  .day-cell{min-height:82px;padding:5px}
+  .day-items{display:none}
+  .week-grid{grid-template-columns:1fr}
+  .week-col{min-height:110px;border-right:0;border-bottom:1px solid var(--line)}
+  .week-col:last-child{border-bottom:0}
+  .product-nav .product-link:not(.active){display:none}
+  .product-brand{margin-right:auto}
+  .layout-demo{grid-template-columns:repeat(6,1fr)}
+  .col-12{grid-column:span 6}.col-8{grid-column:span 6}.col-6{grid-column:span 6}.col-4{grid-column:span 3}.col-3{grid-column:span 3}
+}
+
+
+/* ---------- RESPONSIVE PRODUCT SPEC / MOBILE VS WEB ---------- */
+.responsive-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.responsive-pane{border:1px solid var(--line-dark);background:var(--paper);min-width:0}
+.responsive-pane.web{background:var(--white)}
+.responsive-pane.mobile{background:var(--paper-warm)}
+.responsive-pane-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--paper-deep)}
+.responsive-pane-head strong{font:700 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em}
+.responsive-pane-head span{font:9px var(--font-mono);text-transform:uppercase;color:var(--ink-muted)}
+.responsive-spec{padding:12px}
+.responsive-spec .spec-row{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.responsive-spec .spec-row:last-child{border-bottom:0}
+.spec-key{font:700 9px var(--font-mono);text-transform:uppercase;letter-spacing:.08em}
+.spec-value{font-size:11px;line-height:1.45}
+.screen-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.screen-frame{border:1px solid var(--ink);background:var(--paper);overflow:hidden}
+.screen-frame.web-frame{min-height:430px}
+.screen-frame.mobile-frame{max-width:360px;margin:0 auto;min-height:560px;border-radius:18px}
+.screen-top{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--white)}
+.mobile-frame .screen-top{height:42px;padding:0 12px}
+.screen-body{padding:18px}
+.mobile-frame .screen-body{padding:14px}
+.mock-nav{display:flex;gap:6px;align-items:center}
+.mock-nav-item{font:700 8px var(--font-mono);text-transform:uppercase;padding:8px 9px;border:1px solid transparent}
+.mock-nav-item.active{background:var(--lemon);border-color:var(--ink)}
+.mock-bottom-nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);background:var(--white);margin-top:18px}
+.mock-bottom-nav div{text-align:center;padding:9px 3px;font:700 7px var(--font-mono);text-transform:uppercase}
+.mock-bottom-nav div.active{background:var(--lemon)}
+.mock-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.mock-grid div{background:var(--paper);min-height:48px;padding:5px;font:8px var(--font-mono)}
+.mock-week{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.mock-week .mock-day{background:var(--paper);min-height:210px;padding:7px}
+.mock-week .mock-day strong{font:700 8px var(--font-mono);text-transform:uppercase}
+.mock-task{margin-top:6px;border:1px solid var(--ink);padding:7px;background:var(--coral);font-size:10px;line-height:1.15}
+.mock-task.violet{background:var(--violet)}
+.mock-task.mint{background:var(--mint)}
+.mobile-day-list{display:grid;gap:6px}
+.mobile-day-row{display:grid;grid-template-columns:52px 1fr;gap:8px;border-bottom:1px solid var(--line);padding:9px 0}
+.mobile-day-row strong{font:700 8px var(--font-mono);text-transform:uppercase}
+.mobile-day-row div{font-size:11px}
+.mobile-card-stack{display:grid;gap:8px}
+.mobile-card{border:1px solid var(--ink);padding:11px;background:var(--coral)}
+.mobile-card.violet{background:var(--violet)}
+.mobile-card.mint{background:var(--mint)}
+.mobile-card.lemon{background:var(--lemon)}
+.desktop-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.desktop-card-grid .card{min-height:120px}
+.touch-demo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.touch-box{border:1px solid var(--ink);padding:10px;background:var(--paper);min-height:82px}
+.touch-box strong{display:block;font:700 9px var(--font-mono);text-transform:uppercase}
+.touch-box span{display:block;margin-top:8px;font-size:11px}
+.responsive-rule{padding:12px;border-left:3px solid var(--ink);background:var(--paper-warm);font-size:11px;line-height:1.5}
+.responsive-rule strong{font-weight:700}
+@media(max-width:680px){
+  .responsive-compare,.screen-pair{grid-template-columns:1fr}
+  .responsive-spec .spec-row{grid-template-columns:1fr;gap:4px}
+  .desktop-card-grid{grid-template-columns:1fr}
+  .touch-demo{grid-template-columns:1fr 1fr}
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ---------- PRINT ---------- */
+@media print{
+  .sidebar{display:none}
+  .shell{display:block}
+  .content{padding:0}
+  .section{break-inside:avoid}
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Planner</span>
+      <span class="brand-meta">V1.1</span>
+    </div>
+
+    <div class="nav-label">Foundations</div>
+    <nav class="nav">
+      <a class="active" href="#overview"><i data-lucide="library-big"></i>Overview</a>
+      <a href="#color"><i data-lucide="palette"></i>Color</a>
+      <a href="#type"><i data-lucide="type"></i>Typography</a>
+      <a href="#layout"><i data-lucide="layout-grid"></i>Layout</a>
+      <a href="#spacing"><i data-lucide="move"></i>Spacing</a>
+    </nav>
+
+    <div class="nav-label">Components</div>
+    <nav class="nav">
+      <a href="#icons"><i data-lucide="shapes"></i>Icon library</a>
+      <a href="#buttons"><i data-lucide="mouse-pointer-2"></i>Buttons</a>
+      <a href="#inputs"><i data-lucide="text-cursor-input"></i>Inputs</a>
+      <a href="#cards"><i data-lucide="square"></i>Cards</a>
+      <a href="#states"><i data-lucide="component"></i>States</a>
+      <a href="#feedback"><i data-lucide="message-square"></i>Feedback</a>
+    </nav>
+
+    <div class="nav-label">Planner patterns</div>
+    <nav class="nav">
+      <a href="#navigation"><i data-lucide="compass"></i>Navigation</a>
+      <a href="#calendar"><i data-lucide="calendar-days"></i>Calendar</a>
+      <a href="#day"><i data-lucide="sun"></i>Day</a>
+      <a href="#widgets"><i data-lucide="blocks"></i>Widgets</a>
+      <a href="#capture"><i data-lucide="plus-circle"></i>Capture</a>
+      <a href="#history"><i data-lucide="archive"></i>Looking Back</a>
+      <a href="#search"><i data-lucide="search"></i>Search</a>
+    </nav>
+
+    <div class="nav-label">Reference</div>
+    <nav class="nav">
+      <a href="#accessibility"><i data-lucide="accessibility"></i>Accessibility</a>
+      <a href="#motion"><i data-lucide="sparkles"></i>Motion</a>
+      <a href="#handoff"><i data-lucide="clipboard-list"></i>Figma handoff</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <header class="hero" id="overview">
+        <div class="page-kicker">Daily Planner — Complete Design System</div>
+        <h1>Planner <span>Design System</span></h1>
+        <p>A tactile, colorful interface system for the Personal Planner: part archival stationery, part weekly desk pad, part digital external brain. The supplied references are treated as the visual language—not as decoration pasted onto a generic productivity app.</p>
+        <div class="hero-pills">
+          <span class="pill lemon">V1.1 Expanded</span>
+          <span class="pill coral">Stationery / Archive</span>
+          <span class="pill sage">Mobile First</span>
+          <span class="pill violet">Lucide Icons</span>
+          <span class="pill sky">No Guilt Mechanics</span>
+        </div>
+      </header>
+
+      <!-- COLOR -->
+      <section class="section" id="color">
+        <div class="section-head">
+          <div class="section-title">01 / Color tokens</div>
+          <p class="section-note">The references use color as a filing system. Keep the palette saturated, flat and physical-looking, with dark ink as the constant.</p>
+        </div>
+
+        <div class="board">
+          <div class="grid-6">
+            <div class="swatch light" style="background:var(--lemon)"><div class="swatch-name">Lemon</div><div class="swatch-code">#F5E642</div></div>
+            <div class="swatch light" style="background:var(--amber)"><div class="swatch-name">Amber</div><div class="swatch-code">#E8A020</div></div>
+            <div class="swatch light" style="background:var(--coral)"><div class="swatch-name">Coral</div><div class="swatch-code">#E85030</div></div>
+            <div class="swatch light" style="background:var(--blush)"><div class="swatch-name">Blush</div><div class="swatch-code">#F0B4B0</div></div>
+            <div class="swatch light" style="background:var(--rose)"><div class="swatch-name">Rose</div><div class="swatch-code">#E87888</div></div>
+            <div class="swatch light" style="background:var(--violet)"><div class="swatch-name">Violet</div><div class="swatch-code">#A898E0</div></div>
+            <div class="swatch light" style="background:var(--periwinkle)"><div class="swatch-name">Periwinkle</div><div class="swatch-code">#B8C8F0</div></div>
+            <div class="swatch light" style="background:var(--sky)"><div class="swatch-name">Sky</div><div class="swatch-code">#78B8E0</div></div>
+            <div class="swatch light" style="background:var(--mint)"><div class="swatch-name">Mint</div><div class="swatch-code">#A8D8C0</div></div>
+            <div class="swatch light" style="background:var(--sage)"><div class="swatch-name">Sage</div><div class="swatch-code">#8AAA70</div></div>
+            <div class="swatch light" style="background:var(--olive)"><div class="swatch-name">Olive</div><div class="swatch-code">#7A9060</div></div>
+            <div class="swatch light" style="background:var(--peach)"><div class="swatch-name">Peach</div><div class="swatch-code">#F0C898</div></div>
+            <div class="swatch light" style="background:var(--paper)"><div class="swatch-name">Paper</div><div class="swatch-code">#FAF7F0</div></div>
+            <div class="swatch light" style="background:var(--paper-deep)"><div class="swatch-name">Paper Deep</div><div class="swatch-code">#E8E1D5</div></div>
+            <div class="swatch dark" style="background:var(--ink)"><div class="swatch-name">Ink</div><div class="swatch-code">#1A1A18</div></div>
+            <div class="swatch light" style="background:var(--ink-muted)"><div class="swatch-name">Ink Muted</div><div class="swatch-code">#8A8A82</div></div>
+          </div>
+
+          <div style="margin-top:24px">
+            <div class="type-label">Semantic mapping</div>
+            <div class="grid-3" style="margin-top:10px">
+              <div class="semantic"><span class="semantic-dot" style="background:var(--lemon)"></span><div><b>Priority</b><div class="type-caption">Yellow / attention</div></div></div>
+              <div class="semantic"><span class="semantic-dot" style="background:var(--coral)"></span><div><b>Tasks</b><div class="type-caption">Coral / action</div></div></div>
+              <div class="semantic"><span class="semantic-dot" style="background:var(--peach)"></span><div><b>Open Loops</b><div class="type-caption">Peach / on my mind</div></div></div>
+              <div class="semantic"><span class="semantic-dot" style="background:var(--sage)"></span><div><b>Rituals</b><div class="type-caption">Sage / practice</div></div></div>
+              <div class="semantic"><span class="semantic-dot" style="background:var(--violet)"></span><div><b>Goals</b><div class="type-caption">Violet / direction</div></div></div>
+              <div class="semantic"><span class="semantic-dot" style="background:var(--periwinkle)"></span><div><b>History</b><div class="type-caption">Blue / archive</div></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TYPOGRAPHY -->
+      <section class="section" id="type">
+        <div class="section-head">
+          <div class="section-title">02 / Typography</div>
+          <p class="section-note">Space Grotesk is the functional display voice; Space Mono supplies the tiny archival labels that make the UI feel like printed stationery.</p>
+        </div>
+        <div class="board">
+          <div class="grid-2">
+            <div>
+              <div class="type-caption">Display / Space Grotesk 56–72 / 700</div>
+              <div class="type-display" style="margin-top:8px">Wednesday</div>
+              <div class="type-caption" style="margin-top:12px">Screen title / year / major archive labels</div>
+            </div>
+            <div>
+              <div class="type-caption">H1 / Space Grotesk 40 / 700</div>
+              <div class="type-h1" style="margin-top:8px">Today's plan</div>
+              <div class="type-caption" style="margin-top:12px">Primary screen headings</div>
+            </div>
+            <div>
+              <div class="type-caption">H2 / Space Grotesk 28 / 700</div>
+              <div class="type-h2" style="margin-top:8px">Looking Back</div>
+              <div class="type-caption" style="margin-top:12px">Section headings / archive groups</div>
+            </div>
+            <div>
+              <div class="type-caption">H3 / Space Grotesk 20 / 600</div>
+              <div class="type-h3" style="margin-top:8px">Finish presentation</div>
+              <div class="type-caption" style="margin-top:12px">Cards / task titles / widgets</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--line);margin:28px 0"></div>
+          <div class="grid-3">
+            <div><div class="type-caption">BODY / 15</div><p class="type-body">Turn what's in your head into a manageable day.</p></div>
+            <div><div class="type-caption">LABEL / MONO 10</div><div class="type-label">REMAINING · 03</div></div>
+            <div><div class="type-caption">CAPTION / MONO 9</div><div class="type-caption">TODAY · 4:00 PM · PRIORITY</div></div>
+          </div>
+          <div style="margin-top:24px">
+            <div class="type-label">Typography rules</div>
+            <ul style="font-size:12px">
+              <li>Sentence case for user-authored content.</li>
+              <li>Uppercase + mono only for metadata, navigation labels and compact system language.</li>
+              <li>Never use all-caps for paragraphs.</li>
+              <li>Do not use handwritten or novelty fonts in core UI.</li>
+              <li>Use tight display tracking and comfortable body line-height.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYOUT -->
+      <section class="section" id="layout">
+        <div class="section-head">
+          <div class="section-title">03 / Layout system</div>
+          <p class="section-note">The interface is a grid of paper modules, not a dashboard of floating cards. White space is structural.</p>
+        </div>
+        <div class="board">
+          <div class="type-label">12-column desktop grid</div>
+          <div class="layout-demo" style="margin-top:12px">
+            <span class="col-12">12</span>
+            <span class="col-8">8</span><span class="col-4">4</span>
+            <span class="col-6">6</span><span class="col-6">6</span>
+            <span class="col-4">4</span><span class="col-4">4</span><span class="col-4">4</span>
+            <span class="col-3">3</span><span class="col-3">3</span><span class="col-3">3</span><span class="col-3">3</span>
+          </div>
+          <div style="margin-top:22px" class="grid-3">
+            <div><div class="measure">Desktop gutter 24px</div><p class="type-small">Primary content gaps use 16–24px.</p></div>
+            <div><div class="measure">Page padding 28px</div><p class="type-small">Desktop content begins with a restrained margin.</p></div>
+            <div><div class="measure">Section gap 64px</div><p class="type-small">Large section separation keeps the system editorial.</p></div>
+          </div>
+          <div style="margin-top:22px" class="grid-3">
+            <div class="card flat"><div class="type-label">Mobile</div><div class="type-h3">4px base / 12px page</div></div>
+            <div class="card flat"><div class="type-label">Tablet</div><div class="type-h3">16px page / 16px gap</div></div>
+            <div class="card flat"><div class="type-label">Desktop</div><div class="type-h3">28px page / 18–24px gap</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SPACING -->
+      <section class="section" id="spacing">
+        <div class="section-head">
+          <div class="section-title">04 / Spacing & geometry</div>
+          <p class="section-note">The references feel designed because the small things align. Keep the rhythm systematic.</p>
+        </div>
+        <div class="board">
+          <div class="grid-4">
+            <div class="card"><div class="type-label">04</div><div class="type-h2">4px</div><div class="type-caption">Micro</div></div>
+            <div class="card"><div class="type-label">08</div><div class="type-h2">8px</div><div class="type-caption">Tight</div></div>
+            <div class="card"><div class="type-label">12</div><div class="type-h2">12px</div><div class="type-caption">Compact</div></div>
+            <div class="card"><div class="type-label">16</div><div class="type-h2">16px</div><div class="type-caption">Default</div></div>
+            <div class="card"><div class="type-label">24</div><div class="type-h2">24px</div><div class="type-caption">Component</div></div>
+            <div class="card"><div class="type-label">32</div><div class="type-h2">32px</div><div class="type-caption">Layout</div></div>
+            <div class="card"><div class="type-label">48</div><div class="type-h2">48px</div><div class="type-caption">Major</div></div>
+            <div class="card"><div class="type-label">64</div><div class="type-h2">64px</div><div class="type-caption">Section</div></div>
+          </div>
+          <div style="margin-top:24px" class="grid-4">
+            <div class="card"><div style="height:56px;background:var(--coral);border-radius:0"></div><div class="type-caption" style="margin-top:8px">0 / square</div></div>
+            <div class="card"><div style="height:56px;background:var(--coral);border-radius:2px"></div><div class="type-caption" style="margin-top:8px">2 / stationery</div></div>
+            <div class="card"><div style="height:56px;background:var(--coral);border-radius:8px"></div><div class="type-caption" style="margin-top:8px">8 / sheet</div></div>
+            <div class="card"><div style="height:56px;background:var(--coral);border-radius:999px"></div><div class="type-caption" style="margin-top:8px">pill / control</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ICON LIBRARY -->
+      <section class="section" id="icons">
+        <div class="section-head">
+          <div class="section-title">05 / Icon library</div>
+          <p class="section-note">Lucide is the canonical icon family. The product uses simple outline icons with 1.75–2px strokes and avoids filled iconography except for explicit state indicators. Lucide is lightweight, scalable, consistent and customizable. citeturn0search0turn0view0</p>
+        </div>
+
+        <div class="board">
+          <div class="type-label">Icon rules</div>
+          <div class="grid-3" style="margin-top:10px">
+            <div class="card"><b>Default</b><p class="type-small">20px in compact controls, 24px in standard controls, 32px in widgets.</p></div>
+            <div class="card"><b>Stroke</b><p class="type-small">1.75px default; 2px when an icon needs stronger legibility.</p></div>
+            <div class="card"><b>Color</b><p class="type-small">Ink by default. Accent only when the icon is part of a semantic colored module.</p></div>
+          </div>
+
+          <div class="type-label" style="margin-top:24px">Navigation & calendar</div>
+          <div class="grid-6" style="margin-top:10px">
+            <div class="icon-demo"><i data-lucide="calendar-days"></i><span>calendar-days</span></div>
+            <div class="icon-demo"><i data-lucide="calendar"></i><span>calendar</span></div>
+            <div class="icon-demo"><i data-lucide="chevron-left"></i><span>chevron-left</span></div>
+            <div class="icon-demo"><i data-lucide="chevron-right"></i><span>chevron-right</span></div>
+            <div class="icon-demo"><i data-lucide="chevron-down"></i><span>chevron-down</span></div>
+            <div class="icon-demo"><i data-lucide="sun"></i><span>today / day</span></div>
+          </div>
+
+          <div class="type-label" style="margin-top:24px">Capture & actions</div>
+          <div class="grid-6" style="margin-top:10px">
+            <div class="icon-demo"><i data-lucide="plus"></i><span>plus</span></div>
+            <div class="icon-demo"><i data-lucide="plus-circle"></i><span>plus-circle</span></div>
+            <div class="icon-demo"><i data-lucide="square-pen"></i><span>square-pen</span></div>
+            <div class="icon-demo"><i data-lucide="check"></i><span>check</span></div>
+            <div class="icon-demo"><i data-lucide="circle-check"></i><span>circle-check</span></div>
+            <div class="icon-demo"><i data-lucide="trash-2"></i><span>trash-2</span></div>
+          </div>
+
+          <div class="type-label" style="margin-top:24px">Information & retrieval</div>
+          <div class="grid-6" style="margin-top:10px">
+            <div class="icon-demo"><i data-lucide="search"></i><span>search</span></div>
+            <div class="icon-demo"><i data-lucide="filter"></i><span>filter</span></div>
+            <div class="icon-demo"><i data-lucide="archive"></i><span>archive</span></div>
+            <div class="icon-demo"><i data-lucide="history"></i><span>history</span></div>
+            <div class="icon-demo"><i data-lucide="bookmark"></i><span>bookmark</span></div>
+            <div class="icon-demo"><i data-lucide="file-text"></i><span>file-text</span></div>
+          </div>
+
+          <div class="type-label" style="margin-top:24px">Planner-specific language</div>
+          <div class="grid-6" style="margin-top:10px">
+            <div class="icon-demo"><i data-lucide="brain"></i><span>open loops / mind</span></div>
+            <div class="icon-demo"><i data-lucide="target"></i><span>goals</span></div>
+            <div class="icon-demo"><i data-lucide="repeat"></i><span>rituals</span></div>
+            <div class="icon-demo"><i data-lucide="notebook-pen"></i><span>reflection</span></div>
+            <div class="icon-demo"><i data-lucide="list-checks"></i><span>tasks</span></div>
+            <div class="icon-demo"><i data-lucide="clock-3"></i><span>time</span></div>
+          </div>
+
+          <div class="type-label" style="margin-top:24px">System</div>
+          <div class="grid-6" style="margin-top:10px">
+            <div class="icon-demo"><i data-lucide="settings"></i><span>settings</span></div>
+            <div class="icon-demo"><i data-lucide="download"></i><span>export</span></div>
+            <div class="icon-demo"><i data-lucide="upload"></i><span>import</span></div>
+            <div class="icon-demo"><i data-lucide="save"></i><span>save</span></div>
+            <div class="icon-demo"><i data-lucide="undo-2"></i><span>undo</span></div>
+            <div class="icon-demo"><i data-lucide="circle-help"></i><span>help</span></div>
+          </div>
+
+          <div class="type-label" style="margin-top:24px">Icon sizes</div>
+          <div class="state-row" style="margin-top:10px">
+            <div class="icon-demo icon-size-16"><i data-lucide="calendar"></i><span>16</span></div>
+            <div class="icon-demo icon-size-20"><i data-lucide="calendar"></i><span>20</span></div>
+            <div class="icon-demo icon-size-24"><i data-lucide="calendar"></i><span>24</span></div>
+            <div class="icon-demo icon-size-32"><i data-lucide="calendar"></i><span>32</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUTTONS -->
+      <section class="section" id="buttons">
+        <div class="section-head">
+          <div class="section-title">06 / Buttons</div>
+          <p class="section-note">Buttons borrow the reference's printed label aesthetic. The system deliberately avoids rounded SaaS “pill buttons” except for filters and tags.</p>
+        </div>
+        <div class="board">
+          <div class="type-label">Primary / secondary / semantic</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+            <button class="btn primary"><i data-lucide="plus"></i>Add task</button>
+            <button class="btn">Edit</button>
+            <button class="btn coral">Save this</button>
+            <button class="btn lemon">Today</button>
+            <button class="btn violet">Plan</button>
+            <button class="btn sage">Check in</button>
+            <button class="btn ghost">Archive</button>
+            <button class="btn disabled" disabled>Disabled</button>
+          </div>
+          <div class="type-label" style="margin-top:24px">Sizes</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center">
+            <button class="btn small">Small</button><button class="btn">Default</button><button class="btn large">Large</button>
+          </div>
+          <div class="type-label" style="margin-top:24px">Icon buttons</div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="icon-btn" aria-label="Search"><i data-lucide="search"></i></button>
+            <button class="icon-btn fill" aria-label="Add"><i data-lucide="plus"></i></button>
+            <button class="icon-btn lemon" aria-label="Today"><i data-lucide="sun"></i></button>
+            <button class="icon-btn round" aria-label="Close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="type-label" style="margin-top:24px">State contract</div>
+          <table class="table">
+            <tr><th>State</th><th>Visual</th><th>Behavior</th></tr>
+            <tr><td>Default</td><td>1px ink border</td><td>Normal interaction.</td></tr>
+            <tr><td>Hover</td><td>2px offset shadow / slight lift</td><td>Only on pointer devices.</td></tr>
+            <tr><td>Pressed</td><td>Returns to baseline / no shadow</td><td>Immediate tactile feedback.</td></tr>
+            <tr><td>Focus</td><td>3px focus ring</td><td>Keyboard-visible and never color-only.</td></tr>
+            <tr><td>Disabled</td><td>Reduced opacity</td><td>No pointer interaction.</td></tr>
+            <tr><td>Loading</td><td>Preserve button width</td><td>Use spinner only for genuinely asynchronous operations.</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- INPUTS -->
+      <section class="section" id="inputs">
+        <div class="section-head">
+          <div class="section-title">07 / Form inputs</div>
+          <p class="section-note">Forms should feel like filling a useful paper form, not completing an enterprise data-entry workflow.</p>
+        </div>
+        <div class="board">
+          <div class="grid-2">
+            <div class="field-wrap">
+              <label class="field-label">Task</label>
+              <input class="field" placeholder="What needs to happen…">
+              <div class="field-help">Required.</div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Date</label>
+              <input class="field" value="20 Sep 2026">
+              <div class="field-help">Optional for Open Loops.</div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Note</label>
+              <textarea class="field" placeholder="Add a note…"></textarea>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Frequency</label>
+              <div class="select-wrap">
+                <select class="field"><option>Daily</option><option>Weekly</option><option>Weekends</option><option>Custom</option></select>
+                <i data-lucide="chevron-down"></i>
+              </div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Error</label>
+              <input class="field error" value="Something went wrong">
+              <div class="field-help" style="color:var(--danger)">We couldn't save that change.</div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Success</label>
+              <input class="field success" value="Saved">
+              <div class="field-help" style="color:var(--success)">Your previous version is safe.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARDS -->
+      <section class="section" id="cards">
+        <div class="section-head">
+          <div class="section-title">08 / Cards & paper objects</div>
+          <p class="section-note">Color blocks are a core visual motif. They identify the kind of thing you are looking at, while dark linework keeps everything coherent.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card color coral">
+            <div class="card-head"><div><div class="card-kicker">ASAP / LATER</div><div class="card-title">Task stack</div></div><i data-lucide="list-checks"></i></div>
+            <div class="card-rule"></div>
+            <div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Review quarterly goals</div></div></div>
+            <div class="task done"><div class="task-check checked">✓</div><div class="task-copy"><div class="task-title">Send proposal draft</div></div></div>
+          </article>
+          <article class="card color violet">
+            <div class="card-head"><div><div class="card-kicker">IN THIS ORDER</div><div class="card-title">Priorities</div></div><i data-lucide="list-ordered"></i></div>
+            <div class="open-loop-lines">
+              <div class="open-loop-line"><span>1</span><span style="flex:1">Deep work block</span></div>
+              <div class="open-loop-line"><span>2</span><span style="flex:1">Team standup</span></div>
+              <div class="open-loop-line"><span>3</span><span style="flex:1">Inbox zero</span></div>
+            </div>
+          </article>
+          <article class="card color sage">
+            <div class="card-head"><div><div class="card-kicker">RITUAL</div><div class="card-title">Habit</div></div><i data-lucide="repeat"></i></div>
+            <div class="ritual-grid">
+              <div class="ritual-square checked"></div><div class="ritual-square checked"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div>
+              <div class="ritual-square checked"></div><div class="ritual-square checked"></div><div class="ritual-square checked"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div>
+            </div>
+          </article>
+          <article class="card"><div class="card-kicker">A GOOD THOUGHT</div><div class="note-lines"></div></article>
+          <article class="card color blush"><div class="card-kicker">MORE OF THIS</div><div class="open-loop-lines"><div class="open-loop-line"></div><div class="open-loop-line"></div></div><div class="card-kicker" style="margin-top:20px">LESS OF THAT</div><div class="open-loop-lines"><div class="open-loop-line"></div><div class="open-loop-line"></div></div></article>
+          <article class="card flat"><div class="card-kicker">MY REMINDER TO—</div><div class="field-wrap" style="margin-top:16px"><textarea class="field" placeholder="Write it down…"></textarea></div><button class="btn sage small" style="float:right;margin-top:12px">Save this</button></article>
+        </div>
+      </section>
+
+      <!-- STATES -->
+      <section class="section" id="states">
+        <div class="section-head">
+          <div class="section-title">09 / Component states</div>
+          <p class="section-note">The system needs explicit states before it needs polish. Every interactive component must have a default, hover, focus, pressed, disabled and relevant semantic state.</p>
+        </div>
+        <div class="board">
+          <div class="state-row">
+            <div class="state-box"><div class="state-name">Default</div><div class="state-description">Ready</div></div>
+            <div class="state-box hover"><div class="state-name">Hover</div><div class="state-description">Pointer</div></div>
+            <div class="state-box focus"><div class="state-name">Focus</div><div class="state-description">Keyboard</div></div>
+            <div class="state-box pressed"><div class="state-name">Pressed</div><div class="state-description">Active</div></div>
+            <div class="state-box disabled"><div class="state-name">Disabled</div><div class="state-description">Unavailable</div></div>
+            <div class="state-box error"><div class="state-name">Error</div><div class="state-description">Needs repair</div></div>
+            <div class="state-box success"><div class="state-name">Success</div><div class="state-description">Saved</div></div>
+          </div>
+          <div style="margin-top:24px" class="grid-3">
+            <div class="card"><div class="type-label">Task complete</div><p class="type-small">Checkbox fills ink; title strikes through; record remains visible.</p></div>
+            <div class="card"><div class="type-label">Ritual check-in</div><p class="type-small">Square fills ink; no celebration or streak animation.</p></div>
+            <div class="card"><div class="type-label">Open loop resolved</div><p class="type-small">Moves to Taken care of; no destructive visual treatment.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <section class="section" id="navigation">
+        <div class="section-head">
+          <div class="section-title">10 / Navigation</div>
+          <p class="section-note">The product navigation is deliberately small. Calendar, Looking Back and Goals are the primary places; Search and Settings are utility layers.</p>
+        </div>
+        <div class="board">
+          <div class="product-nav">
+            <div class="product-brand"><span class="dot"></span><strong>Planner</strong></div>
+            <div class="product-link active"><i data-lucide="sun"></i>Today</div>
+            <div class="product-link"><i data-lucide="calendar-days"></i>Week</div>
+            <div class="product-link"><i data-lucide="repeat"></i>Rituals</div>
+            <div class="product-link"><i data-lucide="brain"></i>On my mind</div>
+            <button class="product-add" aria-label="Capture"><i data-lucide="plus"></i></button>
+          </div>
+          <div style="margin-top:22px;max-width:500px">
+            <div class="type-label">Mobile navigation</div>
+            <div class="mobile-nav" style="margin-top:10px">
+              <div class="mobile-item active"><i data-lucide="calendar-days"></i>Calendar</div>
+              <div class="mobile-item"><i data-lucide="archive"></i>Looking back</div>
+              <div class="mobile-item"><i data-lucide="target"></i>Goals</div>
+              <div class="mobile-item"><i data-lucide="settings"></i>Settings</div>
+            </div>
+          </div>
+          <p class="type-caption" style="margin-top:18px">Important: Rituals and Open Loops are not required to become primary navigation destinations in V1. They can be reached contextually from Today and Search. This reference demonstrates component treatment rather than changing the frozen IA.</p>
+        </div>
+      </section>
+
+      <!-- CALENDAR -->
+      <section class="section" id="calendar">
+        <div class="section-head">
+          <div class="section-title">11 / Calendar system</div>
+          <p class="section-note">Year = orientation. Month = context. Week = planning. Day = doing. The same visual language scales across all four.</p>
+        </div>
+
+        <div class="board">
+          <div class="calendar-toolbar">
+            <div><div class="type-caption">September 2026</div><div class="calendar-title">Month</div></div>
+            <div class="calendar-controls">
+              <button class="icon-btn" aria-label="Previous month"><i data-lucide="chevron-left"></i></button>
+              <button class="btn small lemon">Today</button>
+              <button class="icon-btn" aria-label="Next month"><i data-lucide="chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="month-grid">
+            <div class="month-dow">Sun</div><div class="month-dow">Mon</div><div class="month-dow">Tue</div><div class="month-dow">Wed</div><div class="month-dow">Thu</div><div class="month-dow">Fri</div><div class="month-dow">Sat</div>
+            <div class="day-cell muted"><div class="day-number">30</div></div>
+            <div class="day-cell"><div class="day-number">1</div><div class="day-items"><div class="day-item sage">Portfolio</div></div></div>
+            <div class="day-cell"><div class="day-number">2</div><div class="day-items"><div class="day-item violet">Goal review</div></div></div>
+            <div class="day-cell"><div class="day-number">3</div><div class="day-items"><div class="day-item coral">Invoice</div><div class="day-item sky">Meeting</div></div></div>
+            <div class="day-cell"><div class="day-number">4</div></div>
+            <div class="day-cell"><div class="day-number">5</div><div class="day-items"><div class="day-item peach">Passport</div></div></div>
+            <div class="day-cell"><div class="day-number">6</div></div>
+            <div class="day-cell"><div class="day-number">7</div><div class="day-items"><div class="day-item sage">Walk</div></div></div>
+            <div class="day-cell"><div class="day-number">8</div></div>
+            <div class="day-cell"><div class="day-number">9</div></div>
+            <div class="day-cell"><div class="day-number">10</div><div class="day-items"><div class="day-item coral">Presentation</div></div></div>
+            <div class="day-cell"><div class="day-number">11</div></div>
+            <div class="day-cell"><div class="day-number">12</div></div>
+            <div class="day-cell"><div class="day-number">13</div></div>
+            <div class="day-cell"><div class="day-number">14</div></div>
+            <div class="day-cell"><div class="day-number">15</div></div>
+            <div class="day-cell"><div class="day-number">16</div></div>
+            <div class="day-cell"><div class="day-number">17</div></div>
+            <div class="day-cell"><div class="day-number">18</div></div>
+            <div class="day-cell today"><div class="day-number today-mark">19</div><div class="day-items"><div class="day-item coral">Finish deck</div><div class="day-item violet">Weekly goal</div></div></div>
+            <div class="day-cell"><div class="day-number">20</div></div>
+            <div class="day-cell"><div class="day-number">21</div></div>
+            <div class="day-cell"><div class="day-number">22</div></div>
+            <div class="day-cell"><div class="day-number">23</div></div>
+            <div class="day-cell"><div class="day-number">24</div></div>
+            <div class="day-cell"><div class="day-number">25</div></div>
+            <div class="day-cell"><div class="day-number">26</div></div>
+            <div class="day-cell"><div class="day-number">27</div></div>
+            <div class="day-cell"><div class="day-number">28</div></div>
+            <div class="day-cell"><div class="day-number">29</div></div>
+            <div class="day-cell"><div class="day-number">30</div></div>
+            <div class="day-cell muted"><div class="day-number">1</div></div>
+            <div class="day-cell muted"><div class="day-number">2</div></div>
+            <div class="day-cell muted"><div class="day-number">3</div></div>
+          </div>
+
+          <div class="type-label" style="margin-top:32px">Week / desktop</div>
+          <div class="week-grid" style="margin-top:10px">
+            <div class="week-col"><div class="week-head"><span>Mon</span><span class="date">21</span></div><div class="week-task sage"><strong>Portfolio</strong><small>priority</small></div></div>
+            <div class="week-col"><div class="week-head"><span>Tue</span><span class="date">22</span></div><div class="week-task lemon"><strong>Presentation</strong><small>4:00 pm</small></div><div class="week-task violet"><strong>Weekly goal</strong><small>context</small></div></div>
+            <div class="week-col"><div class="week-head"><span>Wed</span><span class="date">23</span></div><div class="week-task coral"><strong>Send invoice</strong><small>task</small></div></div>
+            <div class="week-col"><div class="week-head"><span>Thu</span><span class="date">24</span></div></div>
+            <div class="week-col"><div class="week-head"><span>Fri</span><span class="date">25</span></div><div class="week-task sky"><strong>Review</strong><small>task</small></div></div>
+            <div class="week-col"><div class="week-head"><span>Sat</span><span class="date">26</span></div></div>
+            <div class="week-col"><div class="week-head"><span>Sun</span><span class="date">27</span></div><div class="week-task violet"><strong>Plan week</strong><small>goal</small></div></div>
+          </div>
+
+          <div class="type-label" style="margin-top:32px">Year / orientation</div>
+          <div class="year-grid" style="margin-top:10px">
+            <div class="month-card active"><div class="month-name">Jan</div><div class="month-sub">Year goal</div><div class="activity-row"><i class="activity-bar"></i><i class="activity-bar"></i><i class="activity-bar"></i><i class="activity-bar"></i></div></div>
+            <div class="month-card"><div class="month-name">Feb</div><div class="month-sub">12 recorded days</div><div class="activity-row"><i class="activity-bar"></i><i class="activity-bar"></i><i class="activity-bar"></i></div></div>
+            <div class="month-card"><div class="month-name">Mar</div><div class="month-sub">8 recorded days</div><div class="activity-row"><i class="activity-bar"></i><i class="activity-bar"></i></div></div>
+            <div class="month-card"><div class="month-name">Apr</div><div class="month-sub">18 recorded days</div><div class="activity-row"><i class="activity-bar"></i><i class="activity-bar"></i><i class="activity-bar"></i><i class="activity-bar"></i><i class="activity-bar"></i></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DAY -->
+      <section class="section" id="day">
+        <div class="section-head">
+          <div class="section-title">12 / Day screen</div>
+          <p class="section-note">The Day is the main doing surface. It should look like one sheet of today's desk, not a KPI dashboard.</p>
+        </div>
+        <div class="board">
+          <div class="grid-2">
+            <div class="card lemon">
+              <div class="card-kicker">IN THIS ORDER</div>
+              <div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Finish presentation</div><div class="task-meta">Priority</div></div></div>
+              <div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Send invoice</div><div class="task-meta">Priority</div></div></div>
+              <div class="task done"><div class="task-check checked">✓</div><div class="task-copy"><div class="task-title">Work on aiRA</div></div></div>
+            </div>
+
+            <div class="card">
+              <div class="card-kicker">TODAY / WEDNESDAY</div>
+              <div class="type-h2" style="margin-top:8px">20 Sep</div>
+              <div class="type-small" style="margin-top:5px;color:var(--ink-muted)">3 remaining · 3 completed</div>
+              <div class="card-rule"></div>
+              <button class="btn lemon">+ Capture</button>
+            </div>
+          </div>
+
+          <div style="margin-top:18px" class="grid-2">
+            <div class="card color coral">
+              <div class="card-head"><div><div class="card-kicker">TASKS</div><div class="card-title">Remaining · 3</div></div><i data-lucide="list-checks"></i></div>
+              <div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Reply to Jack</div></div></div>
+              <div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Book dentist</div></div></div>
+              <div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Review portfolio</div></div></div>
+            </div>
+
+            <div class="card peach">
+              <div class="card-head"><div><div class="card-kicker">ON MY MIND</div><div class="card-title">7 Open Loops</div></div><i data-lucide="brain"></i></div>
+              <div class="open-loop-lines">
+                <div class="open-loop-line">Figure out portfolio structure</div>
+                <div class="open-loop-line">Look into passport appointment</div>
+                <div class="open-loop-line">+</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px" class="grid-2">
+            <div class="card sage">
+              <div class="card-head"><div><div class="card-kicker">RITUALS</div><div class="card-title">2 of 4 checked</div></div><i data-lucide="repeat"></i></div>
+              <div class="ritual-grid">
+                <div class="ritual-square checked"></div><div class="ritual-square checked"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div><div class="ritual-square"></div>
+              </div>
+              <div class="type-caption" style="margin-top:12px">Smoke-free · 22 recorded days</div>
+            </div>
+            <div class="reflection-sheet">
+              <div class="prompt">REFLECTION / OPTIONAL</div>
+              <div class="writing"></div>
+              <button class="btn small" style="margin-top:10px">Save reflection</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WIDGETS -->
+      <section class="section" id="widgets">
+        <div class="section-head">
+          <div class="section-title">13 / Planner widgets</div>
+          <p class="section-note">Widgets are compact visual summaries. They show facts and context; they do not score the user.</p>
+        </div>
+        <div class="widget-grid">
+          <div class="widget lemon">
+            <div class="widget-kicker">Things I did</div><div class="widget-corner">THIS WEEK</div>
+            <div class="widget-number">18</div><div class="widget-copy">completed Tasks recorded.</div>
+          </div>
+          <div class="widget sage">
+            <div class="widget-kicker">Smoke-free</div><div class="widget-corner">RITUAL</div>
+            <div class="widget-number">22</div><div class="widget-copy">recorded days. Previous records remain.</div>
+          </div>
+          <div class="widget violet">
+            <div class="widget-kicker">This week</div><div class="widget-corner">GOAL</div>
+            <div class="widget-number">01</div><div class="widget-copy">“Finish portfolio case study”</div>
+          </div>
+          <div class="widget sky">
+            <div class="widget-kicker">Taken care of</div><div class="widget-corner">MONTH</div>
+            <div class="widget-number">06</div><div class="widget-copy">Open Loops resolved.</div>
+          </div>
+          <div class="widget coral">
+            <div class="widget-kicker">Waiting</div><div class="widget-corner">CONTEXT</div>
+            <div class="widget-number">03</div><div class="widget-copy">unfinished Tasks from previous dates.</div>
+          </div>
+          <div class="widget paper">
+            <div class="widget-kicker">Record begins</div><div class="widget-corner">HISTORY</div>
+            <div class="widget-number" style="font-size:26px">01 JAN</div><div class="widget-copy">Earliest retained historical record.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAPTURE -->
+      <section class="section" id="capture">
+        <div class="section-head">
+          <div class="section-title">14 / Universal capture</div>
+          <p class="section-note">The default is Open Loop. The user can switch directly to Task or Ritual without passing through another object.</p>
+        </div>
+        <div class="board" style="display:grid;place-items:center;background:var(--paper-deep)">
+          <div class="capture">
+            <div class="capture-head">
+              <div class="capture-title">Capture</div>
+              <button class="icon-btn" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="capture-tabs">
+              <button class="capture-tab active">Open loop</button>
+              <button class="capture-tab">Task</button>
+              <button class="capture-tab">Ritual</button>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">What's on your mind?</label>
+              <input class="field" value="Figure out career direction">
+            </div>
+            <div class="capture-foot">
+              <button class="btn ghost">Cancel</button>
+              <button class="btn primary">Save</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section class="section" id="history">
+        <div class="section-head">
+          <div class="section-title">15 / Looking Back</div>
+          <p class="section-note">The archive uses blue/periwinkle as a quiet visual shift away from today's action colors.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card color" style="background:var(--periwinkle)">
+            <div class="card-kicker">THINGS I DID</div>
+            <div class="type-h1" style="margin-top:12px">18</div>
+            <div class="type-small">completed Tasks</div>
+            <div class="card-rule"></div>
+            <div class="task"><div class="task-check checked">✓</div><div class="task-copy"><div class="task-title">Work on aiRA</div><div class="task-meta">Today · 10:40</div></div></div>
+            <div class="task"><div class="task-check checked">✓</div><div class="task-copy"><div class="task-title">Send invoice</div><div class="task-meta">Yesterday</div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-kicker">TIMELINE</div>
+            <div style="margin-top:16px">
+              <div class="task"><i data-lucide="circle-check" style="width:18px"></i><div class="task-copy"><div class="task-title">Work on aiRA</div><div class="task-meta">Task completed · Today</div></div></div>
+              <div class="task"><i data-lucide="check" style="width:18px"></i><div class="task-copy"><div class="task-title">Passport application</div><div class="task-meta">Taken care of · Yesterday</div></div></div>
+              <div class="task"><i data-lucide="repeat" style="width:18px"></i><div class="task-copy"><div class="task-title">Smoke-free</div><div class="task-meta">Ritual check-in · Sep 18</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="filters" style="margin-top:16px">
+          <button class="filter active">Recent</button><button class="filter">Week</button><button class="filter">Month</button><button class="filter">Year</button><button class="filter">All time</button>
+        </div>
+      </section>
+
+      <!-- SEARCH -->
+      <section class="section" id="search">
+        <div class="section-head">
+          <div class="section-title">16 / Search & filters</div>
+          <p class="section-note">Search is the safety net for a planner that can accumulate hundreds of Open Loops and years of history.</p>
+        </div>
+        <div class="board">
+          <div class="searchbar">
+            <i data-lucide="search"></i>
+            <input placeholder="Search tasks, Open Loops, goals, reflections…">
+            <span class="type-caption">⌘ K</span>
+          </div>
+          <div class="filters">
+            <button class="filter active">All</button>
+            <button class="filter">Tasks</button>
+            <button class="filter">Open loops</button>
+            <button class="filter">Rituals</button>
+            <button class="filter">Goals</button>
+            <button class="filter">Reflections</button>
+            <button class="filter">Past</button>
+            <button class="filter">Upcoming</button>
+          </div>
+          <div style="margin-top:18px" class="grid-2">
+            <div class="card"><div class="type-label">EXACT MATCH</div><div class="type-h3" style="margin-top:8px">passport</div><div class="type-small" style="margin-top:8px">Open Loop · Sep 5</div></div>
+            <div class="card"><div class="type-label">CONTENT MATCH</div><div class="type-h3" style="margin-top:8px">Book appointment</div><div class="type-small" style="margin-top:8px">Task note contains “passport”</div></div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- RESPONSIVE PRODUCT SPEC -->
+      <section class="section" id="responsive-product">
+        <div class="section-head">
+          <div class="section-title">19 / Mobile vs web product specification</div>
+          <p class="section-note">The planner is one product with two deliberately different compositions. Mobile is optimized for thumb, glance and one-handed capture. Web is optimized for overview, comparison, planning and spatial manipulation. Do not simply shrink the desktop UI.</p>
+        </div>
+
+        <div class="responsive-rule">
+          <strong>Core rule:</strong> same data, same behavior, different information density. Never change the meaning of an object between mobile and web just to make it fit. Change its presentation, navigation, density and interaction method.
+        </div>
+
+        <div class="responsive-compare" style="margin-top:16px">
+          <div class="responsive-pane mobile">
+            <div class="responsive-pane-head"><strong>Mobile</strong><span>~360–430px</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Navigation</div><div class="spec-value">Bottom navigation. Calendar is the primary entry. Search and Settings live behind utility controls.</div></div>
+              <div class="spec-row"><div class="spec-key">Density</div><div class="spec-value">One primary task per screen region. Prefer vertical stacks. Avoid side-by-side panels unless they are tiny controls.</div></div>
+              <div class="spec-row"><div class="spec-key">Capture</div><div class="spec-value">Bottom sheet / full-height sheet. Keyboard opens automatically. Save returns to the current context.</div></div>
+              <div class="spec-row"><div class="spec-key">Week</div><div class="spec-value">Seven-day vertical list. Each day shows a compact preview; tap to open the Day screen.</div></div>
+              <div class="spec-row"><div class="spec-key">Month</div><div class="spec-value">Compact calendar grid. Show dates and tiny indicators only; never cram task titles into cells.</div></div>
+              <div class="spec-row"><div class="spec-key">Cards</div><div class="spec-value">Full-width stacked objects. One card = one conceptual group. Progressive disclosure is preferred to shrinking text.</div></div>
+              <div class="spec-row"><div class="spec-key">Tasks</div><div class="spec-value">Checkbox + title + optional metadata. Secondary actions appear in the task detail sheet, not inline.</div></div>
+              <div class="spec-row"><div class="spec-key">Gestures</div><div class="spec-value">Tap first. Long-press/swipe is optional and must never be required for core actions.</div></div>
+              <div class="spec-row"><div class="spec-key">Touch</div><div class="spec-value">Minimum 44×44px interactive target; 48px preferred for primary controls.</div></div>
+            </div>
+          </div>
+          <div class="responsive-pane web">
+            <div class="responsive-pane-head"><strong>Web / desktop</strong><span>≥ 981px</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Navigation</div><div class="spec-value">Persistent left sidebar. Calendar, Looking Back and Goals remain one click away. Search and Settings are utility actions.</div></div>
+              <div class="spec-row"><div class="spec-key">Density</div><div class="spec-value">Use horizontal space for comparison. Two- and three-column compositions are allowed where they improve scanning.</div></div>
+              <div class="spec-row"><div class="spec-key">Capture</div><div class="spec-value">Centered modal or anchored popover. Keyboard-first interaction is supported; Escape closes temporary surfaces.</div></div>
+              <div class="spec-row"><div class="spec-key">Week</div><div class="spec-value">Seven-column planning board. Drag tasks between days. Empty day space can create a task with the date prefilled.</div></div>
+              <div class="spec-row"><div class="spec-key">Month</div><div class="spec-value">Seven-column calendar grid with compact previews and +N disclosure. More horizontal context is visible.</div></div>
+              <div class="spec-row"><div class="spec-key">Cards</div><div class="spec-value">Cards may sit beside one another in grids. Maintain minimum readable widths; never create a dense dashboard wall.</div></div>
+              <div class="spec-row"><div class="spec-key">Tasks</div><div class="spec-value">Inline actions may appear on hover/focus. Detail can use a side panel or modal for richer editing.</div></div>
+              <div class="spec-row"><div class="spec-key">Manipulation</div><div class="spec-value">Drag-and-drop is available for calendar planning, but every drag action must have a click/tap alternative.</div></div>
+              <div class="spec-row"><div class="spec-key">Input</div><div class="spec-value">Mouse, keyboard and pointer. Visible focus states are required. Keyboard shortcuts are optional accelerators, never requirements.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Screen composition differences</div>
+        <p class="type-small" style="margin:8px 0 16px">These are product-level layout rules, not merely CSS breakpoints.</p>
+
+        <div class="screen-pair">
+          <div>
+            <div class="type-label" style="margin-bottom:8px">WEB / TODAY</div>
+            <div class="screen-frame web-frame">
+              <div class="screen-top"><strong style="font-size:15px">Today</strong><div class="mock-nav"><span>Search</span><span>+</span></div></div>
+              <div class="screen-body">
+                <div class="grid-2">
+                  <div class="card color" style="background:var(--violet)"><div class="card-kicker">PRIORITIES</div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Finish presentation</div></div></div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Send invoice</div></div></div></div>
+                  <div class="card"><div class="card-kicker">RITUALS</div><div class="task"><div class="task-check checked">✓</div><div class="task-copy"><div class="task-title">Smoke-free</div></div></div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Walk</div></div></div></div>
+                </div>
+                <div class="card color" style="background:var(--coral);margin-top:12px"><div class="card-kicker">TASKS</div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Reply to Jack</div></div></div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Review portfolio</div></div></div></div>
+                <div class="card" style="margin-top:12px"><div class="card-kicker">ON MY MIND</div><div class="type-small" style="margin-top:10px">7 Open Loops · Show</div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="type-label" style="margin-bottom:8px">MOBILE / TODAY</div>
+            <div class="screen-frame mobile-frame">
+              <div class="screen-top"><strong style="font-size:14px">Today</strong><span>+</span></div>
+              <div class="screen-body">
+                <div class="mobile-card-stack">
+                  <div class="mobile-card violet"><div class="card-kicker">PRIORITIES</div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Finish presentation</div></div></div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Send invoice</div></div></div></div>
+                  <div class="mobile-card"><div class="card-kicker">TASKS · 3 REMAINING</div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Reply to Jack</div></div></div><div class="task"><div class="task-check"></div><div class="task-copy"><div class="task-title">Review portfolio</div></div></div><div class="type-label" style="margin-top:8px">Completed · 3 — Show</div></div>
+                  <div class="mobile-card mint"><div class="card-kicker">RITUALS</div><div class="task"><div class="task-check checked">✓</div><div class="task-copy"><div class="task-title">Smoke-free</div></div></div><div class="type-label" style="margin-top:8px">+2 more</div></div>
+                  <div class="mobile-card lemon"><div class="card-kicker">ON MY MIND</div><div class="type-small" style="margin-top:8px">7 Open Loops · Show</div></div>
+                </div>
+              </div>
+              <div class="mock-bottom-nav"><div class="active">Calendar</div><div>History</div><div>Goals</div><div>More</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Calendar: mobile vs web</div>
+        <div class="screen-pair" style="margin-top:16px">
+          <div>
+            <div class="type-label" style="margin-bottom:8px">WEB / WEEK PLANNING</div>
+            <div class="screen-frame web-frame">
+              <div class="screen-top"><strong>Week · Sep 21–27</strong><span>Today</span></div>
+              <div class="screen-body">
+                <div class="mock-week">
+                  <div class="mock-day"><strong>Mon 21</strong><div class="mock-task violet">Finish deck</div><div class="mock-task">Send invoice</div></div>
+                  <div class="mock-day"><strong>Tue 22</strong><div class="mock-task">Review aiRA</div></div>
+                  <div class="mock-day"><strong>Wed 23</strong></div>
+                  <div class="mock-day"><strong>Thu 24</strong><div class="mock-task mint">Dentist</div></div>
+                  <div class="mock-day"><strong>Fri 25</strong><div class="mock-task">Portfolio</div></div>
+                  <div class="mock-day"><strong>Sat 26</strong></div>
+                  <div class="mock-day"><strong>Sun 27</strong><div class="mock-task violet">Plan week</div></div>
+                </div>
+                <div class="type-caption" style="margin-top:10px">Drag task → another day. Tap task → detail. Empty space → add task.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="type-label" style="margin-bottom:8px">MOBILE / WEEK OVERVIEW</div>
+            <div class="screen-frame mobile-frame">
+              <div class="screen-top"><strong>Week</strong><span>Sep 21–27</span></div>
+              <div class="screen-body">
+                <div class="mobile-day-list">
+                  <div class="mobile-day-row"><strong>MON 21</strong><div><b>Finish deck</b><br><span class="type-caption">+2 more</span></div></div>
+                  <div class="mobile-day-row"><strong>TUE 22</strong><div><b>Review aiRA</b></div></div>
+                  <div class="mobile-day-row"><strong>WED 23</strong><div><span class="type-caption">No tasks</span></div></div>
+                  <div class="mobile-day-row"><strong>THU 24</strong><div><b>Dentist</b><br><span class="type-caption">+1 more</span></div></div>
+                  <div class="mobile-day-row"><strong>FRI 25</strong><div><b>Portfolio</b></div></div>
+                  <div class="mobile-day-row"><strong>SAT 26</strong><div><span class="type-caption">No tasks</span></div></div>
+                  <div class="mobile-day-row"><strong>SUN 27</strong><div><b>Plan week</b></div></div>
+                </div>
+                <div class="type-caption" style="margin-top:10px">No drag requirement. Tap a day → Day screen. Tap task → detail sheet.</div>
+              </div>
+              <div class="mock-bottom-nav"><div class="active">Calendar</div><div>History</div><div>Goals</div><div>More</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Month / Year behavior</div>
+        <div class="responsive-compare" style="margin-top:16px">
+          <div class="responsive-pane mobile">
+            <div class="responsive-pane-head"><strong>Mobile calendar</strong><span>glance first</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Month</div><div class="spec-value">7-column grid remains, but cells become compact. Show date number + tiny activity markers. Tap a date for Day.</div></div>
+              <div class="spec-row"><div class="spec-key">Year</div><div class="spec-value">Scrollable 12-month list/grid. Show month name, activity summary and year goal. Avoid miniature task previews.</div></div>
+              <div class="spec-row"><div class="spec-key">Navigation</div><div class="spec-value">Previous / next + Today + date picker. Use a compact header rather than a wide toolbar.</div></div>
+            </div>
+          </div>
+          <div class="responsive-pane web">
+            <div class="responsive-pane-head"><strong>Web calendar</strong><span>context first</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Month</div><div class="spec-value">Full 7-column grid with compact task previews. +N reveals additional items. Day cells can support more metadata.</div></div>
+              <div class="spec-row"><div class="spec-key">Year</div><div class="spec-value">12-month overview in a 3×4 or 4×3 composition. Include year goal and factual activity context.</div></div>
+              <div class="spec-row"><div class="spec-key">Navigation</div><div class="spec-value">Wide toolbar can hold date picker, Today, previous/next, view switcher and contextual actions.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Cards & elements: responsive rules</div>
+        <div class="responsive-compare" style="margin-top:16px">
+          <div class="responsive-pane mobile">
+            <div class="responsive-pane-head"><strong>Mobile cards</strong><span>stack / reveal</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Width</div><div class="spec-value">Full available width minus 12–16px page gutters.</div></div>
+              <div class="spec-row"><div class="spec-key">Padding</div><div class="spec-value">12–16px. Keep internal density low enough for thumb scanning.</div></div>
+              <div class="spec-row"><div class="spec-key">Actions</div><div class="spec-value">Primary action visible. Secondary actions move into detail sheet / overflow menu.</div></div>
+              <div class="spec-row"><div class="spec-key">Disclosure</div><div class="spec-value">Use “Show”, “+N more” and tap-to-expand instead of squeezing more content into the card.</div></div>
+              <div class="spec-row"><div class="spec-key">Controls</div><div class="spec-value">Checkboxes, buttons and icon buttons use 44–48px touch targets even when the visual glyph is smaller.</div></div>
+            </div>
+          </div>
+          <div class="responsive-pane web">
+            <div class="responsive-pane-head"><strong>Web cards</strong><span>compare / scan</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Width</div><div class="spec-value">Use 2–3 column grids when each card remains comfortably readable.</div></div>
+              <div class="spec-row"><div class="spec-key">Padding</div><div class="spec-value">16–24px depending on hierarchy. Larger cards can use 24px.</div></div>
+              <div class="spec-row"><div class="spec-key">Actions</div><div class="spec-value">Inline action links/buttons can appear on hover and remain visible on keyboard focus.</div></div>
+              <div class="spec-row"><div class="spec-key">Disclosure</div><div class="spec-value">Use columns for comparison and side-by-side context before introducing nested scrolling.</div></div>
+              <div class="spec-row"><div class="spec-key">Controls</div><div class="spec-value">Visual controls can be 32–40px, but must retain accessible target areas and visible focus.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Navigation & capture</div>
+        <div class="responsive-compare" style="margin-top:16px">
+          <div class="responsive-pane mobile">
+            <div class="responsive-pane-head"><strong>Mobile</strong><span>one-handed</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Bottom nav</div><div class="spec-value">Calendar / Looking Back / Goals / More. Keep labels short. Active item uses a clear ink + color treatment.</div></div>
+              <div class="spec-row"><div class="spec-key">Capture</div><div class="spec-value">Floating + button or persistent top-right +. Opens bottom sheet; input is immediately focused.</div></div>
+              <div class="spec-row"><div class="spec-key">Search</div><div class="spec-value">Dedicated full-screen search surface, with filters below the search field rather than a dense toolbar.</div></div>
+            </div>
+          </div>
+          <div class="responsive-pane web">
+            <div class="responsive-pane-head"><strong>Web</strong><span>persistent context</span></div>
+            <div class="responsive-spec">
+              <div class="spec-row"><div class="spec-key">Sidebar</div><div class="spec-value">Persistent navigation with Calendar / Looking Back / Goals, plus Search and Settings utilities.</div></div>
+              <div class="spec-row"><div class="spec-key">Capture</div><div class="spec-value">Top-level + in sidebar/header. Opens modal/popover without losing the current calendar or history context.</div></div>
+              <div class="spec-row"><div class="spec-key">Search</div><div class="spec-value">Search can open as a modal/command surface with keyboard shortcut support and wider filter rows.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Touch, pointer & keyboard states</div>
+        <div class="touch-demo" style="margin-top:12px">
+          <div class="touch-box"><strong>Mobile default</strong><span>Tap target ≥44px. No hover-only information.</span></div>
+          <div class="touch-box"><strong>Mobile pressed</strong><span>Short physical response: surface darkens or shifts 1–2px. No elaborate animation.</span></div>
+          <div class="touch-box"><strong>Web hover</strong><span>Optional reveal of secondary actions. Never reveal the only way to complete a task.</span></div>
+          <div class="touch-box"><strong>Keyboard focus</strong><span>2px visible focus ring using the focus token. Must not rely on color alone.</span></div>
+          <div class="touch-box"><strong>Drag</strong><span>Web enhancement only. Provide Move / Choose a date as an equivalent action.</span></div>
+          <div class="touch-box"><strong>Long press</strong><span>Never required for a core action. If added later, document it as an enhancement.</span></div>
+        </div>
+
+        <div class="section-title" style="margin-top:34px">Breakpoint contract</div>
+        <div class="table-wrap" style="margin-top:12px">
+          <table class="table">
+            <thead><tr><th>Range</th><th>Layout</th><th>Navigation</th><th>Calendar</th><th>Cards</th><th>Interaction</th></tr></thead>
+            <tbody>
+              <tr><td>0–680px</td><td>Single column</td><td>Bottom nav</td><td>Vertical Week / compact Month</td><td>Full-width stack</td><td>Touch-first</td></tr>
+              <tr><td>681–980px</td><td>Single/limited columns</td><td>Compact top/side nav</td><td>Hybrid; no dense 7-column Week</td><td>1–2 columns</td><td>Touch + pointer</td></tr>
+              <tr><td>981px+</td><td>12-column web grid</td><td>Persistent sidebar</td><td>7-column Week / full Month / Year overview</td><td>2–3 columns</td><td>Pointer + keyboard + touch</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="responsive-rule" style="margin-top:16px">
+          <strong>Do not do:</strong> shrink desktop typography until it technically fits; keep a 7-column Week on a phone; put every secondary action directly on a mobile card; hide critical actions behind hover; make drag-and-drop the only way to move tasks; or introduce separate mobile behavior that changes the underlying Task/Open Loop/Ritual rules.
+        </div>
+      </section>
+
+      <!-- FEEDBACK -->
+      <section class="section" id="feedback">
+        <div class="section-head">
+          <div class="section-title">17 / Feedback & system messages</div>
+          <p class="section-note">Feedback is factual. The app never turns a save event into praise or a missed action into shame.</p>
+        </div>
+        <div class="grid-2">
+          <div>
+            <div class="type-label">Toast / Undo</div>
+            <div class="toast" style="margin-top:10px">Task deleted <button class="undo">Undo</button></div>
+          </div>
+          <div>
+            <div class="type-label">Inline error</div>
+            <div class="inline-error" style="margin-top:10px">We couldn't save that change. Your previous version is still here.</div>
+          </div>
+          <div>
+            <div class="type-label">Inline success</div>
+            <div class="inline-success" style="margin-top:10px">Saved. Your reflection is recorded.</div>
+          </div>
+          <div>
+            <div class="type-label">Backup error</div>
+            <div class="inline-error" style="margin-top:10px">This backup couldn't be imported. Your current data hasn't been changed.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OVERLAYS -->
+      <section class="section">
+        <div class="section-head">
+          <div class="section-title">18 / Modal & sheet patterns</div>
+          <p class="section-note">A temporary surface should look like a sheet placed over the planner, not a glossy application dialog.</p>
+        </div>
+        <div class="grid-2">
+          <div class="modal-demo">
+            <div class="dialog">
+              <div class="type-label">Move task</div>
+              <h3>Choose a date</h3>
+              <p>The Task will leave its current date and appear on the selected date.</p>
+              <input class="field" value="24 Sep 2026">
+              <div class="capture-foot"><button class="btn ghost">Cancel</button><button class="btn primary">Move</button></div>
+            </div>
+          </div>
+          <div class="modal-demo" style="align-items:end">
+            <div class="sheet">
+              <div class="handle"></div>
+              <div class="type-label">Capture</div>
+              <div class="type-h2" style="margin-top:8px">What's on your mind?</div>
+              <input class="field" style="margin-top:14px" placeholder="Start typing…">
+              <div class="capture-foot"><button class="btn primary">Save</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMPTY / LOADING -->
+      <section class="section">
+        <div class="section-head">
+          <div class="section-title">19 / Empty, loading & fallback states</div>
+          <p class="section-note">Empty is valid. The product should not invent motivational content just because a section has nothing in it.</p>
+        </div>
+        <div class="grid-3">
+          <div class="empty"><div><i data-lucide="notebook-pen"></i><h3>Reflection</h3><p>+ Add something</p></div></div>
+          <div class="empty"><div><i data-lucide="brain"></i><h3>On My Mind</h3><p>Nothing here.</p></div></div>
+          <div class="card"><div class="type-label">LOADING</div><div style="margin-top:18px;display:grid;gap:10px"><div class="skeleton" style="width:70%"></div><div class="skeleton" style="width:92%"></div><div class="skeleton" style="width:55%"></div></div></div>
+        </div>
+      </section>
+
+      <!-- ACCESSIBILITY -->
+      <section class="section" id="accessibility">
+        <div class="section-head">
+          <div class="section-title">20 / Accessibility</div>
+          <p class="section-note">Accessibility is a component requirement, not a final QA pass.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card mint">
+            <div class="type-label">REQUIRED</div>
+            <ul style="font-size:12px">
+              <li>44px minimum interactive targets.</li>
+              <li>Visible keyboard focus.</li>
+              <li>Semantic controls.</li>
+              <li>Accessible names for icon-only controls.</li>
+              <li>Color is never the only status signal.</li>
+              <li>Reduced-motion support.</li>
+              <li>Readable contrast even on pastel modules.</li>
+            </ul>
+          </div>
+          <div class="card coral">
+            <div class="type-label">AVOID</div>
+            <ul style="font-size:12px">
+              <li>Hover-only functionality.</li>
+              <li>Tiny calendar targets.</li>
+              <li>Pastel text on pastel backgrounds.</li>
+              <li>Animation needed to understand completion.</li>
+              <li>Icons without labels where meaning is ambiguous.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- MOTION -->
+      <section class="section" id="motion">
+        <div class="section-head">
+          <div class="section-title">21 / Motion</div>
+          <p class="section-note">Motion should feel like paper moving slightly, not a game rewarding the user.</p>
+        </div>
+        <div class="board">
+          <table class="table">
+            <tr><th>Moment</th><th>Motion</th><th>Duration</th></tr>
+            <tr><td>Task completion</td><td>Checkbox fill + title transition</td><td>120–180ms</td></tr>
+            <tr><td>Expand / collapse</td><td>Height + opacity</td><td>200ms</td></tr>
+            <tr><td>Capture open</td><td>Sheet rises / modal fades</td><td>200–240ms</td></tr>
+            <tr><td>Delete</td><td>Row exits + Undo appears</td><td>180ms</td></tr>
+            <tr><td>Navigation</td><td>Prefer immediate state change</td><td>≤200ms</td></tr>
+          </table>
+          <p class="type-caption" style="margin-top:14px">No confetti, bounce, flame animation, XP animation, streak celebration or “you are on fire” motion.</p>
+        </div>
+      </section>
+
+      <!-- CONTENT -->
+      <section class="section">
+        <div class="section-head">
+          <div class="section-title">22 / Content & language</div>
+          <p class="section-note">The visual system and content system are inseparable. Words should preserve the emotional contract.</p>
+        </div>
+        <div class="board">
+          <table class="table">
+            <tr><th>Concept</th><th>Use</th><th>Avoid</th></tr>
+            <tr><td>Open Loop</td><td>On My Mind</td><td>Backlog / Problems</td></tr>
+            <tr><td>Unfinished Task</td><td>From yesterday</td><td>Overdue / Late</td></tr>
+            <tr><td>Resolved Open Loop</td><td>Taken care of</td><td>Cleared / Fixed forever</td></tr>
+            <tr><td>Ritual history</td><td>22 recorded days</td><td>22-day streak</td></tr>
+            <tr><td>Absence</td><td>Welcome back.</td><td>You missed 8 days.</td></tr>
+            <tr><td>History</td><td>Looking Back</td><td>Productivity report</td></tr>
+            <tr><td>Empty</td><td>+ Add something</td><td>Let's make today amazing!</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- FIGMA HANDOFF -->
+      <section class="section" id="handoff">
+        <div class="section-head">
+          <div class="section-title">23 / Figma handoff</div>
+          <p class="section-note">This is the build order for turning this system into a usable component library and then into the actual planner screens.</p>
+        </div>
+        <div class="board">
+          <div class="grid-3">
+            <div class="card lemon"><div class="type-label">01 / FOUNDATIONS</div><div class="type-h3" style="margin-top:8px">Variables</div><p class="type-small">Color, type, spacing, radius, borders, shadows, motion.</p></div>
+            <div class="card coral"><div class="type-label">02 / PRIMITIVES</div><div class="type-h3" style="margin-top:8px">Components</div><p class="type-small">Buttons, inputs, icons, checkbox, badges, tabs, filters.</p></div>
+            <div class="card sage"><div class="type-label">03 / OBJECTS</div><div class="type-h3" style="margin-top:8px">Planner objects</div><p class="type-small">Task, Open Loop, Ritual, Goal, Reflection, History.</p></div>
+            <div class="card violet"><div class="type-label">04 / PATTERNS</div><div class="type-h3" style="margin-top:8px">Screens</div><p class="type-small">Day, Week, Month, Year, Looking Back, Search, Goals.</p></div>
+            <div class="card sky"><div class="type-label">05 / STATES</div><div class="type-h3" style="margin-top:8px">Behavior</div><p class="type-small">Default, hover, focus, pressed, completed, empty, error, offline.</p></div>
+            <div class="card peach"><div class="type-label">06 / PROTOTYPE</div><div class="type-h3" style="margin-top:8px">Test</div><p class="type-small">Capture, task completion, moving, ritual check-in, history retrieval.</p></div>
+          </div>
+          <div style="margin-top:26px" class="type-label">Canonical icon source</div>
+          <p class="type-small">Lucide Icons — use the icon names in this library and keep the icon family consistent. Lucide's official library documents customizable size, color and stroke width and publishes the icons under the ISC License. <a href="https://lucide.dev/icons/" target="_blank" rel="noopener">Open Lucide Icons</a>.</p>
+          <div class="inline-success" style="margin-top:16px"><strong>Design-system rule:</strong> if a screen starts looking crowded, solve hierarchy and progressive disclosure before changing the typography scale or adding decorative elements.</div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Planner Design System V1.1</span>
+        <span>Stationery / archive / external brain</span>
+        <span>V1 product behavior remains frozen</span>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // Render Lucide icons.
+  if (window.lucide) {
+    lucide.createIcons({
+      attrs: {
+        "stroke-width": 1.8,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round"
+      }
+    });
+  }
+
+  // Small component demos.
+  document.querySelectorAll(".capture-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      tab.parentElement.querySelectorAll(".capture-tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+    });
+  });
+
+  document.querySelectorAll(".ritual-square").forEach(square => {
+    square.addEventListener("click", () => square.classList.toggle("checked"));
+    square.setAttribute("role","checkbox");
+    square.setAttribute("tabindex","0");
+    square.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        square.classList.toggle("checked");
+      }
+    });
+  });
+</script>
+</body>
+</html>

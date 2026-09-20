@@ -1,0 +1,111 @@
+/* Copied verbatim from the design system :root block (lines 32-141). Do not rename or edit values. */
+:root{
+  /* =========================================================
+     01 — COLOR TOKENS
+     Calibrated to the supplied visual references.
+     ========================================================= */
+  --lemon:#F5E642;
+  --amber:#E8A020;
+  --coral:#E85030;
+  --blush:#F0B4B0;
+  --rose:#E87888;
+  --violet:#A898E0;
+  --periwinkle:#B8C8F0;
+  --sky:#78B8E0;
+  --mint:#A8D8C0;
+  --sage:#8AAA70;
+  --olive:#7A9060;
+  --peach:#F0C898;
+
+  --paper:#FAF7F0;
+  --paper-warm:#F3EFE6;
+  --paper-deep:#E8E1D5;
+  --white:#FFFDF8;
+
+  --ink:#1A1A18;
+  --ink-2:#292A26;
+  --ink-muted:#8A8A82;
+  --line:#D8D3C8;
+  --line-dark:#B6B0A4;
+
+  --focus:#4C63FF;
+  --danger:#C73E2D;
+  --success:#4D7B61;
+
+  /* Semantic mapping */
+  --c-primary:var(--ink);
+  --c-accent:var(--lemon);
+  --c-task:var(--coral);
+  --c-open-loop:var(--peach);
+  --c-ritual:var(--sage);
+  --c-goal:var(--violet);
+  --c-reflection:var(--paper);
+  --c-history:var(--periwinkle);
+  --c-planning:var(--sky);
+  --c-success:var(--mint);
+
+  /* =========================================================
+     02 — TYPOGRAPHY
+     ========================================================= */
+  --font-display:"Space Grotesk",Arial,sans-serif;
+  --font-mono:"Space Mono",ui-monospace,monospace;
+
+  --text-xs:10px;
+  --text-sm:12px;
+  --text-md:14px;
+  --text-lg:16px;
+  --text-xl:20px;
+  --text-2xl:28px;
+  --text-3xl:40px;
+  --text-4xl:56px;
+  --text-5xl:72px;
+
+  /* =========================================================
+     03 — SPACING
+     ========================================================= */
+  --sp-1:4px;
+  --sp-2:8px;
+  --sp-3:12px;
+  --sp-4:16px;
+  --sp-5:20px;
+  --sp-6:24px;
+  --sp-7:28px;
+  --sp-8:32px;
+  --sp-10:40px;
+  --sp-12:48px;
+  --sp-16:64px;
+  --sp-20:80px;
+
+  /* =========================================================
+     04 — GEOMETRY
+     ========================================================= */
+  --r-0:0;
+  --r-1:2px;
+  --r-2:4px;
+  --r-3:8px;
+  --r-4:12px;
+  --r-pill:999px;
+
+  /* =========================================================
+     05 — ELEVATION
+     ========================================================= */
+  --shadow-note:3px 4px 0 rgba(26,26,24,.10);
+  --shadow-float:0 8px 20px rgba(26,26,24,.12);
+  --shadow-heavy:4px 5px 0 var(--ink);
+
+  /* =========================================================
+     06 — MOTION
+     ========================================================= */
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --fast:120ms;
+  --med:200ms;
+  --slow:320ms;
+
+  /* =========================================================
+     07 — LAYOUT
+     ========================================================= */
+  --content:1440px;
+  --sidebar:220px;
+  --mobile-nav:68px;
+  --touch:44px;
+}

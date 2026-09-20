@@ -1,0 +1,45 @@
+# Personal Planner
+
+A local-first personal planner (PWA). Read these before working:
+
+- `PRD.md` — product behavior (converted from `Personal_Planner_V1_PRD_Single_Source_of_Truth.docx`).
+- `Personal_Planner_V1_1_Expanded_Design_System (1).html` — visual reference.
+- `src/styles/tokens.css` — the design tokens, copied verbatim from the design system.
+
+## Rules
+
+### 1. Source of truth
+- **The PRD wins on behavior. The design system wins on visuals.**
+- If they conflict, or if one is silent or ambiguous where the other matters, **stop and flag it to the user**. Never resolve a conflict silently, and never invent behavior or visuals to fill a gap.
+
+### 2. Data access
+- UI code never touches IndexedDB (or Dexie) directly. It calls domain functions only (`createTask`, `completeTask`, `moveTask`, `deleteTask`, `resolveOpenLoop`, `convertOpenLoopToTask`, `checkRitual`, `archiveRitual`, `createGoal`, `saveReflection`, ...).
+- Domain logic lives outside UI components and is testable without a DOM.
+- Import is validate-then-replace. A failed import must never change existing data.
+
+### 3. No backend
+- No server, API, accounts, cloud sync, analytics, or push notifications. Everything runs in the browser and works offline.
+- Don't add network calls. Fonts and icons must be bundled or cached for offline use, not fetched at runtime.
+
+### 4. No overdue or guilt language
+- Applies to UI copy, code identifiers, comments, tests, and docs.
+- Never use: overdue, late, missed, behind, streak (as pressure), failed, backlog, "you haven't...", or urgency framing.
+- Use the design system's vocabulary: "From yesterday", "Taken care of", "On my mind", "22 recorded days", "Welcome back."
+- Errors are calm and factual, and say what was preserved.
+- No scores, rankings, good/bad day labels, or celebration effects.
+
+### 5. Styling comes from tokens
+- All colors, sizes, spacing, radii, shadows, fonts, and durations come from `src/styles/tokens.css` via `var(--...)`.
+- No hardcoded hex/rgb values, px sizes, font names, or durations in components or component CSS.
+- If a value you need has no token (for example ink at 12% opacity, or a 9px label size), **flag it to the user**. Don't hardcode it and don't add a token yourself.
+- Media-query breakpoints can't use variables. Keep them in one shared place, not scattered.
+- Icons: Lucide, bundled locally.
+
+### 6. Protected files
+- **Never edit the design system HTML file.** It is a reference only.
+- Never edit `tokens.css` names or values without the user's explicit approval. It mirrors the design system.
+- `PRD.md` is edited only when the user asks.
+
+## Working style
+- Ask before installing dependencies or changing the stack.
+- Build in small slices. Finish and verify one before starting the next.
