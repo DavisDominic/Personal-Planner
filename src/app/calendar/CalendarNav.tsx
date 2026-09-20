@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { Button, IconButton } from '../../components/Button/Button'
 import { CalendarToolbar } from '../../components/Calendar/Calendar'
-import { Field } from '../../components/Field/Field'
+import { DatePicker } from '../../components/DatePicker/DatePicker'
 import { addDays, addMonths, today } from '../../domain/index'
 import { calendarPath } from './calendarPaths'
 import type { CalendarViewName } from './calendarPaths'
@@ -24,17 +24,19 @@ export function CalendarNav({ view, date, caption, title }: CalendarNavProps) {
 
   return (
     <CalendarToolbar caption={caption} title={title}>
-      <IconButton label={`Previous ${view}`} onClick={() => go(step(-1))}>
-        <ChevronLeft aria-hidden="true" />
-      </IconButton>
-      <Button tone="lemon" size="small" onClick={() => go(today())}>
+      <Button tone="lemon" onClick={() => go(today())}>
         Today
       </Button>
-      <IconButton label={`Next ${view}`} onClick={() => go(step(1))}>
-        <ChevronRight aria-hidden="true" />
-      </IconButton>
+      <div className={s.arrows}>
+        <IconButton label={`Previous ${view}`} onClick={() => go(step(-1))}>
+          <ChevronLeft aria-hidden="true" />
+        </IconButton>
+        <IconButton label={`Next ${view}`} onClick={() => go(step(1))}>
+          <ChevronRight aria-hidden="true" />
+        </IconButton>
+      </div>
       <div className={s.jump}>
-        <Field label="Go to date" labelHidden type="date" value={date} onChange={(e) => e.target.value && go(e.target.value)} />
+        <DatePicker label="Go to date" labelHidden align="end" value={date} onChange={(v) => v && go(v)} />
       </div>
     </CalendarToolbar>
   )

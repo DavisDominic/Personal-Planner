@@ -12,8 +12,7 @@
   border-bottom:var(--u-px-1) solid var(--line);
   margin-bottom:var(--u-px-18);
 }
-.brand-dot{width:var(--u-px-11);height:var(--u-px-11);border-radius:50%;background:var(--coral)}
-.brand-name{font-size:var(--text-md);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-0_01)}
+.brand-name{font-size:var(--text-md);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-0_12);text-transform:uppercase}
 .capture{width:100%;margin-bottom:var(--sp-4)}
 .nav{display:grid;gap:var(--u-px-2)}
 .utilities{margin-top:auto;padding-top:var(--sp-4);border-top:var(--u-px-1) solid var(--line)}

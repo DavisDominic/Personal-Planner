@@ -9,7 +9,7 @@ import {
 import type { OpenLoop, Task } from '../../domain/index'
 import t from '../../styles/typography.module.css'
 import { CalendarNav } from '../calendar/CalendarNav'
-import { dayShort, dayTitle, weekdayLong } from '../dateFormat'
+import { dayShort, dayTitle, weekdayLong } from '../../lib/dateFormat'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
 import { ReflectionSection } from '../reflection/ReflectionSection'

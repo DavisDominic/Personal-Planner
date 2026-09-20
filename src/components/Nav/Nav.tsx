@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { NavLink } from 'react-router'
 import { Plus } from 'lucide-react'
 import { cx } from '../../lib/cx'
+import { AppIcon } from '../Logo/Logo'
 import s from './Nav.module.css'
 
 /** With `to`, the item is a router link and the current route decides which is active. Without it, a demo button. */
@@ -13,7 +14,7 @@ export function ProductNav({ brand, items }: { brand: string; items: NavItem[] }
   return (
     <nav className={s.productNav} aria-label="Primary">
       <div className={s.productBrand}>
-        <span className={s.dot} aria-hidden="true" />
+        <AppIcon />
         <strong>{brand}</strong>
       </div>
       {items.map((it, i) => (

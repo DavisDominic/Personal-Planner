@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Trash2 } from 'lucide-react'
 import { Button } from '../../components/Button/Button'
+import { DatePicker } from '../../components/DatePicker/DatePicker'
 import { Field, TextArea } from '../../components/Field/Field'
 import { InlineMessage } from '../../components/Feedback/Feedback'
 import { Dialog } from '../../components/Overlay/Overlay'
@@ -105,13 +106,7 @@ function LoopForm({ loop, day, onClose }: { loop: OpenLoop; day: string; onClose
         <div className={s.fields}>
           <Field label="What's on your mind?" value={title} onChange={(e) => edit(setTitle)(e.target.value)} data-autofocus />
           <TextArea label="Note" value={note} onChange={(e) => edit(setNote)(e.target.value)} />
-          <Field
-            label="Date"
-            type="date"
-            value={date}
-            onChange={(e) => edit(setDate)(e.target.value)}
-            help="Optional. A date doesn't turn this into a task."
-          />
+          <DatePicker label="Date" value={date} onChange={edit(setDate)} allowClear help="Optional. A date doesn't turn this into a task." />
         </div>
 
         {error && (

@@ -2,7 +2,7 @@
 .field-wrap{display:grid;gap:var(--u-px-6)}
 .field-label{font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_14);text-transform:uppercase}
 .field{
-  width:100%;height:var(--u-px-42);
+  width:100%;height:var(--touch);
   border:var(--u-px-1) solid var(--line-dark);
   border-radius:var(--r-2);
   background:var(--white);
@@ -15,7 +15,7 @@ textarea.field{height:var(--u-px-100);resize:vertical}
 .field.success{border:var(--u-px-1_5) solid var(--success)}
 .field-help{font-size:var(--text-xs);color:var(--ink-muted)}
 .select-wrap{position:relative}
-.select-wrap svg{position:absolute;right:var(--u-px-11);top:var(--sp-3);width:var(--u-px-16);height:var(--u-px-16);pointer-events:none}
+.select-wrap svg{position:absolute;right:var(--u-px-11);top:50%;transform:translateY(-50%);width:var(--u-px-16);height:var(--u-px-16);pointer-events:none}
 select.field{appearance:none}
 .field:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 

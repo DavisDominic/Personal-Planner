@@ -1,0 +1,9 @@
+.icon,.logo{display:block;overflow:visible}
+.icon{width:var(--u-px-32);height:var(--u-px-32);flex:none}
+.logo{width:100%;height:auto}
+.card{fill:var(--lemon);stroke:var(--ink);stroke-width:4}
+.ring{fill:var(--ink)}
+.letter{fill:var(--ink)}
+.word{fill:var(--ink);font-family:var(--font-display);font-weight:var(--u-fw-700)}
+.rule{stroke:var(--ink);stroke-width:2}
+.tagline{fill:var(--ink);font-family:var(--font-mono)}

@@ -25,3 +25,6 @@ export const dayTitle = (d: string) => (d.slice(0, 4) === today().slice(0, 4) ? 
 /** A locale-aware range such as "Sep 20 – 26, 2026" or "Aug 30 – Sep 5, 2026". */
 export const weekTitle = (start: string, end: string) =>
   new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', year: 'numeric' }).formatRange(parse(start), parse(end))
+
+/** "Sun, Sep 20, 2026" */
+export const dayFull = (d: string) => fmt(d, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })

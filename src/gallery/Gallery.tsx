@@ -18,6 +18,7 @@ import type { MonthCell, WeekDay, YearMonth } from '../components/Calendar/Calen
 import { Widget, WidgetGrid } from '../components/Widget/Widget'
 import { MobileNav, ProductNav } from '../components/Nav/Nav'
 import { CapturePanel } from '../components/Capture/Capture'
+import { AppIcon } from '../components/Logo/Logo'
 import type { CaptureTab } from '../components/Capture/captureTabs'
 import { FilterChips, SearchBar } from '../components/Search/Search'
 import { InlineMessage, Toast } from '../components/Feedback/Feedback'
@@ -164,8 +165,8 @@ export default function Gallery() {
     <div className={g.shell}>
       <aside className={g.sidebar}>
         <div className={g.brand}>
-          <span className={g.brandDot} />
-          <span className={g.brandName}>Planner</span>
+          <AppIcon />
+          <span className={g.brandName}>Daybook</span>
           <span className={g.brandMeta}>V1.1</span>
         </div>
         {NAV_SIDEBAR.map((group) => (
@@ -188,7 +189,7 @@ export default function Gallery() {
           <header className={g.hero} id="overview">
             <div className={g.pageKicker}>Component gallery — rendered in code</div>
             <h1>
-              Planner <span>Design System</span>
+              Daybook <span>Design System</span>
             </h1>
             <p>
               Slice 0. Every component below is built as React + CSS Modules from <code>tokens.css</code>. Compare it side by side with the original
@@ -489,7 +490,7 @@ export default function Gallery() {
           {/* 10 NAVIGATION */}
           <Section id="navigation" n="10" title="Navigation" note="The product navigation is deliberately small. Calendar, Looking Back and Goals are the primary places; Search and Settings are utility layers.">
             <Board>
-              <ProductNav brand="Planner" items={PRODUCT_NAV} />
+              <ProductNav brand="Daybook" items={PRODUCT_NAV} />
               <div className={cx(g.mt6, g.narrow)}>
                 <div className={t.typeLabel}>Mobile navigation</div>
                 <div className={g.mt3}><MobileNav items={MOBILE_NAV} /></div>
@@ -693,7 +694,7 @@ export default function Gallery() {
           </Section>
 
           <footer className={g.footer}>
-            <span>Planner Design System V1.1</span>
+            <span>Daybook Design System V1.1</span>
             <span>Stationery / archive / external brain</span>
             <span>V1 product behavior remains frozen</span>
           </footer>

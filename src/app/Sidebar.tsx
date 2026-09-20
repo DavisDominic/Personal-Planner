@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '../components/Button/Button'
+import { AppIcon } from '../components/Logo/Logo'
 import { cx } from '../lib/cx'
 import { PRIMARY_NAV, SEARCH_NAV, SETTINGS_NAV } from './navItems'
 import type { AppNavItem } from './navItems'
@@ -27,8 +28,8 @@ export function Sidebar() {
   return (
     <aside className={s.sidebar}>
       <div className={s.brand}>
-        <span className={s.brandDot} aria-hidden="true" />
-        <span className={s.brandName}>Planner</span>
+        <AppIcon />
+        <span className={s.brandName}>Daybook</span>
       </div>
       <Button tone="lemon" className={s.capture} icon={<Plus aria-hidden="true" />} aria-haspopup="dialog" onClick={() => capture.open()}>
         Capture

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Button } from '../../components/Button/Button'
-import { Field } from '../../components/Field/Field'
+import { DatePicker } from '../../components/DatePicker/DatePicker'
 import { InlineMessage } from '../../components/Feedback/Feedback'
 import { Dialog } from '../../components/Overlay/Overlay'
 import t from '../../styles/typography.module.css'
 import { DomainError, moveTask } from '../../domain/index'
-import { dayShort } from '../dateFormat'
+import { dayShort } from '../../lib/dateFormat'
 import { ModalHost } from '../ModalHost'
 import { useToast } from '../useToast'
 import s from './MoveTaskDialog.module.css'
@@ -58,7 +58,7 @@ function MoveForm({ target, onClose }: { target: MoveTarget; onClose: () => void
         <p>
           “{target.title}” will leave its current date and appear on the date you choose.
         </p>
-        <Field label="Date" type="date" value={date} onChange={(e) => setDate(e.target.value)} data-autofocus />
+        <DatePicker label="Date" value={date} onChange={setDate} />
         {error && (
           <div className={s.message}>
             <InlineMessage kind="error">{error}</InlineMessage>

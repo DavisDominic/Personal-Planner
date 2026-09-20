@@ -4,7 +4,7 @@ import { InlineMessage } from '../../components/Feedback/Feedback'
 import { ReflectionCollapsed, ReflectionEditor } from '../../components/Reflection/ReflectionEditor'
 import { deleteReflection, getReflection, periodBounds, restoreReflection, saveReflection } from '../../domain/index'
 import type { ReflectionPeriodType } from '../../domain/index'
-import { dayLong, monthTitle, weekTitle } from '../dateFormat'
+import { dayLong, monthTitle, weekTitle } from '../../lib/dateFormat'
 import { useToast } from '../useToast'
 import s from './ReflectionSection.module.css'
 

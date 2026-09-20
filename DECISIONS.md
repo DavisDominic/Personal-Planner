@@ -19,6 +19,14 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Daybook brand, control sizes and the date picker
+**Status: Confirmed** (2026-09-20) unless noted
+
+- **The app is called Daybook** ("Keep what matters"), not Planner. The logo is recreated as SVG in the design system's own lemon and ink, with its own fonts: the notebook **app icon** (spiral rings and a D) sits beside the "DAYBOOK" name in the sidebar and the phone header, and is the favicon; the full wordmark logo is ready for the first-launch screen. The reference artwork's yellow is a little lighter than the design system's lemon; the design system's lemon is used, as asked. The browser tab title is "Daybook". The stored database keeps its internal name `personal-planner` so nobody's existing data is orphaned.
+- **One control height:** default buttons, icon buttons and fields are all **44px** (the design system's touch size), so they line up next to each other. Small buttons stay 32px for compact actions inside cards. This replaces the design system's 40px buttons and 42px fields.
+- **Custom date picker** in the design system's style (white sheet, ink border, heavy offset shadow, lemon today, ink selection) replaces the browser's dark native one everywhere a date is chosen: the calendar toolbar, Capture, task and open-loop details, and Move. Arrow keys move by day and week, Page Up / Page Down by month, Enter chooses, Escape closes only the calendar. Optional dates have a Clear button. **Time** still uses the browser's own picker. *(Assumed: say if you want that restyled too.)*
+- **Calendar toolbar order:** Today first, then Previous and Next side by side, then the date picker, so Today no longer sits between the two arrows. *(Assumed reading of "moving to next shouldn't pass through Today"; correct me if you meant something else.)*
+
 ## Reflections (Slice 6) and Capture placement
 **Status: Assumed** unless noted
 

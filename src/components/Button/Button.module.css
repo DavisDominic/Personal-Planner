@@ -1,6 +1,6 @@
 /* ---------- BUTTONS ---------- */
 .btn{
-  min-height:var(--u-px-40);padding:var(--u-px-9) var(--u-px-15);
+  min-height:var(--touch);padding:var(--u-px-9) var(--u-px-15);
   border:var(--u-px-1) solid var(--ink);
   border-radius:var(--r-2);
   background:var(--white);color:var(--ink);
@@ -21,7 +21,7 @@
 .btn.small{min-height:var(--u-px-32);padding:var(--u-px-7) var(--u-px-10)}
 .btn.large{min-height:var(--u-px-48);padding:var(--u-px-11) var(--u-px-18);font-size:var(--u-px-11)}
 .icon-btn{
-  width:var(--u-px-40);height:var(--u-px-40);padding:0;
+  width:var(--touch);height:var(--touch);padding:0;
   display:inline-grid;place-items:center;
   border:var(--u-px-1) solid var(--ink);
   border-radius:var(--r-2);

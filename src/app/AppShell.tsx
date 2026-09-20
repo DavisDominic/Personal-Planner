@@ -3,6 +3,7 @@ import { Outlet, useMatch, useNavigate } from 'react-router'
 import { Plus, Search } from 'lucide-react'
 import { IconButton } from '../components/Button/Button'
 import { isDateString } from '../domain/index'
+import { AppIcon } from '../components/Logo/Logo'
 import { MobileNav } from '../components/Nav/Nav'
 import type { NavItem } from '../components/Nav/Nav'
 import { CaptureHost } from './CaptureHost'
@@ -64,8 +65,8 @@ export function AppShell() {
         <div>
           <header className={s.header}>
             <div className={s.brand}>
-              <span className={s.brandDot} aria-hidden="true" />
-              <span className={s.brandName}>Planner</span>
+              <AppIcon />
+              <span className={s.brandName}>Daybook</span>
             </div>
             <IconButton label="Search" onClick={() => navigate('/search')}>
               <Search aria-hidden="true" />

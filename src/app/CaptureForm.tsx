@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CapturePanel, CaptureQuestion, CaptureRow } from '../components/Capture/Capture'
 import type { CaptureTab } from '../components/Capture/captureTabs'
 import { Button } from '../components/Button/Button'
+import { DatePicker } from '../components/DatePicker/DatePicker'
 import { Field, Select, TextArea } from '../components/Field/Field'
 import { WeekdayPicker } from '../components/Weekday/WeekdayPicker'
 import { DomainError, saveCapture, shouldConfirmPriority, today } from '../domain/index'
@@ -130,13 +131,7 @@ export function CaptureForm({ preset, onClose }: { preset?: CapturePreset; onClo
       {tab === 'task' && (
         <>
           <CaptureRow>
-            <Field
-              label="Date"
-              type="date"
-              value={date}
-              onChange={(e) => edit(setDate)(e.target.value)}
-              help="Leave empty to show it every day until it's done."
-            />
+            <DatePicker label="Date" value={date} onChange={edit(setDate)} allowClear help="Leave empty to show it every day until it's done." />
             <Field label="Time" type="time" value={time} onChange={(e) => edit(setTime)(e.target.value)} />
           </CaptureRow>
           <Select label="Priority" value={priority} onChange={(e) => edit(setPriority)(e.target.value)}>

@@ -1,7 +1,7 @@
 import { MonthGrid } from '../../components/Calendar/Calendar'
 import type { MonthCell } from '../../components/Calendar/Calendar'
 import { getCalendarPreview, monthGridDays, today } from '../../domain/index'
-import { dayLong, monthTitle, weekdayShort } from '../dateFormat'
+import { dayLong, monthTitle, weekdayShort } from '../../lib/dateFormat'
 import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
