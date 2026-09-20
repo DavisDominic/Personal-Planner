@@ -6,7 +6,14 @@ import s from './Task.module.css'
 type TaskRowProps = {
   title: string
   meta?: string
+  /** The checkbox's accessible name when it should say more than the title, e.g. "Taken care of: ...". */
+  checkLabel?: string
   defaultDone?: boolean
+  /** Controlled state. With `onToggle`, the caller owns whether the row is done. */
+  done?: boolean
+  onToggle?: (done: boolean) => void
+  /** Strike the title through when done (tasks). Rituals turn this off: a check-in is not a finished item. */
+  strikeWhenDone?: boolean
   /** Set when the row sits on a colour block, so completed titles keep strong ink contrast. */
   onColor?: boolean
   priority?: boolean
@@ -14,18 +21,23 @@ type TaskRowProps = {
   leading?: ReactNode
 }
 
-export function TaskRow({ title, meta, defaultDone = false, onColor, priority, leading }: TaskRowProps) {
-  const [done, setDone] = useState(defaultDone)
+export function TaskRow({ title, meta, checkLabel, defaultDone = false, done: controlled, onToggle, strikeWhenDone = true, onColor, priority, leading }: TaskRowProps) {
+  const [inner, setInner] = useState(defaultDone)
+  const done = controlled ?? inner
+  const toggle = () => {
+    if (controlled === undefined) setInner(!inner)
+    onToggle?.(!done)
+  }
   return (
-    <div className={cx(s.task, done && s.done, onColor && s.onColor)}>
+    <div className={cx(s.task, done && strikeWhenDone && s.done, onColor && s.onColor)}>
       {leading ?? (
         <button
           type="button"
           role="checkbox"
           aria-checked={done}
-          aria-label={title}
+          aria-label={checkLabel ?? title}
           className={cx(s.taskCheck, done && s.checked)}
-          onClick={() => setDone((d) => !d)}
+          onClick={toggle}
         >
           {done && <span aria-hidden="true">✓</span>}
         </button>

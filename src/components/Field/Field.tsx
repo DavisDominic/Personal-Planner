@@ -6,12 +6,12 @@ import s from './Field.module.css'
 
 type FieldState = 'error' | 'success'
 
-type Shared = { label: string; help?: ReactNode; state?: FieldState }
+type Shared = { label: string; help?: ReactNode; state?: FieldState; labelHidden?: boolean }
 
-function Wrap({ label, help, state, id, children }: Shared & { id: string; children: ReactNode }) {
+function Wrap({ label, labelHidden, help, state, id, children }: Shared & { id: string; children: ReactNode }) {
   return (
     <div className={s.fieldWrap}>
-      <label className={s.fieldLabel} htmlFor={id}>
+      <label className={cx(s.fieldLabel, labelHidden && s.hidden)} htmlFor={id}>
         {label}
       </label>
       {children}
@@ -29,10 +29,10 @@ const aria = (id: string, help: ReactNode, state?: FieldState) => ({
   'aria-invalid': state === 'error' ? true : undefined,
 })
 
-export function Field({ label, help, state, className, ...rest }: Shared & InputHTMLAttributes<HTMLInputElement>) {
+export function Field({ label, labelHidden, help, state, className, ...rest }: Shared & InputHTMLAttributes<HTMLInputElement>) {
   const id = useId()
   return (
-    <Wrap label={label} help={help} state={state} id={id}>
+    <Wrap label={label} labelHidden={labelHidden} help={help} state={state} id={id}>
       <input id={id} className={cx(s.field, state && s[state], className)} {...aria(id, help, state)} {...rest} />
     </Wrap>
   )

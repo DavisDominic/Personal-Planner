@@ -1,0 +1,6 @@
+.width{width:min(var(--u-px-430),100%)}
+.message{margin-top:var(--sp-3)}
+.foot{display:flex;justify-content:flex-end;gap:var(--u-px-7);margin-top:var(--sp-4)}
+@media(max-width:980px){
+  .width{width:100%}
+}

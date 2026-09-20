@@ -6,6 +6,7 @@ import { Field, Select, TextArea } from '../components/Field/Field'
 import { WeekdayPicker } from '../components/Weekday/WeekdayPicker'
 import { DomainError, saveCapture, shouldConfirmPriority, today } from '../domain/index'
 import type { CaptureInput, RitualFrequency } from '../domain/index'
+import type { CapturePreset } from './captureContext'
 import { useToast } from './useToast'
 
 type FrequencyType = RitualFrequency['type']
@@ -23,13 +24,13 @@ const PRIORITY_CHOICES = [1, 2, 3, 4, 5]
  * + Capture (PRD 6). The default type is Open Loop. Choosing Task or Ritual reveals only that type's
  * fields, and the user is never pushed through an Open Loop to Task funnel.
  */
-export function CaptureForm({ onClose }: { onClose: () => void }) {
+export function CaptureForm({ preset, onClose }: { preset?: CapturePreset; onClose: () => void }) {
   const toast = useToast()
-  const [tab, setTab] = useState<CaptureTab>('open-loop')
+  const [tab, setTab] = useState<CaptureTab>(preset?.tab ?? 'open-loop')
   const [title, setTitle] = useState('')
   const [note, setNote] = useState('')
   const [showNote, setShowNote] = useState(false)
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(preset?.date ?? '')
   const [time, setTime] = useState('')
   const [priority, setPriority] = useState('')
   const [frequency, setFrequency] = useState<FrequencyType>('daily')

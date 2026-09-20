@@ -6,6 +6,7 @@ import { MobileNav } from '../components/Nav/Nav'
 import type { NavItem } from '../components/Nav/Nav'
 import { CaptureHost } from './CaptureHost'
 import { CaptureContext } from './captureContext'
+import type { CapturePreset } from './captureContext'
 import { PRIMARY_NAV, SETTINGS_NAV } from './navItems'
 import { Sidebar } from './Sidebar'
 import { ToastProvider } from './ToastProvider'
@@ -25,7 +26,11 @@ const MOBILE_ITEMS: NavItem[] = [...PRIMARY_NAV, SETTINGS_NAV].map(({ label, to,
 export function AppShell() {
   const navigate = useNavigate()
   const [captureOpen, setCaptureOpen] = useState(false)
-  const open = useCallback(() => setCaptureOpen(true), [])
+  const [preset, setPreset] = useState<CapturePreset>()
+  const open = useCallback((p?: CapturePreset) => {
+    setPreset(p)
+    setCaptureOpen(true)
+  }, [])
   const close = useCallback(() => setCaptureOpen(false), [])
   const capture = useMemo(() => ({ isOpen: captureOpen, open, close }), [captureOpen, open, close])
 
@@ -69,10 +74,10 @@ export function AppShell() {
       <div className={s.bottom}>
         <MobileNav items={MOBILE_ITEMS} />
       </div>
-      <button type="button" className={s.fab} aria-label="Capture" aria-haspopup="dialog" onClick={open}>
+      <button type="button" className={s.fab} aria-label="Capture" aria-haspopup="dialog" onClick={() => open()}>
         <Plus aria-hidden="true" />
       </button>
-      <CaptureHost open={captureOpen} onClose={close} />
+      <CaptureHost open={captureOpen} preset={preset} onClose={close} />
     </CaptureContext.Provider>
     </ToastProvider>
   )

@@ -30,7 +30,7 @@ export function Sidebar() {
         <span className={s.brandDot} aria-hidden="true" />
         <span className={s.brandName}>Planner</span>
       </div>
-      <Button tone="lemon" className={s.capture} icon={<Plus aria-hidden="true" />} aria-haspopup="dialog" onClick={capture.open}>
+      <Button tone="lemon" className={s.capture} icon={<Plus aria-hidden="true" />} aria-haspopup="dialog" onClick={() => capture.open()}>
         Capture
       </Button>
       <nav className={s.nav} aria-label="Primary">

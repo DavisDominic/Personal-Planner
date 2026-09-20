@@ -21,3 +21,6 @@ select.field{appearance:none}
 
 .field-help.error{color:var(--danger)}
 .field-help.success{color:var(--success)}
+
+/* Visually hidden but still read by screen readers. */
+.field-label.hidden{position:absolute;width:var(--u-px-1);height:var(--u-px-1);overflow:hidden;clip-path:inset(50%);white-space:nowrap}

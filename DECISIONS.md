@@ -19,6 +19,19 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Calendar and Day view
+**Status: Assumed**
+
+- **Where things live:** opening the app lands on **today's Day** (PRD 25). The **Calendar** link opens the **Month**. Routes are `/calendar/{day|week|month}/{date}`. The Day / Week / Month switch keeps the focused date, and a date picker, previous / next and a Today button sit above each view.
+- **Month and Week previews** show dated tasks and dated open loops only. **Undated tasks are left out** of them (they would repeat in every cell); they live on the Day. Order in a cell: priorities (lemon, with "P1" text), tasks (coral), open loops (peach). Done tasks stay on their date, checked and struck through, after unfinished ones. Colour is never the only signal.
+- **Density:** Month shows 3 items then "+N more"; Week shows 5. On phones the Month cell shows only tiny markers, never titles. The 7-column Week is desktop only (981px and up); below that Week is a vertical list of days.
+- **Week actions:** empty space in a day (or "Add a task" on phones) opens Capture on the Task tab with that date filled in. On desktop a task can be **dragged to another day** (a toast offers Undo), and every task also has a **Move** button that opens "Choose a date", the click alternative to dragging. Only unfinished tasks move. Phones get Move with the task detail sheet in the task-actions slice.
+- **Day view, top to bottom:** Priorities (always all visible), Tasks (remaining visible; "Completed · N — Show" discloses the rest; empty shows "+ Add a task"), On My Mind (all open loops, newest first: the first 3 then "+N more — Show"; ticking one marks it Taken care of with an Undo toast), Rituals (those due that day, first 2 then "+N more — Show"; ticking toggles the check-in; each shows a factual "N recorded days"). Empty sections are simply absent.
+- The Day's "N remaining · N completed" counts priorities and tasks together.
+- **Live:** screens update the moment data is saved, through a domain \`watch\` query, with no reload.
+- **Not built yet:** the Reflection section (Reflections slice), "From yesterday" (task-actions slice, so unfinished tasks from earlier days do not show on the Day yet), Goals as context on Month and Week (Goals slice), and the Year view.
+- **Wording:** the toolbar shows "Month" / "Week" above the period title, the reverse of the design system's sample, because the period is the useful heading.
+
 ## Capture (Slice 3)
 **Status: Assumed** unless noted
 
