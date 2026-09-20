@@ -5,10 +5,10 @@
 .main{min-width:0}
 .main:focus{outline:none}
 
-/* Phones and tablets: leave room for the bottom nav and the capture button. */
+/* Phones and tablets: leave room for the capture button. */
 .content{
   max-width:var(--content);margin:auto;
-  padding:var(--sp-4) calc(var(--sp-3) + env(safe-area-inset-right)) calc(var(--mobile-nav) + var(--u-px-56) + var(--sp-8) + env(safe-area-inset-bottom)) calc(var(--sp-3) + env(safe-area-inset-left));
+  padding:var(--sp-4) calc(var(--sp-3) + env(safe-area-inset-right)) calc(var(--u-px-56) + var(--sp-16) + var(--sp-4) + env(safe-area-inset-bottom)) calc(var(--sp-3) + env(safe-area-inset-left));
 }
 @media(min-width:981px){
   .content{padding:var(--sp-8) var(--sp-7) var(--u-px-90)}
@@ -36,20 +36,11 @@
 .brand{display:flex;align-items:center;gap:var(--u-px-10);margin-right:auto}
 .brand-name{font-size:var(--text-md);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-0_12);text-transform:uppercase}
 
-/* Mobile bottom navigation. */
-.bottom{
-  position:fixed;left:0;right:0;bottom:0;z-index:10;
-  min-height:var(--mobile-nav);
-  padding:var(--u-px-2) calc(var(--sp-2) + env(safe-area-inset-right)) calc(var(--u-px-2) + env(safe-area-inset-bottom)) calc(var(--sp-2) + env(safe-area-inset-left));
-  background:var(--paper);
-  border-top:var(--u-px-1) solid var(--line);
-}
-
-/* + Capture: bottom right, in the thumb zone, above the bottom nav. */
+/* + Capture: bottom right, in the thumb zone. */
 .fab{
   position:fixed;z-index:10;
   right:calc(var(--sp-4) + env(safe-area-inset-right));
-  bottom:calc(var(--mobile-nav) + var(--sp-3) + env(safe-area-inset-bottom));
+  bottom:calc(var(--sp-16) + env(safe-area-inset-bottom));
   width:var(--u-px-56);height:var(--u-px-56);
   display:grid;place-items:center;padding:0;
   border:var(--u-px-1) solid var(--ink);border-radius:50%;
@@ -62,5 +53,5 @@
 .fab:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 
 @media(min-width:981px){
-  .header,.bottom,.fab{display:none}
+  .header,.fab{display:none}
 }

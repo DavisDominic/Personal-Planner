@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Outlet, useMatch, useNavigate } from 'react-router'
-import { Plus, Search } from 'lucide-react'
+import { Menu, Plus, Search } from 'lucide-react'
 import { IconButton } from '../components/Button/Button'
 import { isDateString, today } from '../domain/index'
 import { AppIcon } from '../components/Logo/Logo'
-import { MobileNav } from '../components/Nav/Nav'
-import type { NavItem } from '../components/Nav/Nav'
 import { CaptureHost } from './CaptureHost'
+import { MobileMenu } from './MobileMenu'
 import { FirstLaunch } from './entry/FirstLaunch'
 import { useEntry } from './entry/useEntry'
 import { WelcomeBack } from './entry/WelcomeBack'
@@ -14,26 +13,20 @@ import { calendarPath } from './calendar/calendarPaths'
 import { CaptureContext } from './captureContext'
 import type { CapturePreset } from './captureContext'
 import { PwaUpdates } from './PwaUpdates'
-import { PRIMARY_NAV, SETTINGS_NAV } from './navItems'
 import { Sidebar } from './Sidebar'
 import { ToastProvider } from './ToastProvider'
 import s from './AppShell.module.css'
 
-const MOBILE_ITEMS: NavItem[] = [...PRIMARY_NAV, SETTINGS_NAV].map(({ label, to, icon: Icon }) => ({
-  label,
-  to,
-  icon: <Icon aria-hidden="true" />,
-}))
-
 /**
  * The frame around every screen (PRD 4, 23; DECISIONS.md "Mobile navigation and capture").
- * Desktop: persistent sidebar. Phones and tablets: header with Search, bottom nav, and a
+ * Desktop: persistent sidebar. Phones and tablets: a header with a menu drawer and Search, and a
  * floating + Capture button at the bottom right. Which set shows is decided in CSS.
  */
 export function AppShell() {
   const navigate = useNavigate()
   const entry = useEntry()
   const [captureOpen, setCaptureOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [preset, setPreset] = useState<CapturePreset>()
   // Capturing while looking at a Day gives a task that Day's date (PRD 7: "created from a Day context").
   const viewedDay = useMatch('/calendar/day/:date')?.params.date
@@ -78,6 +71,9 @@ export function AppShell() {
         <Sidebar />
         <div>
           <header className={s.header}>
+            <IconButton label="Menu" aria-haspopup="dialog" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
+              <Menu aria-hidden="true" />
+            </IconButton>
             <div className={s.brand}>
               <AppIcon />
               <span className={s.brandName}>Daybook</span>
@@ -97,12 +93,10 @@ export function AppShell() {
           </main>
         </div>
       </div>
-      <div className={s.bottom}>
-        <MobileNav items={MOBILE_ITEMS} />
-      </div>
       <button type="button" className={s.fab} aria-label="Capture" aria-haspopup="dialog" onClick={() => open()}>
         <Plus aria-hidden="true" />
       </button>
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <CaptureHost open={captureOpen} preset={preset} onClose={close} />
     </CaptureContext.Provider>
     </ToastProvider>

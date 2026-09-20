@@ -270,3 +270,18 @@ read on a phone. Rather than change the desktop appearance, a **mobile scale** w
   never clipped, and date/time pairs stack in one column on phones.
 - Viewport units (`dvh`) are the one other literal allowed in component CSS, like media-query breakpoints:
   they cannot be expressed as a token.
+
+## Mobile navigation: a menu drawer (replaces the bottom bar)
+
+**Flagged conflict with the design system**, resolved by the user's decision. The design system specifies a
+bottom navigation bar on phones, and the gallery still shows that component. In the app it is replaced by a
+**menu button at the top left of the header** that opens a drawer down the left edge: Calendar, Looking Back
+and Goals, with Search and Settings at the foot. Choosing a place closes it, as do Escape and a tap outside.
+
+- Reason: on the free Netlify plan a fixed "Powered by Netlify" badge sits in the bottom-right corner and
+  covered the last two items of the bottom bar, making them hard to reach.
+- `ModalHost` gained a `placement` of "sheet" (the default) or "drawer", so the drawer keeps the native
+  dialog's focus trap, Escape and inert background.
+- The **+ Capture** button stays bottom right (thumb zone) but now sits 64px up from the bottom, clearing
+  that badge. Nothing else occupies the bottom of the screen.
+- Desktop is unchanged: the sidebar still holds all of this above 980px.
