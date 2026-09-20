@@ -14,5 +14,5 @@
 .context.week{background:var(--mint)}
 .context-label{
   margin-bottom:var(--sp-1);
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_14);text-transform:uppercase;
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);letter-spacing:var(--u-em-0_14);text-transform:uppercase;
 }

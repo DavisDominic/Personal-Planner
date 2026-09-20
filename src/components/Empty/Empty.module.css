@@ -5,8 +5,8 @@
   display:grid;place-items:center;text-align:center;padding:var(--sp-5);
 }
 .empty svg{margin:auto;width:var(--u-px-28);height:var(--u-px-28)}
-.empty h3{font-size:var(--u-px-15);margin:var(--sp-2) 0 var(--u-px-3)}
-.empty p{font-size:var(--u-px-11);color:var(--ink-muted);margin:0}
+.empty h3{font-size:var(--t-body);margin:var(--sp-2) 0 var(--u-px-3)}
+.empty p{font-size:var(--t-mono);color:var(--ink-muted);margin:0}
 .skeleton{
   background:linear-gradient(90deg,var(--paper-deep),var(--white),var(--paper-deep));
   background-size:200% 100%;height:var(--u-px-12);border-radius:var(--r-1);

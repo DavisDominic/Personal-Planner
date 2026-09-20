@@ -24,7 +24,7 @@
   min-height:var(--u-px-210);padding:var(--u-px-18);
 }
 .reflection-sheet .prompt{
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);text-transform:uppercase;
   letter-spacing:var(--u-em-0_13);color:var(--ink-muted);
 }
 .reflection-sheet .writing{

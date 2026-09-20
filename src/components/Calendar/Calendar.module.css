@@ -16,7 +16,7 @@
   border-right:var(--u-px-1) solid var(--ink);
   border-bottom:var(--u-px-1) solid var(--ink);
   background:var(--paper-deep);
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);
   text-transform:uppercase;
 }
 .day-cell{
@@ -38,7 +38,7 @@
   padding:var(--sp-1) var(--u-px-5);
   border:var(--u-px-1) solid var(--u-ink-28);
   border-radius:var(--r-1);
-  font-size:var(--u-px-9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-size:var(--t-micro);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .day-item.coral{background:var(--coral)}
 .day-item.violet{background:var(--violet)}
@@ -55,7 +55,7 @@
 .week-head{
   display:flex;justify-content:space-between;align-items:baseline;
   padding-bottom:var(--u-px-9);border-bottom:var(--u-px-1) solid var(--line);
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);text-transform:uppercase;
 }
 .week-head .date{color:var(--ink-muted)}
 .week-task{
@@ -63,8 +63,8 @@
   border:var(--u-px-1) solid var(--u-ink-35);
   border-radius:var(--r-1);font-size:var(--text-xs);
 }
-.week-task strong{display:block;font-size:var(--u-px-11)}
-.week-task small{font:var(--u-px-8) var(--font-mono);text-transform:uppercase}
+.week-task strong{display:block;font-size:var(--t-mono)}
+.week-task small{font:var(--t-micro) var(--font-mono);text-transform:uppercase}
 .week-task.coral{background:var(--coral)}
 .week-task.lemon{background:var(--lemon)}
 .week-task.violet{background:var(--violet)}
@@ -77,7 +77,7 @@
   background:var(--white);padding:var(--sp-3);border-radius:var(--r-1);
 }
 .month-card.active{background:var(--lemon)}
-.month-name{font:var(--u-fw-700) var(--u-px-11) var(--font-mono);text-transform:uppercase}
+.month-name{font:var(--u-fw-700) var(--t-mono) var(--font-mono);text-transform:uppercase}
 .month-sub{font-size:var(--text-xs);color:var(--ink-muted);margin-top:var(--sp-1)}
 .activity-row{display:flex;gap:var(--u-px-3);align-items:end;height:var(--u-px-35);margin-top:var(--u-px-18)}
 .activity-bar{--n:0;width:var(--u-px-7);height:calc(var(--u-px-4) + var(--n, 0) * var(--u-px-4));background:var(--ink)}
@@ -99,7 +99,7 @@
 .day-link:hover{background:var(--paper-warm)}
 .day-item.lemon{background:var(--lemon)}
 .day-item.done{text-decoration:line-through}
-.day-more{margin-top:var(--sp-1);font:var(--u-px-9) var(--font-mono);text-transform:uppercase;color:var(--ink-muted)}
+.day-more{margin-top:var(--sp-1);font:var(--t-micro) var(--font-mono);text-transform:uppercase;color:var(--ink-muted)}
 .day-marks{display:none;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--u-px-5)}
 .day-mark{width:var(--u-px-6);height:var(--u-px-6);background:var(--ink)}
 
@@ -125,18 +125,18 @@
   border:var(--u-px-1) solid var(--ink);border-radius:var(--r-1);background:var(--white);color:var(--ink);
   opacity:0;
 }
-.week-move svg{width:var(--u-px-12);height:var(--u-px-12)}
+.week-move svg{width:var(--t-icon-12);height:var(--t-icon-12)}
 .week-task:hover .week-move,.week-move:focus-visible{opacity:1}
 .week-move:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
-.week-more-link{margin-top:var(--sp-2);font:var(--u-px-9) var(--font-mono);text-transform:uppercase;color:var(--ink);text-decoration:underline}
+.week-more-link{margin-top:var(--sp-2);font:var(--t-micro) var(--font-mono);text-transform:uppercase;color:var(--ink);text-decoration:underline}
 .week-add{
   flex:1;min-height:var(--touch);margin-top:var(--sp-2);
   display:flex;align-items:flex-start;gap:var(--sp-1);padding:var(--sp-1);
   border:var(--u-px-1) dashed transparent;border-radius:var(--r-1);background:transparent;color:var(--ink-muted);
-  font:var(--u-px-9) var(--font-mono);text-transform:uppercase;
+  font:var(--t-micro) var(--font-mono);text-transform:uppercase;
   opacity:0;
 }
-.week-add svg{width:var(--u-px-12);height:var(--u-px-12)}
+.week-add svg{width:var(--t-icon-12);height:var(--t-icon-12)}
 .week-col:hover .week-add,.week-add:focus-visible{opacity:1;border-color:var(--line-dark)}
 .week-add:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 .drop-over{background:var(--paper-deep);outline:var(--u-px-2) dashed var(--ink);outline-offset:calc(-1 * var(--u-px-2))}
@@ -152,7 +152,7 @@
   box-shadow:var(--shadow-float);
   opacity:0;
 }
-.day-add svg{width:var(--u-px-12);height:var(--u-px-12)}
+.day-add svg{width:var(--t-icon-12);height:var(--t-icon-12)}
 .day-cell:hover .day-add,.day-cell .day-add:focus-visible{opacity:1}
 .day-add:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 @media(hover:none){.day-cell .day-add{opacity:1}}

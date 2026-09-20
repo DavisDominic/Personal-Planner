@@ -18,7 +18,7 @@
 .task.done .task-title{text-decoration:line-through;color:var(--ink-muted)}
 /* Completed tasks on color-block/paper surfaces keep strong ink contrast. */
 .on-color.done .task-title,.on-color .task-meta{color:var(--ink)}
-.task-meta{font:var(--u-px-9) var(--font-mono);color:var(--ink-muted);text-transform:uppercase;margin-top:var(--sp-1)}
+.task-meta{font:var(--t-micro) var(--font-mono);color:var(--ink-muted);text-transform:uppercase;margin-top:var(--sp-1)}
 .task-priority{
   width:var(--u-px-7);height:var(--u-px-7);border-radius:50%;
   background:var(--coral);display:inline-block;margin-right:var(--u-px-5);

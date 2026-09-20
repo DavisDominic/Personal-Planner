@@ -11,7 +11,7 @@
 .capture-tab{
   min-height:var(--u-px-38);border:0;background:transparent;
   border-bottom:var(--u-px-2) solid transparent;
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);text-transform:uppercase;
 }
 .capture-tab.active{border-color:var(--ink);background:var(--lemon)}
 .capture-foot{display:flex;justify-content:flex-end;gap:var(--u-px-7);margin-top:var(--sp-4)}
@@ -24,5 +24,17 @@
 
 /* On phones and tablets the capture panel is a bottom sheet. */
 @media(max-width:980px){
-  .capture{width:100%;border-radius:var(--r-4) var(--r-4) 0 0;padding-bottom:calc(var(--u-px-18) + env(safe-area-inset-bottom))}
+  .capture{
+    width:100%;border-radius:var(--r-4) var(--r-4) 0 0;
+    padding-bottom:calc(var(--u-px-18) + env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;max-height:100dvh;
+  }
+  .capture-tabs{flex:none}
+  /* The fields take the space that is left, so Save is never pushed off the screen. */
+  .capture-fields{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+  .capture-foot{flex:none}
+}
+
+@media(max-width:680px){
+  .capture-row{grid-template-columns:minmax(0,1fr)}
 }

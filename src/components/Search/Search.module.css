@@ -5,12 +5,12 @@
   background:var(--white);padding:0 var(--sp-3);border-radius:var(--r-2);
 }
 .searchbar input{border:0;outline:0;background:transparent;width:100%;color:var(--ink)}
-.searchbar svg{width:var(--u-px-18)}
+.searchbar svg{width:var(--t-icon-18)}
 .filters{display:flex;flex-wrap:wrap;gap:var(--u-px-6);margin-top:var(--u-px-10)}
 .filter{
   min-height:var(--u-px-30);padding:var(--u-px-5) var(--u-px-9);border:var(--u-px-1) solid var(--line-dark);
   border-radius:var(--r-pill);background:var(--white);
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);text-transform:uppercase;
 }
 .filter.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
 .filter{composes:hit from "../../styles/hit.module.css"}
@@ -25,5 +25,5 @@
 .searchbar input::-webkit-search-cancel-button{appearance:none;display:none}
 .clear-text{display:grid;place-items:center;flex:none;width:var(--u-px-30);height:var(--u-px-30);padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink)}
 .clear-text:hover{background:var(--paper-deep)}
-.clear-text svg{width:var(--u-px-16);height:var(--u-px-16)}
+.clear-text svg{width:var(--t-icon-16);height:var(--t-icon-16)}
 .clear-text:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}

@@ -1,4 +1,4 @@
-.shell{min-height:100vh}
+.shell{min-height:100dvh}
 @media(min-width:981px){
   .shell{display:grid;grid-template-columns:var(--sidebar) 1fr}
 }
@@ -8,7 +8,7 @@
 /* Phones and tablets: leave room for the bottom nav and the capture button. */
 .content{
   max-width:var(--content);margin:auto;
-  padding:var(--sp-4) var(--sp-3) calc(var(--mobile-nav) + var(--u-px-56) + var(--sp-8) + env(safe-area-inset-bottom));
+  padding:var(--sp-4) calc(var(--sp-3) + env(safe-area-inset-right)) calc(var(--mobile-nav) + var(--u-px-56) + var(--sp-8) + env(safe-area-inset-bottom)) calc(var(--sp-3) + env(safe-area-inset-left));
 }
 @media(min-width:981px){
   .content{padding:var(--sp-8) var(--sp-7) var(--u-px-90)}
@@ -18,7 +18,7 @@
   position:absolute;left:var(--sp-2);top:var(--sp-2);z-index:30;
   padding:var(--sp-2) var(--sp-3);
   background:var(--ink);color:var(--white);
-  font:var(--u-fw-700) var(--u-px-10) var(--font-mono);text-transform:uppercase;text-decoration:none;
+  font:var(--u-fw-700) var(--t-mono) var(--font-mono);text-transform:uppercase;text-decoration:none;
   border-radius:var(--r-2);
   transform:translateY(-200%);
 }
@@ -29,7 +29,7 @@
   position:sticky;top:0;z-index:10;
   display:flex;align-items:center;gap:var(--u-px-10);
   min-height:var(--touch);
-  padding:var(--sp-2) var(--sp-3);
+  padding:calc(var(--sp-2) + env(safe-area-inset-top)) calc(var(--sp-3) + env(safe-area-inset-right)) var(--sp-2) calc(var(--sp-3) + env(safe-area-inset-left));
   background:var(--paper);
   border-bottom:var(--u-px-1) solid var(--line);
 }
@@ -40,7 +40,7 @@
 .bottom{
   position:fixed;left:0;right:0;bottom:0;z-index:10;
   min-height:var(--mobile-nav);
-  padding:var(--u-px-2) var(--sp-2) calc(var(--u-px-2) + env(safe-area-inset-bottom));
+  padding:var(--u-px-2) calc(var(--sp-2) + env(safe-area-inset-right)) calc(var(--u-px-2) + env(safe-area-inset-bottom)) calc(var(--sp-2) + env(safe-area-inset-left));
   background:var(--paper);
   border-top:var(--u-px-1) solid var(--line);
 }
@@ -48,7 +48,7 @@
 /* + Capture: bottom right, in the thumb zone, above the bottom nav. */
 .fab{
   position:fixed;z-index:10;
-  right:var(--sp-4);
+  right:calc(var(--sp-4) + env(safe-area-inset-right));
   bottom:calc(var(--mobile-nav) + var(--sp-3) + env(safe-area-inset-bottom));
   width:var(--u-px-56);height:var(--u-px-56);
   display:grid;place-items:center;padding:0;
@@ -57,7 +57,7 @@
   box-shadow:var(--shadow-float);
   transition:transform var(--fast) var(--ease);
 }
-.fab svg{width:var(--u-px-24);height:var(--u-px-24)}
+.fab svg{width:var(--t-icon-24);height:var(--t-icon-24)}
 .fab:active{transform:translate(var(--u-px-1),var(--u-px-1))}
 .fab:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 

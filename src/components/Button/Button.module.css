@@ -19,7 +19,7 @@
 .btn.ghost{background:transparent;border-color:var(--line);box-shadow:none;color:var(--ink-muted)}
 .btn.disabled,.btn:disabled{opacity:var(--u-op-0_38);cursor:not-allowed;transform:none;box-shadow:none}
 .btn.small{min-height:var(--u-px-32);padding:var(--u-px-7) var(--u-px-10)}
-.btn.large{min-height:var(--u-px-48);padding:var(--u-px-11) var(--u-px-18);font-size:var(--u-px-11)}
+.btn.large{min-height:var(--u-px-48);padding:var(--u-px-11) var(--u-px-18);font-size:var(--t-mono)}
 .icon-btn{
   width:var(--touch);height:var(--touch);padding:0;
   display:inline-grid;place-items:center;

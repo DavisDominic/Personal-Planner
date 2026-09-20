@@ -5,7 +5,7 @@
   min-height:var(--u-px-30);padding:var(--u-px-5) var(--u-px-9);
   border:var(--u-px-1) solid var(--line-dark);border-radius:var(--r-pill);
   background:var(--white);color:var(--ink);text-decoration:none;
-  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+  font:var(--u-fw-700) var(--t-micro) var(--font-mono);text-transform:uppercase;
 }
 .item:hover{border-color:var(--ink)}
 .item.active{background:var(--ink);color:var(--white);border-color:var(--ink)}

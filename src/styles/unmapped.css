@@ -105,3 +105,49 @@
   --u-sw-1_8:1.8;
   --u-white-55:color-mix(in srgb, var(--white) 55%, transparent);
 }
+
+/* ---------------------------------------------------------------------------
+ * MOBILE SCALE — flagged gap (see DECISIONS.md "Mobile readability").
+ * The design system is a desktop reference: it has no phone type scale, and its
+ * smallest sizes (8-12px) are hard to read in the hand. These semantic sizes are
+ * used by component CSS in place of raw --u-px-* for TYPE and ICONS only, and they
+ * step up below the desktop breakpoint. Desktop values are unchanged.
+ * ------------------------------------------------------------------------- */
+:root{
+  --t-micro:9px;   /* mono micro labels: captions, chips, calendar heads, bottom nav */
+  --t-mono:11px;   /* mono numerals and small mono text */
+  --t-sub:13px;    /* small headings */
+  --t-body:15px;   /* .type-body */
+  --t-icon-12:12px;
+  --t-icon-14:14px;
+  --t-icon-16:16px;
+  --t-icon-18:18px;
+  --t-icon-19:19px;
+  --t-icon-20:20px;
+  --t-icon-22:22px;
+  --t-icon-24:24px;
+  --t-icon-32:32px;
+}
+@media(max-width:980px){
+  :root{
+    /* Body text reaches 16px, which also stops iOS Safari zooming in when a field is focused. */
+    --text-xs:12px;
+    --text-sm:14px;
+    --text-md:16px;
+    --text-lg:18px;
+    --text-xl:22px;
+    --t-micro:11px;
+    --t-mono:13px;
+    --t-sub:15px;
+    --t-body:16px;
+    --t-icon-12:14px;
+    --t-icon-14:17px;
+    --t-icon-16:19px;
+    --t-icon-18:21px;
+    --t-icon-19:22px;
+    --t-icon-20:23px;
+    --t-icon-22:25px;
+    --t-icon-24:27px;
+    --t-icon-32:34px;
+  }
+}

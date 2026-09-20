@@ -245,3 +245,28 @@ Status maps across kinds: open = active task, open loop, ritual or goal; done = 
 
 - **Time picker** replaces the browser's own, in the date picker's style: scrolling columns for hour (00-23) and minute (00-59) on a **24-hour clock**, with no AM/PM (user decision). Times are shown as "14:35" everywhere and stored as "HH:mm". Arrow keys move within a column, Escape closes, Clear removes the time.
 - **Search** shows a clear (x) button while there is text.
+
+## Mobile readability and fit (phones and tablets)
+
+**Flagged conflict with the design system.** The design system is a desktop reference: it has no phone
+layout and no phone type scale, and its smallest sizes (8–12px mono labels, 12–16px icons) are hard to
+read on a phone. Rather than change the desktop appearance, a **mobile scale** was added in
+`src/styles/unmapped.css` and applies only below the desktop breakpoint. Desktop is byte-for-byte unchanged.
+
+- **Semantic type and icon sizes.** Component CSS no longer uses raw `--u-px-*` for type or icon sizes.
+  It uses `--t-micro` (mono micro labels), `--t-mono`, `--t-sub`, `--t-body` and `--t-icon-12 … --t-icon-32`.
+  Each keeps its desktop value and steps up on mobile, e.g. micro labels 9 → 11px, icons 16 → 19px.
+- **Body text reaches 16px on mobile**, which also stops iOS Safari zooming the page in when a field is
+  focused. The scale: `--text-xs` 10 → 12, `--text-sm` 12 → 14, `--text-md` 14 → 16, `--text-lg` 16 → 18,
+  `--text-xl` 20 → 22. Headings (2xl and up) are already large and are unchanged.
+- **Keyboards no longer cut off a sheet.** `interactive-widget=resizes-content` in the viewport meta lets
+  Android shrink the page when the keyboard opens; the Capture sheet is a flex column whose fields scroll,
+  so Save and Cancel stay on screen. Dialog sheets scroll the same way.
+- **Safe areas.** `viewport-fit=cover` plus `env(safe-area-inset-*)` on the header, page, bottom nav, capture
+  button and sheets, so an installed iPhone app clears the status bar, the home indicator and the corners.
+- **Dynamic viewport.** `100dvh` in place of `100vh`, so a phone's shrinking toolbars can't cut the page off.
+- **Date and time pickers** open centred on phones (max-width 680px) instead of anchored to their field,
+  which previously ran off the edge of the screen. The date field grew to `min-height` so wrapped text is
+  never clipped, and date/time pairs stack in one column on phones.
+- Viewport units (`dvh`) are the one other literal allowed in component CSS, like media-query breakpoints:
+  they cannot be expressed as a token.
