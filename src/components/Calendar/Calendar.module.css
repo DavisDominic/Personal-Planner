@@ -27,7 +27,6 @@
   background:var(--white);
 }
 .day-cell.muted{background:var(--paper);color:var(--ink-muted)}
-.day-cell.today{background:var(--lemon)}
 .day-number{
   width:var(--u-px-25);height:var(--u-px-25);display:grid;place-items:center;
   font:var(--u-fw-700) var(--text-xs) var(--font-mono);
@@ -85,15 +84,15 @@
 .activity-bar:nth-child(1){height:var(--u-px-8)}.activity-bar:nth-child(2){height:var(--u-px-18)}.activity-bar:nth-child(3){height:var(--u-px-12)}.activity-bar:nth-child(4){height:var(--u-px-26)}.activity-bar:nth-child(5){height:var(--u-px-15)}.activity-bar:nth-child(6){height:var(--u-px-31)}
 
 /* ---------- REAL VIEWS: links, more, marks, add, drag ---------- */
-.calendar-title{margin:0}
+.calendar-title{margin:0;min-width:var(--u-px-220);text-align:center}
+.title-row{display:flex;align-items:center;gap:var(--sp-3)}
+.day-number.selected-mark{background:var(--lemon);color:var(--ink);border:var(--u-px-1) solid var(--ink);border-radius:50%}
 .day-cell{position:relative}
 .day-link{color:inherit}
 .day-link:hover{background:var(--paper-warm)}
-.day-cell.today.day-link:hover{background:var(--lemon)}
 .day-item.lemon{background:var(--lemon)}
 .day-item.done{text-decoration:line-through}
 .day-more{margin-top:var(--sp-1);font:var(--u-px-9) var(--font-mono);text-transform:uppercase;color:var(--ink-muted)}
-.day-cell.today .day-more{color:var(--ink)}
 .day-marks{display:none;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--u-px-5)}
 .day-mark{width:var(--u-px-6);height:var(--u-px-6);background:var(--ink)}
 
@@ -101,7 +100,10 @@
 .week-head-link{color:inherit;text-decoration:none}
 .week-head-link:hover{background:var(--paper-warm)}
 .week-head-link:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
-.week-head .date.today-date{display:grid;place-items:center;min-width:var(--u-px-22);height:var(--u-px-22);border-radius:50%;background:var(--ink);color:var(--white)}
+.week-head .date.today-date,.week-head .date.selected-date{display:grid;place-items:center;min-width:var(--u-px-22);height:var(--u-px-22);border-radius:50%}
+.week-head .date.today-date{background:var(--ink);color:var(--white)}
+/* The selected date: a yellow circle around its number. */
+.week-head .date.selected-date{background:var(--lemon);color:var(--ink);border:var(--u-px-1) solid var(--ink)}
 .week-task{position:relative}
 .week-task.peach{background:var(--peach)}
 .week-task.done strong{text-decoration:line-through}

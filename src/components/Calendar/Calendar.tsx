@@ -1,20 +1,41 @@
 import { useState } from 'react'
 import type { DragEvent, ReactNode } from 'react'
 import { Link } from 'react-router'
-import { CalendarDays, Plus } from 'lucide-react'
+import { CalendarDays, ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { cx } from '../../lib/cx'
+import { IconButton } from '../Button/Button'
 import t from '../../styles/typography.module.css'
 import s from './Calendar.module.css'
 
 type DayItemTone = 'coral' | 'violet' | 'sage' | 'sky' | 'peach' | 'lemon'
 type WeekTaskTone = 'coral' | 'lemon' | 'violet' | 'sage' | 'sky' | 'peach'
 
-export function CalendarToolbar({ caption, title, children }: { caption: string; title: string; children: ReactNode }) {
+type CalendarToolbarProps = {
+  caption: string
+  title: string
+  onPrevious: () => void
+  onNext: () => void
+  previousLabel: string
+  nextLabel: string
+  /** Controls on the right, e.g. "Show today" and a date picker. */
+  children?: ReactNode
+}
+
+/** The period title sits between the back and next arrows; other controls go to the right. */
+export function CalendarToolbar({ caption, title, onPrevious, onNext, previousLabel, nextLabel, children }: CalendarToolbarProps) {
   return (
     <div className={s.calendarToolbar}>
       <div>
         <div className={t.typeCaption}>{caption}</div>
-        <h1 className={s.calendarTitle}>{title}</h1>
+        <div className={s.titleRow}>
+          <IconButton label={previousLabel} onClick={onPrevious}>
+            <ChevronLeft aria-hidden="true" />
+          </IconButton>
+          <h1 className={s.calendarTitle}>{title}</h1>
+          <IconButton label={nextLabel} onClick={onNext}>
+            <ChevronRight aria-hidden="true" />
+          </IconButton>
+        </div>
       </div>
       <div className={s.calendarControls}>{children}</div>
     </div>
@@ -27,6 +48,8 @@ export type MonthCell = {
   day: number
   muted?: boolean
   today?: boolean
+  /** The date being looked at: its number gets a yellow circle. */
+  selected?: boolean
   items?: { label: string; tone: DayItemTone; done?: boolean }[]
   /** Where tapping the date goes (its Day view). */
   href?: string
@@ -53,7 +76,7 @@ export function MonthGrid({ weekdays, cells }: { weekdays: string[]; cells: Mont
         const className = cx(s.dayCell, c.muted && s.muted, c.today && s.today, c.href && s.dayLink)
         const body = (
           <>
-            <div className={cx(s.dayNumber, c.today && s.todayMark)}>{c.day}</div>
+            <div className={cx(s.dayNumber, c.today && s.todayMark, c.selected && s.selectedMark)}>{c.day}</div>
             {c.items && c.items.length > 0 && (
               <div className={s.dayItems}>
                 {c.items.map((it, k) => (
@@ -113,6 +136,8 @@ export type WeekDay = {
   date: number
   tasks?: WeekTask[]
   today?: boolean
+  /** The date being looked at: its number gets a yellow circle. */
+  selected?: boolean
   /** The date's Day view. */
   href?: string
   more?: number
@@ -144,7 +169,7 @@ function WeekColumn({ day }: { day: WeekDay }) {
   const head = (
     <>
       <span>{day.dow}</span>
-      <span className={cx(s.date, day.today && s.todayDate)}>{day.date}</span>
+      <span className={cx(s.date, day.today && s.todayDate, day.selected && s.selectedDate)}>{day.date}</span>
     </>
   )
 

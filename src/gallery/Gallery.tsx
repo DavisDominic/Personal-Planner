@@ -112,7 +112,7 @@ const MONTH: MonthCell[] = [
   cell(10, { items: [{ label: 'Presentation', tone: 'coral' }] }),
   ...[11, 12, 13, 14, 15, 16, 17, 18].map((d) => cell(d)),
   cell(19, { today: true, items: [{ label: 'Finish deck', tone: 'coral' }, { label: 'Weekly goal', tone: 'violet' }] }),
-  ...[20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map((d) => cell(d)),
+  cell(20), cell(21, { selected: true }), ...[22, 23, 24, 25, 26, 27, 28, 29, 30].map((d) => cell(d)),
   cell(1, { muted: true }), cell(2, { muted: true }), cell(3, { muted: true }),
 ]
 
@@ -505,10 +505,8 @@ export default function Gallery() {
           {/* 11 CALENDAR */}
           <Section id="calendar" n="11" title="Calendar system" note="Year = orientation. Month = context. Week = planning. Day = doing. The same visual language scales across all four.">
             <Board>
-              <CalendarToolbar caption="September 2026" title="Month">
-                <IconButton label="Previous month"><ChevronLeft aria-hidden="true" /></IconButton>
-                <Button tone="lemon" size="small">Today</Button>
-                <IconButton label="Next month"><ChevronRight aria-hidden="true" /></IconButton>
+              <CalendarToolbar caption="Month" title="September 2026" previousLabel="Previous month" nextLabel="Next month" onPrevious={() => {}} onNext={() => {}}>
+                <Button tone="lemon">Show today</Button>
               </CalendarToolbar>
               <MonthGrid weekdays={W} cells={MONTH} />
               <div className={cx(t.typeLabel, g.mt8)}>Week / desktop</div>

@@ -49,6 +49,7 @@ export function WeekView({ date }: { date: string }) {
       dow: weekdayShort(d),
       date: Number(d.slice(8)),
       today: d === now,
+      selected: d === date,
       href: dayPath(d),
       more: Math.max(0, items.length - SHOWN),
       onAdd: () => capture.open({ tab: 'task', date: d }),

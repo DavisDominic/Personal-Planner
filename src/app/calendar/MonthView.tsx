@@ -28,6 +28,7 @@ export function MonthView({ date }: { date: string }) {
       day: Number(d.slice(8)),
       muted: d.slice(0, 7) !== date.slice(0, 7),
       today: d === now,
+      selected: d === date,
       href: dayPath(d),
       ariaLabel: `${dayLong(d)}${items.length ? `, ${items.length} ${items.length === 1 ? 'item' : 'items'}` : ''}`,
       items: items.slice(0, SHOWN).map((i) => ({ label: labelFor(i), tone: toneFor(i), done: i.done })),

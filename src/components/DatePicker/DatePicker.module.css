@@ -45,15 +45,15 @@
 
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--u-px-2)}
 .day{
-  height:var(--u-px-38);padding:0;
+  height:var(--u-px-38);padding:0;justify-self:center;aspect-ratio:1;
   border:var(--u-px-1) solid transparent;border-radius:var(--r-2);
   background:transparent;color:var(--ink);
   font:var(--u-fw-700) var(--u-px-11) var(--font-mono);
 }
 .day:hover{background:var(--paper-deep)}
 .day.outside{color:var(--ink-muted)}
-.day.today{background:var(--lemon);border-color:var(--ink)}
-.day.selected{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.day.today{background:var(--ink);color:var(--white);border-color:var(--ink);border-radius:50%}
+.day.selected{background:var(--lemon);color:var(--ink);border-color:var(--ink);border-radius:50%}
 .day:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 
 .foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);margin-top:var(--sp-3)}
