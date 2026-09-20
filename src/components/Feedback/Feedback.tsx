@@ -21,3 +21,12 @@ export function InlineMessage({ kind, children }: { kind: 'error' | 'success'; c
     </div>
   )
 }
+
+/** A calm, neutral note, such as a gentle question. Not an error. */
+export function Notice({ children }: { children: ReactNode }) {
+  return (
+    <div className={s.notice} role="status">
+      {children}
+    </div>
+  )
+}

@@ -1,0 +1,13 @@
+.wrap{display:grid;gap:var(--u-px-6)}
+.label{font:var(--u-fw-700) var(--u-px-9) var(--font-mono);letter-spacing:var(--u-em-0_14);text-transform:uppercase}
+.days{display:flex;flex-wrap:wrap;gap:var(--u-px-6)}
+.day{
+  composes:hit from "../../styles/hit.module.css";
+  min-width:var(--u-px-36);min-height:var(--u-px-36);padding:0;
+  border:var(--u-px-1) solid var(--line-dark);border-radius:var(--r-pill);
+  background:var(--white);color:var(--ink);
+  font:var(--u-fw-700) var(--u-px-10) var(--font-mono);text-transform:uppercase;
+}
+.day:hover{border-color:var(--ink)}
+.day.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.day:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}

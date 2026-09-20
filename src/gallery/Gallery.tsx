@@ -18,6 +18,7 @@ import type { MonthCell, WeekDay, YearMonth } from '../components/Calendar/Calen
 import { Widget, WidgetGrid } from '../components/Widget/Widget'
 import { MobileNav, ProductNav } from '../components/Nav/Nav'
 import { CapturePanel } from '../components/Capture/Capture'
+import type { CaptureTab } from '../components/Capture/captureTabs'
 import { FilterChips, SearchBar } from '../components/Search/Search'
 import { InlineMessage, Toast } from '../components/Feedback/Feedback'
 import { Dialog, Sheet } from '../components/Overlay/Overlay'
@@ -67,6 +68,15 @@ function Semantic({ token, label, caption }: { token: string; label: string; cap
         <div className={t.typeCaption}>{caption}</div>
       </div>
     </div>
+  )
+}
+
+function CaptureDemo() {
+  const [tab, setTab] = useState<CaptureTab>('open-loop')
+  return (
+    <CapturePanel tab={tab} onTabChange={setTab} canSave onSubmit={() => {}}>
+      <Field label="What's on your mind?" defaultValue="Figure out career direction" />
+    </CapturePanel>
   )
 }
 
@@ -569,7 +579,7 @@ export default function Gallery() {
           {/* 14 CAPTURE */}
           <Section id="capture" n="14" title="Universal capture" note="The default is Open Loop. The user can switch directly to Task or Ritual without passing through another object.">
             <Board className={g.boardCenter}>
-              <CapturePanel initialText="Figure out career direction" />
+              <CaptureDemo />
             </Board>
           </Section>
 

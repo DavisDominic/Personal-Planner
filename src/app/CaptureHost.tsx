@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { CapturePanel } from '../components/Capture/Capture'
+import { CaptureForm } from './CaptureForm'
 import s from './CaptureHost.module.css'
 
 /**
@@ -31,7 +31,7 @@ export function CaptureHost({ open, onClose }: { open: boolean; onClose: () => v
         if (e.target === ref.current) onClose() // a click on the backdrop
       }}
     >
-      {open && <CapturePanel onClose={onClose} />}
+      {open && <CaptureForm onClose={onClose} />}
     </dialog>
   )
 }

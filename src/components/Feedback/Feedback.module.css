@@ -20,3 +20,6 @@
 .toast .undo:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 
 .toast .undo{background:transparent;border:0;padding:0}
+
+/* A calm, neutral note (e.g. a gentle question). Not an error. */
+.notice{padding:var(--u-px-10);border-left:var(--u-px-3) solid var(--ink);background:var(--paper-warm);font-size:var(--u-px-11);line-height:var(--u-lh-1_45)}

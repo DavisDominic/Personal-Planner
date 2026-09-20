@@ -1,0 +1,12 @@
+/* Sits above the bottom nav and the capture button on phones; bottom centre on desktop. */
+.region{
+  position:fixed;left:0;right:0;z-index:20;
+  bottom:calc(var(--mobile-nav) + var(--u-px-56) + var(--sp-6) + env(safe-area-inset-bottom));
+  display:grid;justify-items:center;
+  padding:0 var(--sp-4);
+  pointer-events:none;
+}
+.toast{width:min(var(--u-px-430),100%);pointer-events:auto}
+@media(min-width:981px){
+  .region{bottom:var(--sp-6)}
+}

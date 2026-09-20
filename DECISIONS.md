@@ -19,6 +19,18 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Capture (Slice 3)
+**Status: Assumed** unless noted
+
+- **Open Loop** (default): only a title. "Add a note" reveals a note field. The optional date is set later, when editing.
+- **Task:** title, date, time, priority (None, P1–P5) and an optional note. Only these fields appear for a Task.
+- **Ritual:** name and frequency (Daily, Weekly, Weekends, Custom weekdays). Custom reveals a weekday picker (Sunday first) and needs at least one day.
+- **No date means every day.** Capture leaves the Task date empty, and the field says: "Leave empty to show it every day until it's done." (PRD 7 defaults the date to today only for dated flows, which the Day and Week screens will provide.)
+- **Priority choices are P1–P5** (the PRD's recommended range). The domain accepts higher levels; the UI offers none yet.
+- **The gentle question** ("You've chosen five priorities already. Add this anyway?", with Go back and Add anyway) appears only when saving a Task with a priority into a day that already has five. An undated priority task counts against today. It never blocks.
+- **Save is disabled** until the form is valid; Enter saves a valid form. After saving, the panel closes and a short factual toast confirms ("Open loop saved"). Toasts last six seconds and will carry Undo where an action is destructive.
+- **Errors** are calm: the domain's message for invalid input, otherwise "We couldn't save that. Nothing has been changed."
+
 ## Weeks start on Sunday
 **Status: Confirmed** (2026-09-20)
 
@@ -30,7 +42,7 @@ Weeks run Sunday to Saturday everywhere (week goals, week reflections, the Week 
 - Routes: `/calendar` (home), `/looking-back`, `/goals`, `/search`, `/settings`, plus `/gallery`. Each screen is a titled placeholder until its slice.
 - **Desktop (981px and up):** persistent sidebar with + Capture on top, Calendar / Looking Back / Goals, and Search (with the Ctrl K / ⌘ K hint) and Settings at the bottom.
 - **Phones and tablets (980px and down):** header with the brand and a Search button, a bottom nav (Calendar / Looking Back / Goals / Settings), and the floating + Capture button at the bottom right (56px, above the bottom nav). Tablets use the phone layout for now; the design system's "compact top/side nav" for 681–980px is not built.
-- **Capture** opens as a centred modal on desktop and a bottom sheet on phones and tablets, with the input focused. *Until the Capture slice, Save only closes it and nothing is stored.*
+- **Capture** opens as a centred modal on desktop and a bottom sheet on phones and tablets, with the input focused. Saving is wired in the Capture slice (below).
 - **Search** for now is its own screen. Ctrl/⌘ + K goes to it (ignored while the capture modal is open). The design system's desktop modal/command surface arrives with the Search slice.
 - Breakpoints stay literal because CSS cannot use variables in media queries: 980px (desktop starts at 981px) and 680px.
 

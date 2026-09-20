@@ -8,6 +8,7 @@ import { CaptureHost } from './CaptureHost'
 import { CaptureContext } from './captureContext'
 import { PRIMARY_NAV, SETTINGS_NAV } from './navItems'
 import { Sidebar } from './Sidebar'
+import { ToastProvider } from './ToastProvider'
 import s from './AppShell.module.css'
 
 const MOBILE_ITEMS: NavItem[] = [...PRIMARY_NAV, SETTINGS_NAV].map(({ label, to, icon: Icon }) => ({
@@ -41,6 +42,7 @@ export function AppShell() {
   }, [navigate, captureOpen])
 
   return (
+    <ToastProvider>
     <CaptureContext.Provider value={capture}>
       <a className={s.skip} href="#main">
         Skip to content
@@ -72,5 +74,6 @@ export function AppShell() {
       </button>
       <CaptureHost open={captureOpen} onClose={close} />
     </CaptureContext.Provider>
+    </ToastProvider>
   )
 }
