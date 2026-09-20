@@ -71,14 +71,14 @@ export function AppShell() {
         <Sidebar />
         <div>
           <header className={s.header}>
-            <IconButton label="Menu" aria-haspopup="dialog" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
+            <IconButton label="Menu" tone="plain" aria-haspopup="dialog" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
               <Menu aria-hidden="true" />
             </IconButton>
             <div className={s.brand}>
               <AppIcon />
               <span className={s.brandName}>Daybook</span>
             </div>
-            <IconButton label="Search" onClick={() => navigate('/search')}>
+            <IconButton label="Search" tone="plain" onClick={() => navigate('/search')}>
               <Search aria-hidden="true" />
             </IconButton>
           </header>

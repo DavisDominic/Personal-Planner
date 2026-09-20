@@ -1,5 +1,5 @@
 import { db, newId, nowTimestamp } from './context'
-import { assertDate } from './dates'
+import { assertDate, timestampToDate } from './dates'
 import { invalid, notFound } from './errors'
 import { createTask } from './tasks'
 import type { DateString, OpenLoop, Task } from './types'
@@ -116,6 +116,18 @@ export const getOpenLoop = (id: string) => db().openLoops.get(id)
 export async function listOpenLoops(): Promise<OpenLoop[]> {
   const loops = await db().openLoops.where('status').equals('open').toArray()
   return loops.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+}
+
+/**
+ * Loops taken care of on a date, most recently resolved first. The Day keeps them in view, ticked, so
+ * that taking care of something leaves a visible record and can be undone later.
+ */
+export async function listTakenCareOfOn(date: DateString): Promise<OpenLoop[]> {
+  assertDate(date)
+  const loops = await db()
+    .openLoops.filter((l) => l.status === 'taken-care-of' && l.resolvedAt !== undefined && timestampToDate(l.resolvedAt) === date)
+    .toArray()
+  return loops.sort((a, b) => (b.resolvedAt ?? '').localeCompare(a.resolvedAt ?? ''))
 }
 
 /** Loops that were taken care of, most recently resolved first. */

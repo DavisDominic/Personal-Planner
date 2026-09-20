@@ -6,9 +6,11 @@ import { Card, CardHead, CardKicker, CardRule } from '../../components/Card/Card
 import { FilterChips } from '../../components/Search/Search'
 import { TaskRow } from '../../components/Task/Task'
 import { addDays, addMonths, getLookingBack, periodBounds, toDateString, today } from '../../domain/index'
-import type { LookingBackRange, Reflection, TimelineEntry } from '../../domain/index'
+import type { LookingBackRange, OpenLoop, Reflection, Task, TimelineEntry } from '../../domain/index'
 import { dayRelative, dayShort, monthTitle, weekTitle } from '../../lib/dateFormat'
 import t from '../../styles/typography.module.css'
+import { OpenLoopDetailDialog } from '../day/OpenLoopDetailDialog'
+import { TaskDetailDialog } from '../day/TaskDetailDialog'
 import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useLive } from '../useLive'
 import s from './LookingBackPage.module.css'
@@ -59,6 +61,9 @@ export function LookingBackPage() {
   const [anchor, setAnchor] = useState(now)
   const [showAllTasks, setShowAllTasks] = useState(false)
   const [timelineCount, setTimelineCount] = useState(TIMELINE_PAGE)
+  // History is a record of real things: opening one leads to the usual actions (reopen, delete).
+  const [openTask, setOpenTask] = useState<Task | null>(null)
+  const [openLoop, setOpenLoop] = useState<OpenLoop | null>(null)
 
   const periodType = scope === 'week' || scope === 'month' || scope === 'year' ? scope : undefined
   const bounds = periodType ? periodBounds(periodType, anchor) : undefined
@@ -80,6 +85,18 @@ export function LookingBackPage() {
   const dateOf = (iso: string) => toDateString(new Date(iso))
   const tasks = data?.tasksDone ?? []
   const shownTasks = showAllTasks ? tasks : tasks.slice(0, TASKS_SHOWN)
+  /** Tasks and open loops open their own dialog; a check-in or a reflection has nothing to open. */
+  const openEntry = (e: TimelineEntry) => {
+    if (e.kind === 'task') {
+      const task = data?.tasksDone.find((x) => x.id === e.id)
+      return task && (() => setOpenTask(task))
+    }
+    if (e.kind === 'loop') {
+      const loop = data?.resolvedLoops.find((x) => x.id === e.id)
+      return loop && (() => setOpenLoop(loop))
+    }
+    return undefined
+  }
   const empty = !!data && data.timeline.length === 0
   const facts = data && data.recordedDays > 0
 
@@ -140,6 +157,7 @@ export function LookingBackPage() {
                     bare
                     quiet
                     onColor
+                    onOpen={() => setOpenTask(task)}
                   />
                 ))}
                 {tasks.length > TASKS_SHOWN && (
@@ -186,6 +204,7 @@ export function LookingBackPage() {
                     bare
                     quiet
                     onColor
+                    onOpen={() => setOpenLoop(loop)}
                   />
                 ))}
               </Card>
@@ -197,11 +216,12 @@ export function LookingBackPage() {
               <CardHead kicker="TIMELINE" title="What was recorded" icon={<Archive aria-hidden="true" />} />
               {data.timeline.slice(0, timelineCount).map((e, i) => (
                 <TaskRow
-                  key={`${e.kind}-${e.at}-${i}`}
+                  key={`${e.kind}-${e.id}-${i}`}
                   title={e.kind === 'reflection' ? excerpt(e.title, 90) : e.title}
                   meta={`${e.kind === 'reflection' ? `${PERIOD_WORD[e.periodType!]} reflection` : KIND_LABEL[e.kind]} · ${dayRelative(e.date)}${e.priority !== undefined ? ` · P${e.priority}` : ''}`}
                   bare
                   quiet
+                  onOpen={openEntry(e)}
                 />
               ))}
               {data.timeline.length > timelineCount && (
@@ -234,6 +254,9 @@ export function LookingBackPage() {
 
       {/* The Year's reflection lives here, not on the Year view (PRD 12 keeps that to three things). */}
       {scope === 'year' && <ReflectionSection type="year" date={anchor} />}
+
+      <TaskDetailDialog task={openTask} onClose={() => setOpenTask(null)} />
+      <OpenLoopDetailDialog loop={openLoop} day={now} onClose={() => setOpenLoop(null)} />
     </section>
   )
 }

@@ -34,6 +34,7 @@ export function DayView({ date }: { date: string }) {
   const toast = useToast()
   const [showDone, setShowDone] = useState(false)
   const [showLoops, setShowLoops] = useState(false)
+  const [showTaken, setShowTaken] = useState(false)
   const [showRituals, setShowRituals] = useState(false)
   const [openTask, setOpenTask] = useState<Task | null>(null)
   const [openLoop, setOpenLoop] = useState<OpenLoop | null>(null)
@@ -96,6 +97,8 @@ export function DayView({ date }: { date: string }) {
   const fromEarlier = earlier.filter((x) => x.date !== yesterday)
 
   const loops = day?.openLoops ?? []
+  // Taken care of today: still on the day, ticked, so it can be undone or opened.
+  const takenCareOf = day?.takenCareOf ?? []
   const shownLoops = showLoops ? loops : loops.slice(0, LOOPS_SHOWN)
   const rituals = day?.rituals ?? []
   const shownRituals = showRituals ? rituals : rituals.slice(0, RITUALS_SHOWN)
@@ -163,7 +166,7 @@ export function DayView({ date }: { date: string }) {
         <div className={s.col}>
           {day && (
             <>
-          {loops.length > 0 && (
+          {(loops.length > 0 || takenCareOf.length > 0) && (
             <Card tone="peach">
               <CardHead kicker="ON MY MIND" title={`${loops.length} Open ${loops.length === 1 ? 'Loop' : 'Loops'}`} icon={<Brain aria-hidden="true" />} />
               {shownLoops.map((loop) => (
@@ -190,6 +193,37 @@ export function DayView({ date }: { date: string }) {
                     {showLoops ? 'Show fewer' : `+${loops.length - LOOPS_SHOWN} more — Show`}
                   </Button>
                 </div>
+              )}
+              {takenCareOf.length > 0 && (
+                <>
+                  <div className={s.disclose}>
+                    <Button size="small" aria-expanded={showTaken} aria-controls="day-taken-care-of" onClick={() => setShowTaken((v) => !v)}>
+                      Taken care of · {takenCareOf.length} — {showTaken ? 'Hide' : 'Show'}
+                    </Button>
+                  </div>
+                  {showTaken && (
+                    <div id="day-taken-care-of">
+                      {takenCareOf.map((loop) => (
+                        <TaskRow
+                          key={loop.id}
+                          title={loop.title}
+                          note={loop.note}
+                          checkLabel={`Back on my mind: ${loop.title}`}
+                          done
+                          onToggle={() =>
+                            void safely(
+                              reopenOpenLoop(loop.id).then(() =>
+                                toast.show({ message: 'Back on my mind', actionLabel: 'Undo', onAction: () => void resolveOpenLoop(loop.id) }),
+                              ),
+                            )
+                          }
+                          onOpen={() => setOpenLoop(loop)}
+                          onColor
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </Card>
           )}

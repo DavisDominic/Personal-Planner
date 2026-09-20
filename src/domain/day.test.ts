@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import type { PlannerDB } from '../db/db'
 import { getDayContents } from './day'
-import { createOpenLoop, resolveOpenLoop } from './openLoops'
+import { createOpenLoop, reopenOpenLoop, resolveOpenLoop } from './openLoops'
 import { checkRitual, createRitual } from './rituals'
 import { completeTask, createTask } from './tasks'
 import { closeDomain, freshDomain } from './testHelpers'
@@ -12,7 +12,7 @@ afterEach(() => closeDomain(db))
 
 describe('getDayContents', () => {
   it('is empty on a blank planner, which is a valid day', async () => {
-    expect(await getDayContents('2026-09-20')).toEqual({ priorities: [], tasks: [], earlier: [], openLoops: [], rituals: [] })
+    expect(await getDayContents('2026-09-20')).toEqual({ priorities: [], tasks: [], earlier: [], openLoops: [], takenCareOf: [], rituals: [] })
   })
 
   it('gathers priorities, tasks, open loops and due rituals for a date', async () => {
@@ -50,6 +50,32 @@ describe('getDayContents', () => {
     const day = await getDayContents('2026-09-20')
     expect(day.tasks.map((x) => x.status)).toEqual(['completed'])
     expect(day.openLoops).toHaveLength(0)
+  })
+})
+
+describe('getDayContents: what was taken care of', () => {
+  it('keeps a loop taken care of today on that day, and out of the open list', async () => {
+    const loop = await createOpenLoop({ title: 'Gym' })
+    await resolveOpenLoop(loop.id)
+    const day = await getDayContents('2026-09-20')
+    expect(day.openLoops).toEqual([])
+    expect(day.takenCareOf.map((l) => l.title)).toEqual(['Gym'])
+  })
+
+  it('shows it only on the day it was taken care of', async () => {
+    const loop = await createOpenLoop({ title: 'Gym' })
+    await resolveOpenLoop(loop.id)
+    expect((await getDayContents('2026-09-21')).takenCareOf).toEqual([])
+    expect((await getDayContents('2026-09-19')).takenCareOf).toEqual([])
+  })
+
+  it('puts it back on my mind when it is reopened', async () => {
+    const loop = await createOpenLoop({ title: 'Gym' })
+    await resolveOpenLoop(loop.id)
+    await reopenOpenLoop(loop.id)
+    const day = await getDayContents('2026-09-20')
+    expect(day.takenCareOf).toEqual([])
+    expect(day.openLoops.map((l) => l.title)).toEqual(['Gym'])
   })
 })
 

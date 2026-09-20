@@ -1,5 +1,5 @@
 import { assertDate } from './dates'
-import { listOpenLoops } from './openLoops'
+import { listOpenLoops, listTakenCareOfOn } from './openLoops'
 import { countRecordedDays, getCheckinsOn, isRitualDueOn, listRituals } from './rituals'
 import { getDayPriorities, getDayTasks, getUnfinishedFromEarlier } from './tasks'
 import type { DateString, OpenLoop, Ritual, Task } from './types'
@@ -25,17 +25,20 @@ export type DayContents = {
   earlier: Task[]
   /** All open loops, newest first. They are not tied to a day, and the app doesn't choose which matters. */
   openLoops: OpenLoop[]
+  /** Loops taken care of on this date, so the day shows what was cleared and it can be put back. */
+  takenCareOf: OpenLoop[]
   /** Active rituals whose frequency lists this date. */
   rituals: DayRitual[]
 }
 
 export async function getDayContents(date: DateString): Promise<DayContents> {
   assertDate(date)
-  const [priorities, tasks, earlier, openLoops, rituals, checkins] = await Promise.all([
+  const [priorities, tasks, earlier, openLoops, takenCareOf, rituals, checkins] = await Promise.all([
     getDayPriorities(date),
     getDayTasks(date),
     getUnfinishedFromEarlier(date),
     listOpenLoops(),
+    listTakenCareOfOn(date),
     listRituals(),
     getCheckinsOn(date),
   ])
@@ -47,6 +50,7 @@ export async function getDayContents(date: DateString): Promise<DayContents> {
     tasks,
     earlier,
     openLoops,
+    takenCareOf,
     rituals: due.map((ritual, i) => ({ ritual, checked: checked.has(ritual.id), recordedDays: counts[i] })),
   }
 }

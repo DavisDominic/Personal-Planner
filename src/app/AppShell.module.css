@@ -33,6 +33,8 @@
   background:var(--paper);
   border-bottom:var(--u-px-1) solid var(--line);
 }
+/* Menu and Search: the same plain icon, drawn at the same size and weight. */
+.header button svg{width:var(--t-icon-22);height:var(--t-icon-22)}
 .brand{display:flex;align-items:center;gap:var(--u-px-10);margin-right:auto}
 .brand-name{font-size:var(--text-md);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-0_12);text-transform:uppercase}
 

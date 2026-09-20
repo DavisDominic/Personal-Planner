@@ -285,3 +285,23 @@ and Goals, with Search and Settings at the foot. Choosing a place closes it, as 
 - The **+ Capture** button stays bottom right (thumb zone) but now sits 64px up from the bottom, clearing
   that badge. Nothing else occupies the bottom of the screen.
 - Desktop is unchanged: the sidebar still holds all of this above 980px.
+
+## Taking care of something leaves a record, and history is actionable
+
+Reported: an open loop ticked off on the Day disappeared completely, while Looking Back still listed it.
+Once the Undo toast passed there was no way back to it from the Day.
+
+- **The Day keeps what was taken care of that day.** The "On my mind" card now ends with
+  "Taken care of · N — Show", the same disclosure completed tasks already use. The rows are ticked, so
+  unticking one puts it back on my mind (with Undo), and tapping it opens the usual dialog.
+- `getDayContents` gained `takenCareOf`: loops whose `resolvedAt` falls on that date. It is per day, so a
+  loop appears on the day it was cleared and nowhere else.
+- **The open loop dialog knows both states.** For a loop already taken care of it offers **Back on my mind**
+  instead of "Taken care of", and its label reads "Taken care of".
+- **Looking Back rows open their record.** A completed task or a loop taken care of, in its card or in the
+  timeline, opens the same dialog used everywhere else: reopen, delete (with Undo), or edit. History is
+  still only a view over real records — nothing is stored twice — but it is no longer a dead end.
+  Ritual check-ins and reflections have no dialog, so those rows stay plain text.
+- `TimelineEntry` carries the record's `id` so a row can find what it came from.
+- **Header icons.** The menu and search icons lost their boxes (`tone="plain"`) and are drawn at one size
+  and weight, matching the chevrons elsewhere.

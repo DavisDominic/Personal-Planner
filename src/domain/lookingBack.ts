@@ -6,6 +6,8 @@ import type { DateString, OpenLoop, Reflection, ReflectionPeriodType, Task, Time
 export type LookingBackRange = { start: DateString; end: DateString } | null
 
 export type TimelineEntry = {
+  /** The record this entry came from, so the UI can open it. */
+  id: string
   kind: 'task' | 'ritual' | 'loop' | 'reflection'
   /** The date the thing is recorded against. */
   date: DateString
@@ -87,10 +89,10 @@ export async function getLookingBack(range: LookingBackRange): Promise<LookingBa
   ])
 
   const timeline: TimelineEntry[] = [
-    ...tasksDone.map((t): TimelineEntry => ({ kind: 'task', date: taskDate(t), at: t.completedAt!, title: t.title, priority: t.priority })),
-    ...doneCheckins.map((c): TimelineEntry => ({ kind: 'ritual', date: c.date, at: c.completedAt, title: names.get(c.ritualId) ?? 'Ritual' })),
-    ...resolvedLoops.map((l): TimelineEntry => ({ kind: 'loop', date: loopDate(l), at: l.resolvedAt!, title: l.title })),
-    ...shownReflections.map((r): TimelineEntry => ({ kind: 'reflection', date: r.periodStart, at: r.updatedAt, title: r.content, periodType: r.periodType })),
+    ...tasksDone.map((t): TimelineEntry => ({ id: t.id, kind: 'task', date: taskDate(t), at: t.completedAt!, title: t.title, priority: t.priority })),
+    ...doneCheckins.map((c): TimelineEntry => ({ id: c.id, kind: 'ritual', date: c.date, at: c.completedAt, title: names.get(c.ritualId) ?? 'Ritual' })),
+    ...resolvedLoops.map((l): TimelineEntry => ({ id: l.id, kind: 'loop', date: loopDate(l), at: l.resolvedAt!, title: l.title })),
+    ...shownReflections.map((r): TimelineEntry => ({ id: r.id, kind: 'reflection', date: r.periodStart, at: r.updatedAt, title: r.content, periodType: r.periodType })),
   ].sort((a, b) => b.date.localeCompare(a.date) || b.at.localeCompare(a.at))
 
   return {
