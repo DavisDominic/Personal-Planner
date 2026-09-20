@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '../../components/Button/Button'
 import { InlineMessage } from '../../components/Feedback/Feedback'
 import { ReflectionCollapsed, ReflectionEditor } from '../../components/Reflection/ReflectionEditor'
 import { deleteReflection, getReflection, periodBounds, restoreReflection, saveReflection } from '../../domain/index'
@@ -171,22 +170,9 @@ function ReflectionBody({ type, date }: { type: ReflectionPeriodType; date: stri
       textareaRef={area}
       status={saved ? 'Saved' : undefined}
       message={error ? <InlineMessage kind="error">{error}</InlineMessage> : undefined}
-      prompts={
-        type === 'day'
-          ? DAY_PROMPTS.map((p) => (
-              <Button key={p} tone="ghost" size="small" onMouseDown={(e) => e.preventDefault()} onClick={() => startWith(p)}>
-                {p}
-              </Button>
-            ))
-          : undefined
-      }
-      actions={
-        exists ? (
-          <Button tone="ghost" size="small" onMouseDown={(e) => e.preventDefault()} onClick={() => void remove()}>
-            Delete
-          </Button>
-        ) : undefined
-      }
+      prompts={type === 'day' ? DAY_PROMPTS : undefined}
+      onPrompt={startWith}
+      onDelete={exists ? () => void remove() : undefined}
     />
   )
 }

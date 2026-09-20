@@ -1,4 +1,5 @@
 import type { ReactNode, Ref } from 'react'
+import { Trash2 } from 'lucide-react'
 import { Button } from '../Button/Button'
 import { cx } from '../../lib/cx'
 import s from './ReflectionEditor.module.css'
@@ -13,17 +14,21 @@ type ReflectionEditorProps = {
   onBlur: () => void
   textareaRef?: Ref<HTMLTextAreaElement>
   /** Optional prompts the user can tap to start from. Never required. */
-  prompts?: ReactNode
+  prompts?: string[]
+  onPrompt?: (prompt: string) => void
   /** Small factual status such as "Saved". */
   status?: string
-  /** Extra actions shown in the footer, e.g. Delete. */
-  actions?: ReactNode
+  /** Shown as a quiet text action in the footer, only once something is saved. */
+  onDelete?: () => void
   /** A calm message if something couldn't be saved. */
   message?: ReactNode
 }
 
 /** A lined sheet of paper to write on (design system: reflection sheet). Free writing, no required fields. */
-export function ReflectionEditor({ label, ariaLabel, value, onChange, onBlur, textareaRef, prompts, status, actions, message }: ReflectionEditorProps) {
+export function ReflectionEditor({ label, ariaLabel, value, onChange, onBlur, textareaRef, prompts, onPrompt, status, onDelete, message }: ReflectionEditorProps) {
+  // Keeps the writing area focused while a chip or Delete is pressed, so leaving it can't collapse the sheet.
+  const keepFocus = (e: { preventDefault: () => void }) => e.preventDefault()
+
   return (
     <div className={s.sheet}>
       <div className={s.prompt}>{label}</div>
@@ -35,14 +40,29 @@ export function ReflectionEditor({ label, ariaLabel, value, onChange, onBlur, te
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
       />
-      {prompts && <div className={s.prompts}>{prompts}</div>}
+      {prompts && prompts.length > 0 && (
+        <div className={s.prompts} role="group" aria-label="Optional prompts">
+          {prompts.map((p) => (
+            <button key={p} type="button" className={s.chip} onMouseDown={keepFocus} onClick={() => onPrompt?.(p)}>
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
       {message}
-      <div className={s.footer}>
-        {actions}
-        <span className={s.status} role="status">
-          {status}
-        </span>
-      </div>
+      {(status || onDelete) && (
+        <div className={s.footer}>
+          <span className={s.status} role="status">
+            {status}
+          </span>
+          {onDelete && (
+            <button type="button" className={s.delete} onMouseDown={keepFocus} onClick={onDelete}>
+              <Trash2 aria-hidden="true" />
+              Delete
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

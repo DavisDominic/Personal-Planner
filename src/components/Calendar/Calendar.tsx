@@ -19,21 +19,21 @@ type CalendarToolbarProps = {
   nextLabel: string
   /** Controls on the right, e.g. "Show today" and a date picker. */
   children?: ReactNode
+  /** The title is the page's heading by default; use "h2" when the page already has its own h1. */
+  heading?: 'h1' | 'h2'
 }
 
 /** The period title sits between the back and next arrows; other controls go to the right. */
-export function CalendarToolbar({ caption, title, onPrevious, onNext, previousLabel, nextLabel, children }: CalendarToolbarProps) {
+export function CalendarToolbar({ caption, title, onPrevious, onNext, previousLabel, nextLabel, children, heading: Heading = 'h1' }: CalendarToolbarProps) {
   return (
     <div className={s.calendarToolbar}>
-      <div className={s.titleRow}>
-        <IconButton tone="plain" className={s.firstChevron} label={previousLabel} onClick={onPrevious}>
+      <div className={s.titleGrid}>
+        <div className={cx(t.typeCaption, s.toolbarCaption)}>{caption}</div>
+        <IconButton tone="plain" className={cx(s.firstChevron, s.prevSlot)} label={previousLabel} onClick={onPrevious}>
           <ChevronLeft aria-hidden="true" />
         </IconButton>
-        <div className={s.titleBlock}>
-          <div className={t.typeCaption}>{caption}</div>
-          <h1 className={s.calendarTitle}>{title}</h1>
-        </div>
-        <IconButton tone="plain" label={nextLabel} onClick={onNext}>
+        <Heading className={cx(s.calendarTitle, s.titleSlot)}>{title}</Heading>
+        <IconButton tone="plain" className={s.nextSlot} label={nextLabel} onClick={onNext}>
           <ChevronRight aria-hidden="true" />
         </IconButton>
       </div>

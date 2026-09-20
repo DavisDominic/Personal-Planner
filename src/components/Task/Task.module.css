@@ -40,3 +40,5 @@
 .task-open:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
 .task.done .task-open{text-decoration:line-through}
 .task-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-2)}
+
+.task.quiet .task-title{font-weight:normal}

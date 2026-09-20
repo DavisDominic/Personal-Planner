@@ -84,7 +84,12 @@
 
 /* ---------- REAL VIEWS: links, more, marks, add, drag ---------- */
 .calendar-title{margin:0}
-.title-block{display:grid;justify-items:start;gap:var(--sp-1);text-align:left}
+/* Caption above the title, both left-aligned; the chevrons sit on the title's own row, so they line up with it. */
+.title-grid{display:grid;grid-template-columns:auto auto auto;align-items:center;column-gap:var(--sp-1);justify-content:start}
+.toolbar-caption{grid-column:2;grid-row:1}
+.prev-slot{grid-column:1;grid-row:2}
+.title-slot{grid-column:2;grid-row:2;line-height:var(--u-lh-1_1)}
+.next-slot{grid-column:3;grid-row:2}
 /* The chevron glyph, not its box, lines up with the page edge. */
 .first-chevron{margin-left:calc(-1 * var(--u-px-10))}
 .title-row{display:flex;align-items:center;gap:var(--sp-3)}

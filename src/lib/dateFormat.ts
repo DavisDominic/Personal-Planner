@@ -33,3 +33,13 @@ export const dayFull = (d: string) => fmt(d, { weekday: 'short', day: 'numeric',
 export const monthShort = (d: string) => fmt(d, { month: 'short' })
 /** "September" */
 export const monthLong = (d: string) => fmt(d, { month: 'long' })
+
+/** "Today", "Yesterday", "Sep 18", or "Sep 18, 2025" for another year. */
+export function dayRelative(d: string) {
+  const now = today()
+  if (d === now) return 'Today'
+  const y = new Date(parse(now).getTime() - 24 * 60 * 60 * 1000)
+  const yesterday = `${y.getFullYear()}-${String(y.getMonth() + 1).padStart(2, '0')}-${String(y.getDate()).padStart(2, '0')}`
+  if (d === yesterday) return 'Yesterday'
+  return d.slice(0, 4) === now.slice(0, 4) ? dayShort(d) : `${dayShort(d)}, ${d.slice(0, 4)}`
+}

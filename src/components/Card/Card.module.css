@@ -32,3 +32,7 @@
 
 .card-title-row{display:flex;align-items:center;gap:var(--sp-1)}
 .first-chevron{margin-left:calc(-1 * var(--u-px-10))}
+
+/* A card's heading is the biggest thing in it; rows sit clearly below. */
+.card-head{margin-bottom:var(--sp-2)}
+.card-title{font-size:var(--u-px-22);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-n0_02);margin-top:var(--sp-1)}

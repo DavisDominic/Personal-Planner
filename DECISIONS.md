@@ -19,6 +19,18 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
 
+## Looking Back (Slice 9)
+**Status: Assumed** unless noted
+
+- **Looking Back is evidence, not evaluation** (PRD 13): plain facts only. No score, streak, ranking, comparison, good or bad day, or interpretation. Ritual tallies are listed **in name order, not ranked**. It is a derived view; nothing extra is stored.
+- **Scopes:** Recent, Week, Month, Year, All time. **Recent is the last 14 days** ending today. Week, Month and Year show the current period with **back / next chevrons** and "Show this week / month / year" to browse any earlier one. Facts line: "N recorded days" and "Your record begins Jan 3" (the earliest recorded date, whatever the range).
+- **What it shows:** **Things I did** (completed tasks, and how many were priorities), **Things I kept doing** (ritual check-ins per ritual), **Taken care of** (open loops), **Reflections** (any whose period overlaps the range), and a **Timeline** of all of it, newest first ("Show more" past 40). A card is simply absent if it has nothing; if the whole period is empty it says "Nothing recorded for this period."
+- **A "recorded day"** is the same definition as the Year view: a task completed, a ritual checked in, an open loop taken care of, or a day reflection written. Planned-but-unfinished work never appears here.
+- **The Year reflection lives here**, editable, when the Year scope is selected (it is not on the Year view). **Confirmed** as the plan (2026-09-20).
+- **Hierarchy and icons (Confirmed 2026-09-20):** card headings are bigger and bolder (22px, on every card), and the rows under them are regular weight. **Content rows carry no icons or checkboxes**, only text and a small meta line ("Ritual check-in · Today"); each card keeps just its one heading icon, and the meta line says what kind of record each row is.
+- **Reflection sheet footer (Confirmed 2026-09-20):** the prompts are small pill suggestions; below a hairline sits a quiet "Saved" and a small text **Delete** (only once something is saved), so Delete no longer looks like another prompt.
+- **Calendar toolbar (Confirmed 2026-09-20):** the chevrons sit on the title's own line (level with "September 2026"), with the label tucked tight above and left-aligned with the title.
+
 ## Year view and Goals (Slice 7)
 **Status: Assumed** unless noted
 
