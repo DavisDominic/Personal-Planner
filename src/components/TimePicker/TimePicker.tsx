@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent, ReactNode } from 'react'
 import { Clock } from 'lucide-react'
 import { cx } from '../../lib/cx'
+import { formatTime } from '../../lib/dateFormat'
 import { Button } from '../Button/Button'
 import d from '../DatePicker/DatePicker.module.css'
 import s from './TimePicker.module.css'
@@ -18,16 +19,15 @@ type TimePickerProps = {
   align?: 'start' | 'end'
 }
 
-const HOURS = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'))
-/** Five-minute steps keep the grid small; the time stays a plain "HH:mm". */
-const MINUTES = Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, '0'))
-const COLUMNS = 6
+const two = (n: number) => String(n).padStart(2, '0')
+const MINUTES = Array.from({ length: 60 }, (_, i) => two(i))
 /** Room the picker needs, used to decide whether it opens upward. */
-const NEEDED_SPACE = 300
+const NEEDED_SPACE = 340
 
 /**
- * A time picker in the same style as the date picker, in place of the browser's own. Choose an hour, then a
- * minute; choosing the minute closes it. Arrow keys move around each grid, Escape closes.
+ * A time picker in the same style as the date picker, in place of the browser's own. Like the native one it is
+ * a clock: scrolling columns for hour (00-23) and minute (00-59). The value is 24-hour "HH:mm". Arrow keys move
+ * within a column, Escape closes.
  */
 export function TimePicker({ label, labelHidden, value, onChange, allowClear, placeholder = 'Choose a time', help, align = 'start' }: TimePickerProps) {
   const id = useId()
@@ -35,9 +35,11 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
   const [up, setUp] = useState(false)
   const wrap = useRef<HTMLDivElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
-  const hourGrid = useRef<HTMLDivElement>(null)
+  const popover = useRef<HTMLDivElement>(null)
 
   const [hh, mm] = value ? value.split(':') : ['', '']
+  const h24 = hh === '' ? undefined : Number(hh)
+  const hourCells = Array.from({ length: 24 }, (_, i) => i)
 
   const show = () => {
     const rect = trigger.current?.getBoundingClientRect()
@@ -52,9 +54,17 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
     if (returnFocus) trigger.current?.focus()
   }
 
+  // Open on the current choice: scroll each column to it and focus the hour.
   useEffect(() => {
-    if (open) (hourGrid.current?.querySelector<HTMLElement>('[tabindex="0"]'))?.focus()
+    if (!open) return
+    popover.current?.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((el) => el.scrollIntoView({ block: 'center' }))
+    popover.current?.querySelector<HTMLElement>('[tabindex="0"]')?.focus()
   }, [open])
+
+  // Keep the chosen hour and minute in view as they change.
+  useEffect(() => {
+    if (open) popover.current?.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((el) => el.scrollIntoView({ block: 'nearest' }))
+  }, [open, value])
 
   useEffect(() => {
     if (!open) return
@@ -73,7 +83,7 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
       close(true)
       return
     }
-    const move: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -COLUMNS, ArrowDown: COLUMNS }
+    const move: Record<string, number> = { ArrowUp: -1, ArrowDown: 1, ArrowLeft: -1, ArrowRight: 1 }
     const cell = e.target as HTMLElement
     if (move[e.key] === undefined || !cell.dataset.cell) return
     const cells = [...(cell.parentElement?.querySelectorAll<HTMLElement>('[data-cell]') ?? [])]
@@ -81,16 +91,15 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
     if (next) {
       e.preventDefault()
       next.focus()
+      next.scrollIntoView({ block: 'nearest' })
     }
   }
 
-  const chooseHour = (h: string) => onChange(`${h}:${mm || '00'}`)
-  const chooseMinute = (m: string) => {
-    onChange(`${hh || '09'}:${m}`)
-    close(true)
-  }
-  // Only one stop per grid for Tab; the arrows do the rest.
-  const stop = (current: string, cell: string, first: string) => (current ? cell === current : cell === first)
+  const commit = (hour24: number, minute: string) => onChange(`${two(hour24)}:${minute}`)
+  const chooseHour = (h: number) => commit(h, mm || '00')
+  const chooseMinute = (m: string) => commit(h24 ?? 9, m)
+  // Only one Tab stop per column; the arrows do the rest.
+  const stop = (chosen: boolean, cell: boolean, first: boolean) => (chosen ? cell : first)
 
   return (
     <div className={d.field}>
@@ -99,43 +108,49 @@ export function TimePicker({ label, labelHidden, value, onChange, allowClear, pl
       </label>
       <div className={d.wrap} ref={wrap} onKeyDown={onKeyDown}>
         <button ref={trigger} id={id} type="button" className={d.trigger} aria-haspopup="dialog" aria-expanded={open} onClick={() => (open ? close(false) : show())}>
-          <span className={value ? undefined : d.placeholder}>{value || placeholder}</span>
+          <span className={value ? undefined : d.placeholder}>{value ? formatTime(value) : placeholder}</span>
           <Clock aria-hidden="true" />
         </button>
 
         {open && (
-          <div className={cx(d.popover, align === 'end' && d.end, up && d.up)} role="dialog" aria-label={`Choose ${label.toLowerCase()}`}>
-            <div className={s.legend}>Hour</div>
-            <div className={s.grid} ref={hourGrid} role="group" aria-label="Hour">
-              {HOURS.map((h) => (
-                <button
-                  key={h}
-                  type="button"
-                  data-cell
-                  tabIndex={stop(hh, h, '09') ? 0 : -1}
-                  aria-pressed={h === hh}
-                  className={cx(s.cell, h === hh && s.selected)}
-                  onClick={() => chooseHour(h)}
-                >
-                  {h}
-                </button>
-              ))}
-            </div>
-            <div className={s.legend}>Minute</div>
-            <div className={s.grid} role="group" aria-label="Minute">
-              {MINUTES.map((m) => (
-                <button
-                  key={m}
-                  type="button"
-                  data-cell
-                  tabIndex={stop(mm, m, '00') ? 0 : -1}
-                  aria-pressed={m === mm}
-                  className={cx(s.cell, m === mm && s.selected)}
-                  onClick={() => chooseMinute(m)}
-                >
-                  {m}
-                </button>
-              ))}
+          <div ref={popover} className={cx(d.popover, align === 'end' && d.end, up && d.up)} role="dialog" aria-label={`Choose ${label.toLowerCase()}`}>
+            <div className={s.cols}>
+              <div className={s.colWrap}>
+                <div className={s.legend}>Hour</div>
+                <div className={s.col} role="group" aria-label="Hour">
+                  {hourCells.map((h, i) => (
+                    <button
+                      key={h}
+                      type="button"
+                      data-cell
+                      tabIndex={stop(h24 !== undefined, h === h24, i === 0) ? 0 : -1}
+                      aria-pressed={h === h24}
+                      className={cx(s.cell, h === h24 && s.selected)}
+                      onClick={() => chooseHour(h)}
+                    >
+                      {two(h)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className={s.colWrap}>
+                <div className={s.legend}>Minute</div>
+                <div className={s.col} role="group" aria-label="Minute">
+                  {MINUTES.map((m, i) => (
+                    <button
+                      key={m}
+                      type="button"
+                      data-cell
+                      tabIndex={stop(mm !== '', m === mm, i === 0) ? 0 : -1}
+                      aria-pressed={m === mm}
+                      className={cx(s.cell, m === mm && s.selected)}
+                      onClick={() => chooseMinute(m)}
+                    >
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className={d.foot}>
               <Button size="small" onClick={() => close(true)}>

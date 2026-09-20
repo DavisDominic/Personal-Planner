@@ -5,7 +5,7 @@ import { Card } from '../../components/Card/Card'
 import { TaskRow } from '../../components/Task/Task'
 import { completeTask, getUnfinishedFromEarlier, getWaitingSummary, moveTask, moveTaskToToday, today } from '../../domain/index'
 import type { Task } from '../../domain/index'
-import { dayLong, dayShort } from '../../lib/dateFormat'
+import { dayLong, dayShort, formatTime } from '../../lib/dateFormat'
 import t from '../../styles/typography.module.css'
 import { TaskDetailDialog } from '../day/TaskDetailDialog'
 import { useLive } from '../useLive'
@@ -79,7 +79,7 @@ function Review({ onStart }: { onStart: () => void }) {
           <Card key={task.id} kind="note">
             <TaskRow
               title={task.title}
-              meta={[dayShort(task.date!), task.priority !== undefined && `P${task.priority}`, task.time].filter(Boolean).join(' · ')}
+              meta={[dayShort(task.date!), task.priority !== undefined && `P${task.priority}`, task.time && formatTime(task.time)].filter(Boolean).join(' · ')}
               note={task.note}
               done={false}
               onToggle={() => void safely(completeTask(task.id))}

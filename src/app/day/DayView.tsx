@@ -9,7 +9,7 @@ import {
 import type { OpenLoop, Task } from '../../domain/index'
 import t from '../../styles/typography.module.css'
 import { CalendarNav } from '../calendar/CalendarNav'
-import { dayShort, dayTitle, weekdayLong } from '../../lib/dateFormat'
+import { dayShort, dayTitle, formatTime, weekdayLong } from '../../lib/dateFormat'
 import { useCapture } from '../useCapture'
 import { useLive } from '../useLive'
 import { ReflectionSection } from '../reflection/ReflectionSection'
@@ -26,7 +26,7 @@ const CANT_SAVE = "We couldn't save that change. Your previous version is still 
 
 const join = (parts: (string | false | undefined)[]) => parts.filter(Boolean).join(' · ') || undefined
 
-const taskMeta = (task: Task) => join([task.priority !== undefined && `P${task.priority}`, task.date === undefined && 'every day', task.time])
+const taskMeta = (task: Task) => join([task.priority !== undefined && `P${task.priority}`, task.date === undefined && 'every day', task.time && formatTime(task.time)])
 
 export function DayView({ date }: { date: string }) {
   const day = useLive(() => getDayContents(date), date)
@@ -68,7 +68,7 @@ export function DayView({ date }: { date: string }) {
     <TaskRow
       key={task.id}
       title={task.title}
-      meta={join([showDate && dayShort(task.date!), task.priority !== undefined && `P${task.priority}`, task.time])}
+      meta={join([showDate && dayShort(task.date!), task.priority !== undefined && `P${task.priority}`, task.time && formatTime(task.time)])}
       note={task.note}
       done={false}
       onToggle={() => void safely(completeTask(task.id))}

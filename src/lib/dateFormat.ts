@@ -43,3 +43,6 @@ export function dayRelative(d: string) {
   if (d === yesterday) return 'Yesterday'
   return d.slice(0, 4) === now.slice(0, 4) ? dayShort(d) : `${dayShort(d)}, ${d.slice(0, 4)}`
 }
+
+/** Times are shown on a 24-hour clock everywhere, as "14:35". */
+export const formatTime = (hhmm: string) => hhmm

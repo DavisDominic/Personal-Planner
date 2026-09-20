@@ -243,5 +243,5 @@ Status maps across kinds: open = active task, open loop, ritual or goal; done = 
 
 ## Time picker and search clear
 
-- **Time picker** replaces the browser's own, in the same style as the date picker: choose an hour (00-23), then a minute in five-minute steps; choosing the minute closes it. 24-hour "HH:mm", arrow keys move around each grid, Escape closes, Clear removes the time. Times already stored in other minutes still show correctly.
+- **Time picker** replaces the browser's own, in the date picker's style: scrolling columns for hour (00-23) and minute (00-59) on a **24-hour clock**, with no AM/PM (user decision). Times are shown as "14:35" everywhere and stored as "HH:mm". Arrow keys move within a column, Escape closes, Clear removes the time.
 - **Search** shows a clear (x) button while there is text.

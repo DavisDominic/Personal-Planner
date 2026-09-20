@@ -3,7 +3,7 @@ import { WeekGrid } from '../../components/Calendar/Calendar'
 import type { WeekDay } from '../../components/Calendar/Calendar'
 import { getCalendarPreview, moveTask, today, weekDays } from '../../domain/index'
 import type { PreviewItem } from '../../domain/index'
-import { dayLong, dayShort, weekdayShort, weekTitle } from '../../lib/dateFormat'
+import { dayLong, dayShort, formatTime, weekdayShort, weekTitle } from '../../lib/dateFormat'
 import { GoalsSection } from '../goals/GoalsSection'
 import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useCapture } from '../useCapture'
@@ -20,7 +20,7 @@ const SHOWN = 5
 
 /** The small line under a title. Words, never colour alone, say what it is. */
 const metaFor = (i: PreviewItem) =>
-  i.kind === 'open-loop' ? 'on my mind' : [i.priority !== undefined && `P${i.priority}`, i.done && 'done', i.time].filter(Boolean).join(' · ') || 'task'
+  i.kind === 'open-loop' ? 'on my mind' : [i.priority !== undefined && `P${i.priority}`, i.done && 'done', i.time && formatTime(i.time)].filter(Boolean).join(' · ') || 'task'
 
 export function WeekView({ date }: { date: string }) {
   const days = weekDays(date)
