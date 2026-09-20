@@ -67,7 +67,7 @@ export type Goal = {
   title: string
   description?: string
   scope: GoalScope
-  /** year: "YYYY", month: "YYYY-MM", week: the Monday of the week as "YYYY-MM-DD". */
+  /** year: "YYYY", month: "YYYY-MM", week: the Sunday that starts the week, as "YYYY-MM-DD". */
   period: string
   status: GoalStatus
   createdAt: Timestamp

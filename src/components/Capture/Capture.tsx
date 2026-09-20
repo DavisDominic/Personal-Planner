@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { X } from 'lucide-react'
 import { Button, IconButton } from '../Button/Button'
 import { Field } from '../Field/Field'
@@ -7,14 +8,29 @@ import s from './Capture.module.css'
 
 const TABS = ['Open loop', 'Task', 'Ritual'] as const
 
-/** Presentational capture panel. The default type is Open Loop (PRD 6). */
-export function CapturePanel() {
+type CapturePanelProps = {
+  /** Called by the close button, Cancel and Save. */
+  onClose?: () => void
+  initialText?: string
+}
+
+/**
+ * Presentational capture panel. The default type is Open Loop (PRD 6).
+ * Saving is wired in the Capture slice; for now Save only closes.
+ */
+export function CapturePanel({ onClose, initialText }: CapturePanelProps) {
   const [tab, setTab] = useState<(typeof TABS)[number]>('Open loop')
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault()
+    onClose?.()
+  }
+
   return (
-    <div className={s.capture}>
+    <form className={s.capture} onSubmit={submit}>
       <div className={s.captureHead}>
         <div className={s.captureTitle}>Capture</div>
-        <IconButton label="Close">
+        <IconButton label="Close" onClick={onClose}>
           <X aria-hidden="true" />
         </IconButton>
       </div>
@@ -32,11 +48,15 @@ export function CapturePanel() {
           </button>
         ))}
       </div>
-      <Field label="What's on your mind?" defaultValue="Figure out career direction" />
+      <Field label="What's on your mind?" defaultValue={initialText} data-autofocus />
       <div className={s.captureFoot}>
-        <Button tone="ghost">Cancel</Button>
-        <Button tone="primary">Save</Button>
+        <Button tone="ghost" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button tone="primary" type="submit">
+          Save
+        </Button>
       </div>
-    </div>
+    </form>
   )
 }

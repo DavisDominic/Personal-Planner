@@ -1,0 +1,10 @@
+.dialog{
+  padding:0;border:0;background:transparent;
+  width:min(var(--u-px-500),100%);max-width:100%;max-height:100%;overflow:visible;
+  color:var(--ink);
+}
+.dialog::backdrop{background:var(--u-ink-18)}
+/* Bottom sheet on phones and tablets. */
+@media(max-width:980px){
+  .dialog{margin:auto 0 0;width:100%}
+}

@@ -41,3 +41,5 @@
   .product-nav .product-link:not(.active){display:none}
   .product-brand{margin-right:auto}
 }
+
+.mobile-item{text-decoration:none}

@@ -11,18 +11,19 @@ beforeEach(async () => { db = await freshDomain() })
 afterEach(() => closeDomain(db))
 
 describe('goals', () => {
-  it('normalises the period for each scope (weeks start on Monday)', () => {
+  it('normalises the period for each scope (weeks start on Sunday)', () => {
     expect(goalPeriod('year', '2026-09-20')).toBe('2026')
     expect(goalPeriod('month', '2026-09-20')).toBe('2026-09')
-    expect(goalPeriod('week', '2026-09-20')).toBe('2026-09-14') // Sunday belongs to the week starting Monday 14th
-    expect(goalPeriod('week', '2026-09-21')).toBe('2026-09-21')
+    expect(goalPeriod('week', '2026-09-20')).toBe('2026-09-20') // a Sunday starts its own week
+    expect(goalPeriod('week', '2026-09-26')).toBe('2026-09-20') // the Saturday ends it
+    expect(goalPeriod('week', '2026-09-27')).toBe('2026-09-27')
   })
 
   it('lists goals for the period containing a date, by scope', async () => {
     const wk = await createGoal({ title: 'Finish portfolio case study', scope: 'week', forDate: '2026-09-22' })
     await createGoal({ title: 'Next week', scope: 'week', forDate: '2026-09-29' })
     const yr = await createGoal({ title: 'Ship v1', scope: 'year', forDate: '2026-03-01' })
-    expect((await listGoals('week', '2026-09-27')).map((g) => g.id)).toEqual([wk.id])
+    expect((await listGoals('week', '2026-09-26')).map((g) => g.id)).toEqual([wk.id])
     expect((await listGoals('year', '2026-12-31')).map((g) => g.id)).toEqual([yr.id])
     expect(await listGoals('month', '2026-09-01')).toHaveLength(0)
   })
@@ -76,7 +77,8 @@ describe('reflections', () => {
     await saveReflection('month', '2026-09-20', 'm')
     await saveReflection('year', '2026-09-20', 'y')
     expect(await db.reflections.count()).toBe(4)
-    expect(await getReflection('week', '2026-09-16')).toMatchObject({ periodStart: '2026-09-14', periodEnd: '2026-09-20' })
+    expect(await getReflection('week', '2026-09-23')).toMatchObject({ periodStart: '2026-09-20', periodEnd: '2026-09-26' })
+    expect(await getReflection('week', '2026-09-16')).toBeUndefined() // the week before is a different period
     expect(await getReflection('month', '2026-09-01')).toMatchObject({ periodStart: '2026-09-01', periodEnd: '2026-09-30' })
     expect(await getReflection('year', '2026-01-01')).toMatchObject({ periodStart: '2026-01-01', periodEnd: '2026-12-31' })
   })

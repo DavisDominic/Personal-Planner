@@ -54,6 +54,12 @@ async function update(id: string, change: (t: Task) => Task): Promise<Task> {
   })
 }
 
+/** Undated tasks appear on every day from creation while active; a completed one only on its completion day. */
+const showsUndatedOn = (t: Task, date: DateString) =>
+  t.status === 'completed'
+    ? t.completedAt !== undefined && timestampToDate(t.completedAt) === date
+    : timestampToDate(t.createdAt) <= date
+
 const byPriorityThenCreated = (a: Task, b: Task) =>
   (a.priority ?? Infinity) - (b.priority ?? Infinity) || a.createdAt.localeCompare(b.createdAt)
 
@@ -150,21 +156,24 @@ export async function getDayPriorities(date: DateString): Promise<Task[]> {
   assertDate(date)
   const tasks = await db().tasks.filter((t) => t.priority !== undefined && t.status !== 'no-longer-relevant').toArray()
   return tasks
-    .filter((t) => {
-      if (t.date !== undefined) return t.date === date
-      if (t.status === 'completed') return t.completedAt !== undefined && timestampToDate(t.completedAt) === date
-      return timestampToDate(t.createdAt) <= date
-    })
+    .filter((t) => (t.date !== undefined ? t.date === date : showsUndatedOn(t, date)))
     .sort(byPriorityThenCreated)
 }
 
-/** The Tasks section of a Day: dated tasks without a priority, remaining and completed. */
+/**
+ * The Tasks section of a Day: tasks without a priority, remaining and completed.
+ * Dated tasks on that date come first (by time, then creation). Undated tasks follow, below all
+ * the others, and keep appearing every day from their creation until finished or removed.
+ * A completed undated task shows (checked) only on the day it was completed.
+ */
 export async function getDayTasks(date: DateString): Promise<Task[]> {
   assertDate(date)
-  const tasks = await db().tasks.where('date').equals(date).toArray()
-  return tasks
-    .filter((t) => t.priority === undefined && t.status !== 'no-longer-relevant')
-    .sort((a, b) => (a.time ?? '99:99').localeCompare(b.time ?? '99:99') || a.createdAt.localeCompare(b.createdAt))
+  const plain = (t: Task) => t.priority === undefined && t.status !== 'no-longer-relevant'
+  const dated = (await db().tasks.where('date').equals(date).toArray()).filter(plain)
+  const undated = (await db().tasks.filter((t) => t.date === undefined && plain(t)).toArray()).filter((t) => showsUndatedOn(t, date))
+  dated.sort((a, b) => (a.time ?? '99:99').localeCompare(b.time ?? '99:99') || a.createdAt.localeCompare(b.createdAt))
+  undated.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  return [...dated, ...undated]
 }
 
 /**

@@ -11,7 +11,6 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 
 - **Formats:** dates are local `YYYY-MM-DD`, times `HH:mm`, timestamps ISO 8601, ids UUIDs. Absent optional fields are omitted, not null.
 - **Statuses:** Task `active | completed | no-longer-relevant`; Open Loop `open | taken-care-of`; Goal `active | archived`. Deleting removes the record (no trash) and returns it so the UI can offer Undo.
-- **Weeks start on Monday** (matches the design system's week view). Note the design system's month grid starts on Sunday; that mismatch is unresolved.
 - **Undo and reopen:** completing, resolving and archiving each have a reverse (`reopenTask`, `reopenOpenLoop`, `restoreRitual`, `restoreGoalFromArchive`) so a mis-tap is recoverable. A completed task cannot be moved until reopened (it stays on its original date).
 - **Older unfinished tasks:** the PRD says an unfinished task is surfaced the next day as "From yesterday". Tasks from earlier days are surfaced too (the Welcome Back review needs them). The domain returns all unfinished dated tasks from before a date; the UI decides how to group and label them.
 - **Empty reflection:** saving empty content on an existing reflection removes it (returned for Undo). Saving empty with nothing stored creates nothing.
@@ -19,6 +18,21 @@ Add new entries at the top. Status is **Confirmed** (the user said so) or **Assu
 - **Goal change history** ("when changed significantly") is not recorded yet. It is undefined in the PRD and belongs with the Goals screen (Slice 8).
 - **Convert Open Loop to Task** creates a new task (new id, new created time) and deletes the loop in one transaction. It keeps the loop's title, note and date unless overridden.
 - **The priority prompt is a question, not a rule.** `shouldConfirmPriority(date, taskId?)` tells the UI whether to ask. The domain never blocks a sixth priority, and never asks on moves.
+
+## Weeks start on Sunday
+**Status: Confirmed** (2026-09-20)
+
+Weeks run Sunday to Saturday everywhere (week goals, week reflections, the Week view). The design system's sample week board shows Mon–Sun, and its month grid starts on Sunday; the sample data is illustrative, so the user's decision wins.
+
+## App shell (Slice 2)
+**Status: Assumed** unless noted
+
+- Routes: `/calendar` (home), `/looking-back`, `/goals`, `/search`, `/settings`, plus `/gallery`. Each screen is a titled placeholder until its slice.
+- **Desktop (981px and up):** persistent sidebar with + Capture on top, Calendar / Looking Back / Goals, and Search (with the Ctrl K / ⌘ K hint) and Settings at the bottom.
+- **Phones and tablets (980px and down):** header with the brand and a Search button, a bottom nav (Calendar / Looking Back / Goals / Settings), and the floating + Capture button at the bottom right (56px, above the bottom nav). Tablets use the phone layout for now; the design system's "compact top/side nav" for 681–980px is not built.
+- **Capture** opens as a centred modal on desktop and a bottom sheet on phones and tablets, with the input focused. *Until the Capture slice, Save only closes it and nothing is stored.*
+- **Search** for now is its own screen. Ctrl/⌘ + K goes to it (ignored while the capture modal is open). The design system's desktop modal/command surface arrives with the Search slice.
+- Breakpoints stay literal because CSS cannot use variables in media queries: 980px (desktop starts at 981px) and 680px.
 
 ## Priority
 **Status: Confirmed** (2026-09-20)
@@ -38,7 +52,12 @@ The PRD's rules apply as written (PRD 7, "Priority"). Only the representation is
 - It sits in that day's Priorities section, ordered by its P-level, and counts toward that day's five. *(Assumed.)*
 - It stays until it is completed, marked No Longer Relevant, or deleted. Completing it shows a checkmark on the day it was completed and it stops appearing on later days. *(Assumed.)*
 - It is not date-bound, so it never appears in "From yesterday". *(Assumed.)*
-- **Open:** where undated tasks *without* a priority appear is not specified by the PRD or decided here.
+
+### Undated tasks without a priority
+**Status: Confirmed** (2026-09-20)
+- They appear on the Day's Tasks section every day from their creation date, **below all other tasks**, and keep appearing day after day until finished or removed.
+- Completing one shows it checked on the day it was completed, then it stops appearing. No Longer Relevant or deleting removes it everywhere. *(Same treatment as undated priority tasks; assumed.)*
+- They are not date-bound, so they never appear in "From yesterday", and they are not priorities so they don't count toward the five.
 
 ### Carry-over to the next day
 - An unfinished task stays on its original date with its priority unchanged. The next day it appears in **From yesterday**, which is a view and not a data change.

@@ -569,7 +569,7 @@ export default function Gallery() {
           {/* 14 CAPTURE */}
           <Section id="capture" n="14" title="Universal capture" note="The default is Open Loop. The user can switch directly to Task or Ritual without passing through another object.">
             <Board className={g.boardCenter}>
-              <CapturePanel />
+              <CapturePanel initialText="Figure out career direction" />
             </Board>
           </Section>
 

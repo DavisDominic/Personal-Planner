@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { NavLink } from 'react-router'
 import { Plus } from 'lucide-react'
 import { cx } from '../../lib/cx'
 import s from './Nav.module.css'
 
-export type NavItem = { label: string; icon: ReactNode }
+/** With `to`, the item is a router link and the current route decides which is active. Without it, a demo button. */
+export type NavItem = { label: string; icon: ReactNode; to?: string }
 
 export function ProductNav({ brand, items }: { brand: string; items: NavItem[] }) {
   const [active, setActive] = useState(0)
@@ -33,22 +35,29 @@ export function ProductNav({ brand, items }: { brand: string; items: NavItem[] }
   )
 }
 
-export function MobileNav({ items }: { items: NavItem[] }) {
+export function MobileNav({ items, label = 'Primary' }: { items: NavItem[]; label?: string }) {
   const [active, setActive] = useState(0)
   return (
-    <nav className={s.mobileNav} aria-label="Primary">
-      {items.map((it, i) => (
-        <button
-          key={it.label}
-          type="button"
-          className={cx(s.mobileItem, i === active && s.active)}
-          aria-current={i === active ? 'page' : undefined}
-          onClick={() => setActive(i)}
-        >
-          {it.icon}
-          {it.label}
-        </button>
-      ))}
+    <nav className={s.mobileNav} aria-label={label}>
+      {items.map((it, i) =>
+        it.to ? (
+          <NavLink key={it.label} to={it.to} className={({ isActive }) => cx(s.mobileItem, isActive && s.active)}>
+            {it.icon}
+            {it.label}
+          </NavLink>
+        ) : (
+          <button
+            key={it.label}
+            type="button"
+            className={cx(s.mobileItem, i === active && s.active)}
+            aria-current={i === active ? 'page' : undefined}
+            onClick={() => setActive(i)}
+          >
+            {it.icon}
+            {it.label}
+          </button>
+        ),
+      )}
     </nav>
   )
 }

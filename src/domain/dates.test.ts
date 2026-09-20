@@ -15,16 +15,17 @@ describe('dates', () => {
     expect(addDays('2028-02-28', 1)).toBe('2028-02-29')
   })
 
-  it('finds weekday and the Monday that starts a week', () => {
+  it('finds weekday and the Sunday that starts a week', () => {
     expect(dayOfWeek('2026-09-20')).toBe(0) // Sunday
-    expect(weekStart('2026-09-20')).toBe('2026-09-14')
-    expect(weekStart('2026-09-21')).toBe('2026-09-21')
-    expect(weekStart('2026-09-27')).toBe('2026-09-21')
+    expect(weekStart('2026-09-20')).toBe('2026-09-20')
+    expect(weekStart('2026-09-21')).toBe('2026-09-20')
+    expect(weekStart('2026-09-26')).toBe('2026-09-20')
+    expect(weekStart('2026-09-27')).toBe('2026-09-27')
   })
 
   it('computes period bounds', () => {
     expect(periodBounds('month', '2028-02-10')).toEqual({ start: '2028-02-01', end: '2028-02-29' })
-    expect(periodBounds('week', '2026-09-23')).toEqual({ start: '2026-09-21', end: '2026-09-27' })
+    expect(periodBounds('week', '2026-09-23')).toEqual({ start: '2026-09-20', end: '2026-09-26' })
     expect(periodBounds('day', '2026-09-23')).toEqual({ start: '2026-09-23', end: '2026-09-23' })
   })
 

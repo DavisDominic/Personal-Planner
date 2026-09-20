@@ -215,3 +215,32 @@ describe('undated priority tasks', () => {
     expect(await getDayPriorities('2026-09-21')).toHaveLength(0)
   })
 })
+
+describe('undated tasks without a priority', () => {
+  it('appear on every day from creation, below all dated tasks, until finished or removed', async () => {
+    const someday = await createTask({ title: 'someday' })
+    const today = await createTask({ title: 'today', date: '2026-09-20' })
+    const timed = await createTask({ title: 'timed', date: '2026-09-20', time: '09:00' })
+    expect((await getDayTasks('2026-09-20')).map((t) => t.id)).toEqual([timed.id, today.id, someday.id])
+    expect((await getDayTasks('2026-10-15')).map((t) => t.id)).toEqual([someday.id])
+    expect(await getDayTasks('2026-09-19')).toHaveLength(0) // not before it was created
+  })
+
+  it('show checked only on the day they were completed, then stop', async () => {
+    const t = await createTask({ title: 'someday' })
+    setNow(2026, 9, 23)
+    await completeTask(t.id)
+    expect((await getDayTasks('2026-09-23')).map((x) => x.id)).toEqual([t.id])
+    expect(await getDayTasks('2026-09-24')).toHaveLength(0)
+  })
+
+  it('stop when no longer relevant or deleted, are not counted as priorities, and are not carried over', async () => {
+    const a = await createTask({ title: 'a' })
+    const b = await createTask({ title: 'b' })
+    expect(await countDayPriorities('2026-09-21')).toBe(0)
+    expect(await getUnfinishedFromEarlier('2026-12-31')).toHaveLength(0)
+    await markTaskNoLongerRelevant(a.id)
+    await deleteTask(b.id)
+    expect(await getDayTasks('2026-09-21')).toHaveLength(0)
+  })
+})

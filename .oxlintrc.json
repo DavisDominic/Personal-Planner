@@ -7,7 +7,7 @@
   },
   "overrides": [
     {
-      "files": ["src/components/**", "src/gallery/**", "src/App.tsx", "src/main.tsx", "src/lib/**"],
+      "files": ["src/components/**", "src/gallery/**", "src/app/**", "src/App.tsx", "src/main.tsx", "src/lib/**"],
       "rules": {
         "no-restricted-imports": [
           "error",

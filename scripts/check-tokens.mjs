@@ -7,6 +7,11 @@ const ROOT = 'src'
 const TOKEN_FILES = new Set(['src/styles/tokens.css', 'src/styles/unmapped.css'])
 const problems = []
 
+// Every custom property that exists in the token files, so typos in var(--...) are caught.
+const defined = new Set(
+  [...TOKEN_FILES].flatMap((f) => [...fs.readFileSync(f, 'utf8').matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1])),
+)
+
 function* walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name).replaceAll('\\', '/')
@@ -37,12 +42,17 @@ for (const file of walk(ROOT)) {
   fs.readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
     if (isCss && (/^\s*@media/.test(line) || /^\s*(\/\*|\*)/.test(line))) return
     const code = isCss ? line.replace(/\/\*.*?\*\//g, '') : line
+    if (isCss) {
+      for (const m of code.matchAll(/var\((--[\w-]+)/g)) {
+        if (!defined.has(m[1])) problems.push(`${file}:${i + 1}  undefined variable ${m[1]}: ${line.trim()}`)
+      }
+    }
     for (const [re, label] of rules) if (re.test(code)) problems.push(`${file}:${i + 1}  ${label}: ${line.trim()}`)
   })
 }
 
 if (problems.length) {
-  console.error(`Found ${problems.length} hardcoded value(s). Use tokens from src/styles/tokens.css (or flag a gap):\n`)
+  console.error(`Found ${problems.length} problem(s). Use tokens from src/styles/tokens.css (or flag a gap); every var(--x) must exist:\n`)
   console.error(problems.join('\n'))
   process.exit(1)
 }

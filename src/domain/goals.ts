@@ -23,7 +23,7 @@ const cleanDescription = (d: string) => d.trim() || undefined
 const withoutUndefined = <T extends object>(o: T): T =>
   Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined)) as T
 
-/** year: "YYYY", month: "YYYY-MM", week: the Monday of that week. */
+/** year: "YYYY", month: "YYYY-MM", week: the Sunday that starts that week. */
 export function goalPeriod(scope: GoalScope, forDate: DateString): string {
   const { start } = periodBounds(scope, assertDate(forDate))
   return scope === 'year' ? start.slice(0, 4) : scope === 'month' ? start.slice(0, 7) : start
