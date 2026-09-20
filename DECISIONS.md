@@ -231,3 +231,12 @@ Vite, React, TypeScript, CSS Modules. Dexie and `vite-plugin-pwa` arrive with th
 
 **Revised:** search shows only the box and a **Filters** button. Filters opens three groups, each a filter in its own right: Type, Status (Any / Open / Done / Set aside) and Time (All time / Past / Upcoming plus From / To). Chosen filters stay visible as removable chips with a count on the button and a "Clear all".
 Status maps across kinds: open = active task, open loop, ritual or goal; done = completed task or taken-care-of loop; set aside = no-longer-relevant task, archived ritual or goal. Reflections have no status, so they drop out when one is chosen.
+
+## PWA and offline (PRD 22)
+
+- **vite-plugin-pwa** (approved) generates the manifest and a Workbox service worker. Everything the app needs, including the bundled fonts and icons, is precached on first load (51 files, about 1 MB), so the app works fully offline. No runtime caching and no network calls.
+- **Updates are offered, never forced.** A new version shows a calm toast, "A new version is ready" with an Update action, so a reload never happens under an unsaved edit. Once, when caching finishes: "Daybook is ready to work offline."
+- **Install:** standalone display, start URL `/`, theme and background colour set to the paper-warm token value (Web manifests cannot use CSS variables, so the hex is written once in `vite.config.ts` and `index.html`).
+- **Icons:** the existing Daybook notebook icon rendered to PNG: 192, 512, a maskable 512 (icon at 62% on paper-warm so platform masks don't crop it) and a 180 Apple touch icon.
+- The service worker is registered only in production builds, and only once the main shell is showing (after Start on a first launch).
+- **Not verified here:** the in-app browser refuses service workers, so registration, offline reload and the install prompt have not been exercised; only the build output (manifest, 51-file precache list including fonts) was checked. Test in Chrome: `npm run build && npx vite preview`, load it, then go offline in DevTools and reload.

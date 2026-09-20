@@ -13,6 +13,7 @@ import { WelcomeBack } from './entry/WelcomeBack'
 import { calendarPath } from './calendar/calendarPaths'
 import { CaptureContext } from './captureContext'
 import type { CapturePreset } from './captureContext'
+import { PwaUpdates } from './PwaUpdates'
 import { PRIMARY_NAV, SETTINGS_NAV } from './navItems'
 import { Sidebar } from './Sidebar'
 import { ToastProvider } from './ToastProvider'
@@ -69,6 +70,7 @@ export function AppShell() {
   return (
     <ToastProvider>
     <CaptureContext.Provider value={capture}>
+      <PwaUpdates />
       <a className={s.skip} href="#main">
         Skip to content
       </a>
