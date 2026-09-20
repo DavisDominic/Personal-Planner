@@ -1,0 +1,96 @@
+/* ---------- CALENDAR ---------- */
+.calendar-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);
+  margin-bottom:var(--u-px-14);
+}
+.calendar-title{font-size:var(--u-px-26);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-n0_035)}
+.calendar-controls{display:flex;align-items:center;gap:var(--sp-1)}
+.month-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border-top:var(--u-px-1) solid var(--ink);
+  border-left:var(--u-px-1) solid var(--ink);
+}
+.month-dow{
+  padding:var(--u-px-9) var(--sp-2);
+  border-right:var(--u-px-1) solid var(--ink);
+  border-bottom:var(--u-px-1) solid var(--ink);
+  background:var(--paper-deep);
+  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);
+  text-transform:uppercase;
+}
+.day-cell{
+  min-height:var(--u-px-118);
+  padding:var(--sp-2);
+  border-right:var(--u-px-1) solid var(--line);
+  border-bottom:var(--u-px-1) solid var(--line);
+  background:var(--white);
+}
+.day-cell.muted{background:var(--paper);color:var(--ink-muted)}
+.day-cell.today{background:var(--lemon)}
+.day-number{
+  width:var(--u-px-25);height:var(--u-px-25);display:grid;place-items:center;
+  font:var(--u-fw-700) var(--text-xs) var(--font-mono);
+}
+.day-number.today-mark{background:var(--ink);color:var(--white);border-radius:50%}
+.day-items{display:grid;gap:var(--sp-1);margin-top:var(--u-px-7)}
+.day-item{
+  display:flex;align-items:center;gap:var(--u-px-5);
+  padding:var(--sp-1) var(--u-px-5);
+  border:var(--u-px-1) solid var(--u-ink-28);
+  border-radius:var(--r-1);
+  font-size:var(--u-px-9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.day-item.coral{background:var(--coral)}
+.day-item.violet{background:var(--violet)}
+.day-item.sage{background:var(--sage)}
+.day-item.sky{background:var(--sky)}
+.day-item.peach{background:var(--peach)}
+.week-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border:var(--u-px-1) solid var(--ink);
+}
+.week-col{min-height:var(--u-px-290);border-right:var(--u-px-1) solid var(--line);padding:var(--u-px-10)}
+.week-col:last-child{border-right:0}
+.week-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:var(--u-px-9);border-bottom:var(--u-px-1) solid var(--line);
+  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+}
+.week-head .date{color:var(--ink-muted)}
+.week-task{
+  margin-top:var(--sp-2);padding:var(--sp-2);
+  border:var(--u-px-1) solid var(--u-ink-35);
+  border-radius:var(--r-1);font-size:var(--text-xs);
+}
+.week-task strong{display:block;font-size:var(--u-px-11)}
+.week-task small{font:var(--u-px-8) var(--font-mono);text-transform:uppercase}
+.week-task.coral{background:var(--coral)}
+.week-task.lemon{background:var(--lemon)}
+.week-task.violet{background:var(--violet)}
+.week-task.sage{background:var(--sage)}
+.week-task.sky{background:var(--sky)}
+
+.year-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--u-px-10)}
+.month-card{
+  min-height:var(--u-px-132);border:var(--u-px-1) solid var(--ink);
+  background:var(--white);padding:var(--sp-3);border-radius:var(--r-1);
+}
+.month-card.active{background:var(--lemon)}
+.month-name{font:var(--u-fw-700) var(--u-px-11) var(--font-mono);text-transform:uppercase}
+.month-sub{font-size:var(--text-xs);color:var(--ink-muted);margin-top:var(--sp-1)}
+.activity-row{display:flex;gap:var(--u-px-3);align-items:end;height:var(--u-px-35);margin-top:var(--u-px-18)}
+.activity-bar{width:var(--u-px-7);background:var(--ink)}
+.activity-bar:nth-child(1){height:var(--u-px-8)}.activity-bar:nth-child(2){height:var(--u-px-18)}.activity-bar:nth-child(3){height:var(--u-px-12)}.activity-bar:nth-child(4){height:var(--u-px-26)}.activity-bar:nth-child(5){height:var(--u-px-15)}.activity-bar:nth-child(6){height:var(--u-px-31)}
+@media(max-width:680px){
+  .month-grid{overflow:hidden}
+  .day-cell{min-height:var(--u-px-82);padding:var(--u-px-5)}
+  .day-items{display:none}
+  .week-grid{grid-template-columns:1fr}
+  .week-col{min-height:var(--u-px-110);border-right:0;border-bottom:var(--u-px-1) solid var(--line)}
+  .week-col:last-child{border-bottom:0}
+  .year-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+.month-card.active .month-sub{color:var(--ink)}

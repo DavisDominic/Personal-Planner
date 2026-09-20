@@ -1,0 +1,18 @@
+/* ---------- SEARCH / FILTERS ---------- */
+.searchbar{
+  display:flex;align-items:center;gap:var(--u-px-9);
+  min-height:var(--u-px-44);border:var(--u-px-1) solid var(--ink);
+  background:var(--white);padding:0 var(--sp-3);border-radius:var(--r-2);
+}
+.searchbar input{border:0;outline:0;background:transparent;width:100%;color:var(--ink)}
+.searchbar svg{width:var(--u-px-18)}
+.filters{display:flex;flex-wrap:wrap;gap:var(--u-px-6);margin-top:var(--u-px-10)}
+.filter{
+  min-height:var(--u-px-30);padding:var(--u-px-5) var(--u-px-9);border:var(--u-px-1) solid var(--line-dark);
+  border-radius:var(--r-pill);background:var(--white);
+  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+}
+.filter.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.filter{composes:hit from "../../styles/hit.module.css"}
+.filter:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+.searchbar:focus-within{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}

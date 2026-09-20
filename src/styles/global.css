@@ -1,0 +1,21 @@
+/* ---------- RESET ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper-warm);
+  color:var(--ink);
+  font-family:var(--font-display);
+  font-size:var(--text-md);
+  line-height:var(--u-lh-1_45);
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+::selection{background:var(--lemon);color:var(--ink)}
+svg{display:block}
+/* ---------- REDUCED MOTION ---------- */
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+svg{stroke-width:var(--u-sw-1_8);stroke-linecap:round;stroke-linejoin:round}

@@ -1,0 +1,43 @@
+.product-link,.mobile-item{border:0;background:transparent;color:inherit;padding:0}
+/* ---------- NAV COMPONENT ---------- */
+.product-nav{
+  display:flex;align-items:center;gap:var(--sp-1);
+  padding:var(--sp-2);
+  border:var(--u-px-1) solid var(--line);
+  background:var(--white);
+  border-radius:var(--r-2);
+}
+.product-brand{display:flex;align-items:center;gap:var(--u-px-9);margin-right:auto;padding:0 var(--u-px-10)}
+.product-brand .dot{width:var(--u-px-9);height:var(--u-px-9);border-radius:50%;background:var(--coral)}
+.product-brand strong{font-size:var(--u-px-13)}
+.product-link{
+  min-height:var(--u-px-36);padding:var(--sp-2) var(--sp-3);border-radius:var(--r-2);
+  display:flex;align-items:center;gap:var(--u-px-7);
+  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+}
+.product-link.active{background:var(--ink);color:var(--white)}
+.product-link:hover{background:var(--paper-deep)}
+.product-add{
+  width:var(--u-px-40);height:var(--u-px-40);border:0;border-radius:50%;background:var(--lemon);
+  display:grid;place-items:center;margin-left:var(--sp-1);
+}
+
+/* mobile nav */
+.mobile-nav{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--white);border:var(--u-px-1) solid var(--line);
+  padding:var(--u-px-5);border-radius:var(--u-px-10);
+}
+.mobile-item{
+  min-height:var(--u-px-52);display:grid;place-items:center;gap:var(--u-px-3);
+  font:var(--u-fw-700) var(--u-px-8) var(--font-mono);text-transform:uppercase;color:var(--ink-muted);
+}
+.mobile-item svg{width:var(--u-px-19);height:var(--u-px-19)}
+.mobile-item.active{color:var(--ink);background:var(--lemon);border-radius:var(--u-px-6)}
+.product-link{composes:hit from "../../styles/hit.module.css"}
+.mobile-item{composes:hit from "../../styles/hit.module.css"}
+.product-link:focus-visible,.product-add:focus-visible,.mobile-item:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+@media(max-width:680px){
+  .product-nav .product-link:not(.active){display:none}
+  .product-brand{margin-right:auto}
+}

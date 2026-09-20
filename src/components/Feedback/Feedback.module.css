@@ -1,0 +1,22 @@
+/* ---------- FEEDBACK ---------- */
+.toast{
+  display:flex;align-items:center;gap:var(--u-px-9);
+  min-height:var(--u-px-46);padding:var(--u-px-9) var(--sp-3);
+  border:var(--u-px-1) solid var(--ink);
+  border-radius:var(--r-3);
+  background:var(--ink);color:var(--white);
+  box-shadow:var(--shadow-float);
+  font-size:var(--u-px-11);
+}
+.toast .undo{margin-left:auto;color:var(--lemon);font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase}
+.inline-error{
+  padding:var(--u-px-10);border-left:var(--u-px-3) solid var(--danger);
+  background:var(--u-coral-10);font-size:var(--u-px-11);
+}
+.inline-success{
+  padding:var(--u-px-10);border-left:var(--u-px-3) solid var(--success);
+  background:var(--u-mint-28);font-size:var(--u-px-11);
+}
+.toast .undo:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+
+.toast .undo{background:transparent;border:0;padding:0}

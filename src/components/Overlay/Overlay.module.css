@@ -1,0 +1,12 @@
+.dialog{
+  width:min(var(--u-px-430),100%);background:var(--white);
+  border:var(--u-px-1) solid var(--ink);box-shadow:var(--shadow-heavy);
+  padding:var(--u-px-22);border-radius:var(--r-2);
+}
+.dialog h3{margin:0 0 var(--u-px-7);font-size:var(--u-px-22)}
+.dialog p{font-size:var(--text-sm);color:var(--ink-muted)}
+.sheet{
+  width:min(var(--u-px-520),100%);background:var(--white);
+  border:var(--u-px-1) solid var(--ink);padding:var(--u-px-18);border-radius:var(--r-4) var(--r-4) 0 0;
+}
+.handle{width:var(--u-px-38);height:var(--u-px-4);background:var(--ink-muted);border-radius:var(--u-px-99);margin:0 auto var(--u-px-18)}

@@ -1,0 +1,12 @@
+/* ritual grid */
+.ritual-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--sp-1);margin-top:var(--u-px-18)}
+.ritual-square{
+  aspect-ratio:1;border:var(--u-px-1) solid var(--u-ink-45);
+  background:transparent;border-radius:var(--r-1);
+}
+.ritual-square.checked{background:var(--ink)}
+.ritual-square.today{outline:var(--u-px-2) solid var(--ink);outline-offset:var(--u-px-1)}
+.ritual-square{composes:hit from "../../styles/hit.module.css"}
+.ritual-square:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+
+.ritual-square{padding:0}

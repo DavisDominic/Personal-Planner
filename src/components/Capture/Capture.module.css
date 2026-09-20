@@ -1,0 +1,19 @@
+/* ---------- CAPTURE ---------- */
+.capture{
+  width:min(var(--u-px-500),100%);
+  background:var(--white);border:var(--u-px-1) solid var(--ink);
+  box-shadow:var(--shadow-heavy);
+  padding:var(--u-px-18);border-radius:var(--r-2);
+}
+.capture-head{display:flex;align-items:center;justify-content:space-between}
+.capture-title{font-size:var(--text-xl);font-weight:var(--u-fw-700)}
+.capture-tabs{display:grid;grid-template-columns:repeat(3,1fr);margin:var(--sp-4) 0;border-bottom:var(--u-px-1) solid var(--line)}
+.capture-tab{
+  min-height:var(--u-px-38);border:0;background:transparent;
+  border-bottom:var(--u-px-2) solid transparent;
+  font:var(--u-fw-700) var(--u-px-9) var(--font-mono);text-transform:uppercase;
+}
+.capture-tab.active{border-color:var(--ink);background:var(--lemon)}
+.capture-foot{display:flex;justify-content:flex-end;gap:var(--u-px-7);margin-top:var(--sp-4)}
+.capture-tab{composes:hit from "../../styles/hit.module.css"}
+.capture-tab:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}

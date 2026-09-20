@@ -1,0 +1,7 @@
+/* Extends the pointer/touch target of a control to at least --touch without changing how it looks. */
+.hit{position:relative}
+.hit::after{
+  content:"";position:absolute;left:50%;top:50%;
+  width:max(100%,var(--touch));height:max(100%,var(--touch));
+  transform:translate(-50%,-50%);
+}

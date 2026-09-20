@@ -32,7 +32,9 @@ A local-first personal planner (PWA). Read these before working:
 - All colors, sizes, spacing, radii, shadows, fonts, and durations come from `src/styles/tokens.css` via `var(--...)`.
 - No hardcoded hex/rgb values, px sizes, font names, or durations in components or component CSS.
 - If a value you need has no token (for example ink at 12% opacity, or a 9px label size), **flag it to the user**. Don't hardcode it and don't add a token yourself.
-- Media-query breakpoints can't use variables. Keep them in one shared place, not scattered.
+- `src/styles/unmapped.css` is the one exception: it stages the values the design system uses that have no token (`--u-*`). It is a list of gaps awaiting the user's decision, not a token set. Components may reference `--u-*` vars, but never add to that file without flagging it.
+- `npm run lint:tokens` must pass. It fails on hex/rgb colors, px/em/ms literals and font-family literals outside `tokens.css` and `unmapped.css`.
+- Media-query breakpoints (980px, 680px) can't use variables, so they are the one literal allowed in CSS. Keep them to those two values.
 - Icons: Lucide, bundled locally.
 
 ### 6. Protected files

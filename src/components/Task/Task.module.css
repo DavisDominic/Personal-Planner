@@ -1,0 +1,29 @@
+/* ---------- TASK ---------- */
+.task{
+  display:flex;align-items:flex-start;gap:var(--u-px-11);
+  padding:var(--sp-3) 0;
+  border-bottom:var(--u-px-1) solid var(--line);
+}
+.task:last-child{border-bottom:0}
+.task-check{
+  width:var(--u-px-21);height:var(--u-px-21);flex:none;
+  border:var(--u-px-1) solid var(--ink);
+  border-radius:var(--r-1);
+  background:var(--white);
+  display:grid;place-items:center;
+}
+.task-check.checked{background:var(--ink);color:var(--white)}
+.task-copy{flex:1;min-width:0}
+.task-title{font-size:var(--text-md);font-weight:var(--u-fw-600)}
+.task.done .task-title{text-decoration:line-through;color:var(--ink-muted)}
+/* Completed tasks on color-block/paper surfaces keep strong ink contrast. */
+.on-color.done .task-title,.on-color .task-meta{color:var(--ink)}
+.task-meta{font:var(--u-px-9) var(--font-mono);color:var(--ink-muted);text-transform:uppercase;margin-top:var(--sp-1)}
+.task-priority{
+  width:var(--u-px-7);height:var(--u-px-7);border-radius:50%;
+  background:var(--coral);display:inline-block;margin-right:var(--u-px-5);
+}
+.task-check{composes:hit from "../../styles/hit.module.css"}
+.task-check:focus-visible{outline:var(--u-px-3) solid var(--focus);outline-offset:var(--u-px-2)}
+
+.task-check{padding:0;color:inherit}
