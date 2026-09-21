@@ -376,3 +376,18 @@ into the PRD on request.
 
 Plain icon, no box, drawn at the same size as the menu and search icons in the header. Its tap area stays
 44px.
+
+## Voice input: the keyboard's, not the app's (user decision)
+
+Voice input appears nowhere in the PRD or the design system — checked both the converted `PRD.md` and the
+original `.docx`, where the only match is inside the word "invoice". It was never in scope, so nothing was
+dropped.
+
+**Decision: build nothing.** Every field in Daybook is a plain `<input>` or `<textarea>`, so the phone
+keyboard's own mic (Gboard, the iOS keyboard) already dictates into Capture, notes and reflections.
+
+An in-app mic button was considered and turned down: the browser's speech recognition sends audio to the
+browser vendor's servers to be transcribed (Google's, on Android Chrome), which would break CLAUDE.md
+rule 3 (no backend, no network calls), contradict "Everything stays on this device" on the first-launch
+screen, and fail offline. Revisit only if on-device recognition becomes dependable in browsers, and amend
+the PRD first if so.
