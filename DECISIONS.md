@@ -348,3 +348,14 @@ Day sections are one list split in two, and the numbers now add up:
 Note: the PRD's example screen shows "Tasks / Remaining · 3" next to a Priorities section. That wording is
 kept whenever there are no priorities; the "Other tasks" variant is a deviation made to stop the count
 reading as the day's total.
+
+## The first nav item is "Today", and opens the Day
+
+**Flagged copy deviation.** PRD 4 names the first primary area "Calendar — where I am / where I'm going",
+and that link used to open the month. The same section also says "Today is the primary doing context", so
+the link now opens **today's Day** and is labelled **Today**. The calendar itself is one tap away on the
+Day / Week / Month / Year switch at the top of the Day.
+
+- The link still points at `/calendar`, which redirects to today's Day, so it stays highlighted while
+  browsing any week, month or year — it is still the calendar area, just entered at the doing end.
+- Opening the app, the link, and any unknown address all land in the same place.

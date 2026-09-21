@@ -14,9 +14,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppShell />}>
-          {/* Opening the app lands on today's Day (PRD 25); the Calendar link opens the month. */}
+          {/* Opening the app, and the Today link, both land on today's Day (PRD 4, 25). */}
           <Route index element={<Navigate to={calendarPath('day', today())} replace />} />
-          <Route path="calendar" element={<Navigate to={calendarPath('month', today())} replace />} />
+          <Route path="calendar" element={<Navigate to={calendarPath('day', today())} replace />} />
           <Route path="calendar/:view" element={<CalendarView />} />
           <Route path="calendar/:view/:date" element={<CalendarView />} />
           <Route path="looking-back" element={<LookingBackPage />} />
