@@ -4,9 +4,10 @@ import { Button } from '../../components/Button/Button'
 import { Card, CardHead } from '../../components/Card/Card'
 import { TaskRow } from '../../components/Task/Task'
 import {
-  addDays, checkRitual, completeTask, getDayContents, moveTask, moveTaskToToday, reopenOpenLoop, reopenTask, resolveOpenLoop, today,
+  addDays, archiveRitual, checkRitual, completeTask, getDayContents, listRituals, moveTask, moveTaskToToday, reopenOpenLoop, reopenTask, resolveOpenLoop,
+  restoreRitual, today,
 } from '../../domain/index'
-import type { OpenLoop, Task } from '../../domain/index'
+import type { OpenLoop, Ritual, Task } from '../../domain/index'
 import t from '../../styles/typography.module.css'
 import { CalendarNav } from '../calendar/CalendarNav'
 import { dayShort, dayTitle, formatTime, weekdayLong } from '../../lib/dateFormat'
@@ -16,6 +17,7 @@ import { ReflectionSection } from '../reflection/ReflectionSection'
 import { useToast } from '../useToast'
 import s from './DayView.module.css'
 import { OpenLoopDetailDialog } from './OpenLoopDetailDialog'
+import { RitualDetailDialog } from './RitualDetailDialog'
 import { TaskDetailDialog } from './TaskDetailDialog'
 
 /** Open loops and rituals show a few, then "+N more" (PRD 12: progressive disclosure). */
@@ -38,6 +40,8 @@ export function DayView({ date }: { date: string }) {
   const [showRituals, setShowRituals] = useState(false)
   const [openTask, setOpenTask] = useState<Task | null>(null)
   const [openLoop, setOpenLoop] = useState<OpenLoop | null>(null)
+  const [openRitual, setOpenRitual] = useState<Ritual | null>(null)
+  const [showArchived, setShowArchived] = useState(false)
 
   const isToday = date === today()
   const caption = `${isToday ? 'Today / ' : ''}${weekdayLong(date)}`
@@ -104,6 +108,7 @@ export function DayView({ date }: { date: string }) {
   const takenCareOf = day?.takenCareOf ?? []
   const shownLoops = showLoops ? loops : loops.slice(0, LOOPS_SHOWN)
   const rituals = day?.rituals ?? []
+  const archivedRituals = useLive(() => listRituals({ archived: true }), 'archived-rituals') ?? []
   const shownRituals = showRituals ? rituals : rituals.slice(0, RITUALS_SHOWN)
 
   return (
@@ -231,7 +236,7 @@ export function DayView({ date }: { date: string }) {
             </Card>
           )}
 
-          {rituals.length > 0 && (
+          {(rituals.length > 0 || archivedRituals.length > 0) && (
             <Card tone="sage">
               <CardHead kicker="RITUALS" title={`${rituals.filter((r) => r.checked).length} of ${rituals.length} checked`} icon={<Repeat aria-hidden="true" />} />
               {shownRituals.map(({ ritual, checked, recordedDays }) => (
@@ -242,6 +247,7 @@ export function DayView({ date }: { date: string }) {
                   done={checked}
                   strikeWhenDone={false}
                   onToggle={() => void safely(checkRitual(ritual.id, date))}
+                  onOpen={() => setOpenRitual(ritual)}
                   onColor
                 />
               ))}
@@ -252,6 +258,42 @@ export function DayView({ date }: { date: string }) {
                   </Button>
                 </div>
               )}
+              {archivedRituals.length > 0 && (
+                <>
+                  <div className={s.disclose}>
+                    <Button size="small" aria-expanded={showArchived} aria-controls="day-archived-rituals" onClick={() => setShowArchived((v) => !v)}>
+                      Archived · {archivedRituals.length} — {showArchived ? 'Hide' : 'Show'}
+                    </Button>
+                  </div>
+                  {showArchived && (
+                    <div id="day-archived-rituals">
+                      {archivedRituals.map((ritual) => (
+                        <TaskRow
+                          key={ritual.id}
+                          title={ritual.name}
+                          bare
+                          onOpen={() => setOpenRitual(ritual)}
+                          actions={
+                            <Button
+                              size="small"
+                              onClick={() =>
+                                void safely(
+                                  restoreRitual(ritual.id).then(() =>
+                                    toast.show({ message: 'Ritual restored', actionLabel: 'Undo', onAction: () => void archiveRitual(ritual.id) }),
+                                  ),
+                                )
+                              }
+                            >
+                              Bring it back
+                            </Button>
+                          }
+                          onColor
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
             </Card>
           )}
             </>
@@ -261,6 +303,7 @@ export function DayView({ date }: { date: string }) {
       </div>
 
       <TaskDetailDialog task={openTask} onClose={() => setOpenTask(null)} />
+      <RitualDetailDialog ritual={openRitual} onClose={() => setOpenRitual(null)} />
       <OpenLoopDetailDialog loop={openLoop} day={date} onClose={() => setOpenLoop(null)} />
     </div>
   )

@@ -391,3 +391,16 @@ browser vendor's servers to be transcribed (Google's, on Android Chrome), which 
 rule 3 (no backend, no network calls), contradict "Everything stays on this device" on the first-launch
 screen, and fail offline. Revisit only if on-device recognition becomes dependable in browsers, and amend
 the PRD first if so.
+
+## Rituals can be opened, edited and archived (missing PRD 9 behaviour)
+
+Reported: tapping a ritual did nothing. PRD 9 requires archiving ("Rituals can be archived. Historical
+check-ins remain. Archived Rituals can be retrieved and restored"), and none of it had a UI: a ritual could
+be created and checked, never renamed, re-scheduled or put away.
+
+- **Tapping a ritual opens it**, like a task or an open loop: rename it, change how often it happens, and
+  see "N recorded days" (PRD 9's factual line). Changing the frequency never rewrites past check-ins.
+- **Archive, with Undo.** There is deliberately no delete: the domain has none, because the check-ins are a
+  record of what was actually done.
+- **Archived rituals live behind "Archived · N — Show"** at the foot of the Rituals card, each with
+  "Bring it back". The card now appears when everything is archived, so the way back always exists.
