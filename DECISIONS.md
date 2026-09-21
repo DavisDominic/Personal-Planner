@@ -330,3 +330,21 @@ own wording, and the stored status value stays `taken-care-of`, so no data migra
 - **The date and time pickers behave like dialogs on a phone.** They are centred there, so they now have a
   scrim behind them: a tap outside closes them, and the page no longer slides around underneath. Any scroll
   outside the popover (including inside a sheet) closes it.
+
+## Priorities are tasks, and the Day's counts say so
+
+Reported: adding a task with a priority left the Tasks card reading "Remaining · 0", as though the day
+held nothing to do. PRD 7 is clear that "Priority is a Task property, not a separate object", so the two
+Day sections are one list split in two, and the numbers now add up:
+
+- The day's line ("2 remaining · 1 completed") counts every task, priorities included. It always did.
+- **Priorities · N** — N is how many priorities are still to do. Completed ones stay visible, ticked.
+- **Other tasks · N** — the same count for the rest, and the word "Other" says that the priorities above
+  were tasks too. With no priorities on the day the card keeps the PRD's own wording, "Remaining · N".
+- Priorities N + Other tasks N always equals the day's remaining count.
+- An empty Tasks card now offers "+ Add a task" even when the day has priorities; before, the button
+  appeared only when the whole day was empty.
+
+Note: the PRD's example screen shows "Tasks / Remaining · 3" next to a Priorities section. That wording is
+kept whenever there are no priorities; the "Other tasks" variant is a deviation made to stop the count
+reading as the day's total.

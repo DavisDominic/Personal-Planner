@@ -87,8 +87,11 @@ export function DayView({ date }: { date: string }) {
   const tasks = day?.tasks ?? []
   const remaining = tasks.filter((x) => x.status !== 'completed')
   const completed = tasks.filter((x) => x.status === 'completed')
-  const remainingCount = remaining.length + priorities.filter((x) => x.status !== 'completed').length
+  const remainingPriorities = priorities.filter((x) => x.status !== 'completed').length
+  const remainingCount = remaining.length + remainingPriorities
   const completedCount = completed.length + priorities.filter((x) => x.status === 'completed').length
+  // With priorities on the day, the second card holds the rest of the tasks, and says so.
+  const tasksTitle = priorities.length > 0 ? `Other tasks · ${remaining.length}` : `Remaining · ${remaining.length}`
 
   // Unfinished tasks from earlier days are surfaced on today's Day only, with neutral wording.
   const yesterday = addDays(date, -1)
@@ -118,15 +121,15 @@ export function DayView({ date }: { date: string }) {
             <>
           {priorities.length > 0 && (
             <Card tone="lemon">
-              <CardHead kicker="IN THIS ORDER" title="Priorities" icon={<ListOrdered aria-hidden="true" />} />
+              <CardHead kicker="IN THIS ORDER" title={`Priorities · ${remainingPriorities}`} icon={<ListOrdered aria-hidden="true" />} />
               {priorities.map(taskRow)}
             </Card>
           )}
 
           <Card kind="color" tone="coral">
-            <CardHead kicker="TASKS" title={`Remaining · ${remaining.length}`} icon={<ListChecks aria-hidden="true" />} />
+            <CardHead kicker="TASKS" title={tasksTitle} icon={<ListChecks aria-hidden="true" />} />
             {remaining.map(taskRow)}
-            {tasks.length === 0 && priorities.length === 0 && (
+            {tasks.length === 0 && (
               <div className={s.empty}>
                 <Button size="small" onClick={() => capture.open({ tab: 'task', date })}>
                   + Add a task
