@@ -359,3 +359,20 @@ Day / Week / Month / Year switch at the top of the Day.
 - The link still points at `/calendar`, which redirects to today's Day, so it stays highlighted while
   browsing any week, month or year — it is still the calendar area, just entered at the doing end.
 - Opening the app, the link, and any unknown address all land in the same place.
+
+## PRD updated to match two navigation decisions
+
+At the user's request, `PRD.md` now records what the app does, so the two are no longer out of step:
+
+- PRD 4's primary-area table: the first area is **Today**, entered at today's Day, with Week, Month and
+  Year reached from there (it read "Calendar" and opened the month).
+- PRD 23, Mobile: navigation is **a drawer behind a menu button** in the header, not a bottom bar.
+
+Still recorded here but not in the PRD: "Completed" in place of "Taken Care Of" (PRD 8), and the Day's
+"Other tasks" count (PRD 12's example says "Remaining"). Both are the user's decisions and can be written
+into the PRD on request.
+
+## The drawer's close control
+
+Plain icon, no box, drawn at the same size as the menu and search icons in the header. Its tap area stays
+44px.

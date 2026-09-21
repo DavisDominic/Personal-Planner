@@ -11,6 +11,7 @@
 }
 .brand-name{font-size:var(--text-md);font-weight:var(--u-fw-700);letter-spacing:var(--u-em-0_12);text-transform:uppercase}
 .close{margin-left:auto}
+.close svg{width:var(--t-icon-22);height:var(--t-icon-22)}
 .nav{display:grid;gap:var(--u-px-2);margin-top:var(--u-px-18)}
 .utilities{margin-top:auto;padding-top:var(--sp-4);border-top:var(--u-px-1) solid var(--line)}
 .link{

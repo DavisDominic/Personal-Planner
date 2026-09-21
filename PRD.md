@@ -117,7 +117,7 @@ Behavior and product decisions are frozen. Visual personality is intentionally n
 
 | **Primary area** | **Purpose** |
 | --- | --- |
-| Calendar | Where I am / where I’m going |
+| Today | Where I am / where I’m going. The navigation item is labelled “Today” and opens today’s Day, the doing context; Week, Month and Year are reached from there. |
 | Looking Back | What happened |
 | Goals | What direction I’m choosing |
 | + Capture | Quickly add something without navigating first |
@@ -833,7 +833,7 @@ Core offline functionality includes Calendar, Tasks, Open Loops, Rituals, Goals,
 
 - Mobile-first.
 - Thumb-friendly interaction.
-- Bottom navigation.
+- Navigation in a drawer, opened from a menu button at the top left of the header.
 - Capture as bottom sheet/full-screen overlay.
 - Vertical Week.
 - No hover dependence.

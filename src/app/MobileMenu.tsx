@@ -29,7 +29,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
         <div className={s.head}>
           <AppIcon />
           <span className={s.brandName}>Daybook</span>
-          <IconButton label="Close menu" className={s.close} onClick={onClose} data-autofocus>
+          <IconButton label="Close menu" tone="plain" className={s.close} onClick={onClose} data-autofocus>
             <X aria-hidden="true" />
           </IconButton>
         </div>
